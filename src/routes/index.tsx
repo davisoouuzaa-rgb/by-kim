@@ -102,7 +102,7 @@ function Index() {
         <div className="bk-product-grid">
           {products.map((product, index) => (
             <article className="bk-product" key={product.name}>
-              <a className="bk-product-image" href={menu} target="_blank" rel="noreferrer">
+              <a className="bk-product-image" href={ifood} target="_blank" rel="noreferrer">
                 <img src={product.image} alt={product.alt} loading="lazy" />
                 <span className="bk-product-number">0{index + 1}</span>
                 <span className="bk-product-arrow"><ArrowRight size={18} /></span>
@@ -121,6 +121,7 @@ function Index() {
           <p>Estamos em Santa Cecília, com doces autorais, cheesecakes e bolos feitos com técnica e criatividade.</p>
           <div className="bk-details"><div><MapPin size={17} /><span>Rua Tupi, 114<br />Santa Cecília · São Paulo</span></div><div><Clock3 size={17} /><span>Terça a domingo<br />10h às 17h30</span></div></div>
           <a className="bk-button bk-button-dark" href="https://www.google.com/maps/search/?api=1&query=Rua+Tupi+114+Santa+Cecilia+Sao+Paulo" target="_blank" rel="noreferrer">COMO CHEGAR <ArrowRight size={15} /></a>
+          <a className="bk-underlined" href={ifood} target="_blank" rel="noreferrer">PEDIR PELO IFOOD <ArrowRight size={15} /></a>
         </div>
       </section>
 
