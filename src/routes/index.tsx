@@ -11,7 +11,7 @@ const ifood = "https://www.ifood.com.br/delivery/sao-paulo-sp/by-kim-confeitaria
 const products = [
   {
     name: "Cheesecake de matchá com calda de morango",
-    detail: "Uma das cheesecakes da casa, com o sabor marcante e delicado do matchá.",
+    detail: "Matchá e calda de morango.",
     price: "R$ 35 · fatia",
     image: "https://vejasp.abril.com.br/wp-content/uploads/2024/01/DAN_2535.jpg.jpg?quality=70&strip=info&w=900",
     alt: "Cheesecake de matchá com calda de morango da By Kim",
@@ -25,14 +25,14 @@ const products = [
   },
   {
     name: "Bolo de cenoura com especiarias",
-    detail: "Bolo de 15 camadas com especiarias, nozes e ganache de cream cheese.",
+    detail: "Especiarias, nozes e ganache de cream cheese.",
     price: "Consulte o cardápio",
     image: "https://vejasp.abril.com.br/wp-content/uploads/2024/01/DAN_2497.jpg.jpg?quality=70&strip=info&w=900",
     alt: "Bolo de cenoura com especiarias, nozes e ganache da By Kim",
   },
   {
     name: "Bolo de brigadeiro",
-    detail: "O famoso bolo de chocolate da casa, montado em 15 camadas finas.",
+    detail: "Chocolate em 15 camadas.",
     price: "Consulte o cardápio",
     image: "https://vejasp.abril.com.br/wp-content/uploads/2024/01/DAN_2478.jpg.jpg?quality=70&strip=info&w=900",
     alt: "Bolo de brigadeiro da By Kim",
@@ -42,49 +42,49 @@ const products = [
 function Index() {
   return (
     <main className="bk-page">
-      <div className="bk-topline">CONFEITARIA ARTESANAL · SANTA CECÍLIA, SP</div>
+      <div className="bk-topline">SANTA CECÍLIA · SÃO PAULO</div>
       <header className="bk-header">
         <a className="bk-wordmark" href="#inicio" aria-label="By Kim início">
           <span className="bk-mark">BY KIM</span>
-          <span className="bk-submark">ㄱ ㅣ ㅁ · CONFEITARIA</span>
+          <span className="bk-submark">CONFEITARIA</span>
         </a>
         <nav className="bk-nav" aria-label="Navegação principal">
-          <a href="#sobre">A casa</a>
+          <a href="#sobre">Sobre</a>
           <a href="#vitrine">Vitrine</a>
           <a href="#visite">Visite-nos</a>
         </nav>
-        <a className="bk-header-cta" href={whatsapp} target="_blank" rel="noreferrer">FAÇA SEU PEDIDO <ArrowRight size={14} /></a>
+        <a className="bk-header-cta" href={whatsapp} target="_blank" rel="noreferrer">PEDIR <ArrowRight size={14} /></a>
       </header>
 
       <section className="bk-hero" id="inicio">
         <div className="bk-hero-copy">
-          <p className="bk-eyebrow"><span /> DOCES FORA DA CAIXA</p>
-          <h1>Um jeito novo<br />de sentir <em>o doce.</em></h1>
-          <p className="bk-intro">Confeitaria artesanal, técnica e criatividade em cada detalhe. Sabores que surpreendem, feitos para despertar os sentidos.</p>
+          <p className="bk-eyebrow"><span /> BY KIM</p>
+          <h1>Doce, com<br /><em>personalidade.</em></h1>
+          
           <div className="bk-hero-actions">
-            <a className="bk-button bk-button-dark" href="#vitrine">EXPLORE A VITRINE <ArrowRight size={15} /></a>
-            <a className="bk-text-link" href={instagram} target="_blank" rel="noreferrer"><Instagram size={16} /> @BYKIMCONFEITARIA</a>
+            <a className="bk-button bk-button-dark" href="#vitrine">VER DOCES <ArrowRight size={15} /></a>
+            <a className="bk-text-link" href={instagram} target="_blank" rel="noreferrer"><Instagram size={16} /> INSTAGRAM</a>
           </div>
-          <div className="bk-hero-note"><span>01 / 03</span><span>FEITO COM INTENÇÃO. SERVIDO COM AFETO.</span></div>
+          
         </div>
         <div className="bk-hero-image-wrap">
           <img className="bk-hero-image" src="https://cloudfront-us-east-1.images.arcpublishing.com/estadao/MEVLYPTJWRCCNMINS2H6FSI7WY.jpg" alt="Chef confeiteira finalizando uma criação artesanal" />
           <div className="bk-image-stamp"><span>BY</span><strong>KIM</strong><small>CONFEITARIA</small></div>
-          <span className="bk-image-caption">ARTE, TÉCNICA E SABOR.</span>
+          
         </div>
       </section>
 
       <section className="bk-marquee" aria-label="Especialidades">
-        <span>CHEESECAKES</span><i>✳</i><span>BOLOS AUTORAIS</span><i>✳</i><span>MIL-FOLHAS</span><i>✳</i><span>DOCES FORA DA CAIXA</span><i>✳</i>
+        <span>CHEESECAKES</span><i>✳</i><span>BOLOS</span><i>✳</i><span>MIL-FOLHAS</span>
       </section>
 
       <section className="bk-about" id="sobre">
-        <div className="bk-section-index">01 — NOSSA ESSÊNCIA</div>
+        
         <div className="bk-about-main">
-          <p className="bk-eyebrow">MAIS DO QUE CONFEITARIA</p>
-          <h2>O extraordinário<br />mora nos <em>detalhes.</em></h2>
-          <p className="bk-about-text">A By Kim é um ateliê de confeitaria que combina referências, técnicas e ingredientes para criar doces com personalidade. Uma mistura de precisão, curiosidade e liberdade para sair do óbvio.</p>
-          <a className="bk-underlined" href={instagram} target="_blank" rel="noreferrer">ACOMPANHE NOSSA HISTÓRIA <ArrowRight size={15} /></a>
+          
+          <h2>A casa<br /><em>By Kim.</em></h2>
+          <p className="bk-about-text">Confeitaria autoral em Santa Cecília.</p>
+          <a className="bk-underlined" href={instagram} target="_blank" rel="noreferrer">CONHEÇA NO INSTAGRAM <ArrowRight size={15} /></a>
         </div>
         <div className="bk-about-aside">
           <div className="bk-aside-rule" />
@@ -96,8 +96,8 @@ function Index() {
 
       <section className="bk-showcase" id="vitrine">
         <div className="bk-showcase-head">
-          <div><p className="bk-eyebrow">ESCOLHAS DA CASA</p><h2>Pequenas obras<br />de <em>confeitaria.</em></h2></div>
-          <div className="bk-showcase-side"><p>Conheça algumas das criações que fazem parte do universo By Kim. O cardápio pode variar conforme a produção.</p><a className="bk-underlined" href={ifood} target="_blank" rel="noreferrer">VER CARDÁPIO NO IFOOD <ArrowRight size={15} /></a></div>
+          <div><p className="bk-eyebrow">A VITRINE</p><h2>Nossos <em>doces.</em></h2></div>
+          <div className="bk-showcase-side"><a className="bk-underlined" href={ifood} target="_blank" rel="noreferrer">CARDÁPIO COMPLETO <ArrowRight size={15} /></a></div>
         </div>
         <div className="bk-product-grid">
           {products.map((product, index) => (
@@ -116,18 +116,18 @@ function Index() {
 
       <section className="bk-visit" id="visite">
         <div className="bk-visit-copy">
-          <p className="bk-eyebrow">VENHA CONHECER</p>
-          <h2>Uma pausa<br />com <em>sabor.</em></h2>
-          <p>Estamos em Santa Cecília, com doces autorais, cheesecakes e bolos feitos com técnica e criatividade.</p>
+          <p className="bk-eyebrow">ONDE ESTAMOS</p>
+          <h2>Visite a<br /><em>By Kim.</em></h2>
+          
           <div className="bk-details"><div><MapPin size={17} /><span>Rua Tupi, 114<br />Santa Cecília · São Paulo</span></div><div><Clock3 size={17} /><span>Terça a domingo<br />10h às 17h30</span></div></div>
           <a className="bk-button bk-button-dark" href="https://www.google.com/maps/search/?api=1&query=Rua+Tupi+114+Santa+Cecilia+Sao+Paulo" target="_blank" rel="noreferrer">COMO CHEGAR <ArrowRight size={15} /></a>
-          <a className="bk-underlined" href={ifood} target="_blank" rel="noreferrer">PEDIR PELO IFOOD <ArrowRight size={15} /></a>
+          <a className="bk-underlined" href={ifood} target="_blank" rel="noreferrer">IFOOD <ArrowRight size={15} /></a>
         </div>
       </section>
 
       <footer className="bk-footer">
         <a className="bk-footer-brand" href="#inicio">BY KIM <span>ㄱ ㅣ ㅁ</span></a>
-        <p>DOCES FORA DA CAIXA. FEITOS COM INTENÇÃO.</p>
+        
         <div className="bk-footer-links"><a href={instagram} target="_blank" rel="noreferrer"><Instagram size={16} /> INSTAGRAM</a><a href={whatsapp} target="_blank" rel="noreferrer"><MessageCircle size={16} /> WHATSAPP</a></div>
         <small>© {new Date().getFullYear()} BY KIM CONFEITARIA</small>
       </footer>
