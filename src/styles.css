@@ -302,3 +302,69 @@ body,.bk-page { background:#080808; color:#f7f7f5; }
  .bk-product-image img { transition:transform .7s cubic-bezier(.2,.7,.2,1); }
  .bk-header-cta,.bk-button { transition:all .25s ease; }
 }
+
+
+/* BY KIM — preto e branco minimalista */
+:root {
+  --background: oklch(0.08 0 0);
+  --foreground: oklch(0.97 0 0);
+  --card: oklch(0.11 0 0);
+  --card-foreground: oklch(0.97 0 0);
+  --popover: oklch(0.11 0 0);
+  --popover-foreground: oklch(0.97 0 0);
+  --primary: oklch(0.97 0 0);
+  --primary-foreground: oklch(0.08 0 0);
+  --secondary: oklch(0.16 0 0);
+  --secondary-foreground: oklch(0.97 0 0);
+  --muted: oklch(0.16 0 0);
+  --muted-foreground: oklch(0.72 0 0);
+  --border: oklch(0.28 0 0);
+}
+html, body, .bk-page,
+.bk-topline, .bk-header, .bk-showcase, .bk-marquee,
+.bk-cta-art, .bk-footer {
+  background: #080808 !important;
+  color: #f7f7f7 !important;
+}
+.bk-topline, .bk-marquee, .bk-footer,
+.bk-cta-art { color: #f7f7f7 !important; }
+.bk-wordmark, .bk-nav a, .bk-header-cta,
+.bk-text-link, .bk-underlined, .bk-about-aside,
+.bk-product-cta .bk-product-info a,
+.bk-footer-brand, .bk-footer-links a,
+.bk-footer > small, .bk-footer > p {
+  color: #f7f7f7 !important;
+}
+.bk-header { border-bottom: 1px solid #292929; }
+.bk-header-cta, .bk-button-dark {
+  color: #f7f7f7 !important;
+  background: #080808 !important;
+  border: 1px solid #f7f7f7 !important;
+}
+.bk-header-cta:hover, .bk-button-dark:hover {
+  color: #080808 !important;
+  background: #f7f7f7 !important;
+}
+.bk-eyebrow span, .bk-aside-rule { background: #f7f7f7; }
+.bk-intro, .bk-about-text, .bk-showcase-side p,
+.bk-visit-copy > p:not(.bk-eyebrow),
+.bk-product-info p, .bk-product-info > span,
+.bk-details div { color: #bdbdbd; }
+.bk-hero-note { border-color: #292929; color: #888; }
+.bk-hero-note span:first-child { color: #f7f7f7; }
+.bk-marquee { border-top: 1px solid #292929; border-bottom: 1px solid #292929; }
+.bk-product-image { background: #171717; }
+.bk-product-number, .bk-product-arrow {
+  background: #080808;
+  color: #f7f7f7;
+  border: 1px solid #444;
+}
+.bk-cta-art { border: 1px solid #333; }
+.bk-visit-image { background: #171717; }
+.bk-details svg { color: #f7f7f7; }
+.bk-footer { border-top: 1px solid #292929; }
+.bk-footer > small { border-color: #292929; }
+.bk-image-stamp { display: none; }
+.bk-image-caption { letter-spacing: .14em; }
+.bk-about-aside span, .bk-section-index { color: #999; }
+.bk-underlined { border-color: #f7f7f7; }
