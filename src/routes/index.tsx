@@ -27,14 +27,14 @@ const products = [
     name: "Bolo de cenoura",
     detail: "Bolo de 15 camadas com especiarias, nozes e ganache de cream cheese.",
     price: "Consulte o cardápio",
-    image: "https://vejasp.abril.com.br/wp-content/uploads/2024/01/DAN_2497.jpg.jpg?quality=80&strip=info&w=900",
+    image: "/bolo-cenoura.png",
     alt: "Bolo de cenoura com especiarias, nozes e ganache da By Kim",
   },
   {
     name: "Bolo de brigadeiro",
     detail: "O famoso bolo de chocolate da casa, montado em 15 camadas finas.",
     price: "Consulte o cardápio",
-    image: "https://vejasp.abril.com.br/wp-content/uploads/2024/01/DAN_2478.jpg.jpg?quality=80&strip=info&w=900",
+    image: "/bolo-brigadeiro.png",
     alt: "Bolo de brigadeiro da By Kim",
   },
 ];
