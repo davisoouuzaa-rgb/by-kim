@@ -10,7 +10,7 @@ const ifood = "https://www.ifood.com.br/delivery/sao-paulo-sp/by-kim-confeitaria
 
 const products = [
   {
-    name: "Cheesecake de matchá",
+    name: "Cheesecake de matchá com calda de morango",
     detail: "Uma das cheesecakes da casa, com o sabor marcante e delicado do matchá.",
     price: "R$ 35 · fatia",
     image: "https://vejasp.abril.com.br/wp-content/uploads/2024/01/DAN_2535.jpg.jpg?quality=70&strip=info&w=900",
@@ -24,14 +24,14 @@ const products = [
     alt: "Seleção de cheesecakes da By Kim",
   },
   {
-    name: "Bolo de Cenoura 15 Camadas (Fatia)",
+    name: "Bolo de cenoura com especiarias",
     detail: "Bolo de 15 camadas com especiarias, nozes e ganache de cream cheese.",
     price: "Consulte o cardápio",
     image: "https://vejasp.abril.com.br/wp-content/uploads/2024/01/DAN_2497.jpg.jpg?quality=70&strip=info&w=900",
     alt: "Bolo de cenoura com especiarias, nozes e ganache da By Kim",
   },
   {
-    name: "Bolo de Brigadeiro 15 Camadas (Fatia)",
+    name: "Bolo de brigadeiro",
     detail: "O famoso bolo de chocolate da casa, montado em 15 camadas finas.",
     price: "Consulte o cardápio",
     image: "https://vejasp.abril.com.br/wp-content/uploads/2024/01/DAN_2478.jpg.jpg?quality=70&strip=info&w=900",
