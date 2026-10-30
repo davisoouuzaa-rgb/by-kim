@@ -100,9 +100,6 @@ function Index() {
       </section>
 
       <section className="bk-visit" id="visite">
-        <div className="bk-visit-image">
-          <img src="https://vejasp.abril.com.br/wp-content/uploads/2024/01/DAN_2535.jpg.jpg?quality=80&strip=info&w=1200" alt="Cheesecake de matchá com calda de morango" loading="lazy" />
-        </div>
         <div className="bk-visit-copy">
           <p className="bk-eyebrow">VENHA CONHECER</p>
           <h2>Uma pausa<br />com <em>sabor.</em></h2>
