@@ -95,10 +95,7 @@ function Index() {
               <div className="bk-product-info"><div><h3>{product.name}</h3><p>{product.detail}</p></div><span>{product.price}</span></div>
             </article>
           ))}
-          <article className="bk-product bk-product-cta">
-            <div className="bk-cta-art"><span>BY KIM</span><div>ㄱ<br />ㅣ<br />ㅁ</div><small>DOCES FORA DA CAIXA</small></div>
-            <div className="bk-product-info"><div><h3>Tem sempre algo novo.</h3><p>Descubra as criações da temporada e as novidades da vitrine.</p></div><a href={instagram} target="_blank" rel="noreferrer">VER NO INSTAGRAM <ArrowRight size={15} /></a></div>
-          </article>
+
         </div>
       </section>
 
