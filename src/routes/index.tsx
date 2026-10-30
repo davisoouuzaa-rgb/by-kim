@@ -1,11 +1,10 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { ArrowDown, ArrowRight, Instagram, MapPin, Clock3, MessageCircle, Sparkles } from "lucide-react";
+import { ArrowRight, Instagram, MapPin, Clock3, MessageCircle } from "lucide-react";
 
 export const Route = createFileRoute("/")({ component: Index });
 
 const instagram = "https://www.instagram.com/bykimconfeitaria/?hl=en";
 const whatsapp = "https://wa.me/5511913171186?text=Ol%C3%A1%2C%20vim%20pelo%20site%20da%20By%20Kim%20e%20gostaria%20de%20saber%20mais!";
-const menu = "https://bykimconfeitaria.com/";
 const ifood = "https://www.ifood.com.br/delivery/sao-paulo-sp/by-kim-confeitaria-santa-cecilia/6623c15d-18c8-4c00-90ab-61aabacf720b";
 
 const products = [
@@ -85,12 +84,6 @@ function Index() {
           <h2>A casa<br /><em>By Kim.</em></h2>
           <p className="bk-about-text">Confeitaria autoral em Santa Cecília.</p>
           <a className="bk-underlined" href={instagram} target="_blank" rel="noreferrer">CONHEÇA NO INSTAGRAM <ArrowRight size={15} /></a>
-        </div>
-        <div className="bk-about-aside">
-          <div className="bk-aside-rule" />
-          <Sparkles size={22} strokeWidth={1.2} />
-          <p>“Vendemos o que gostamos e acreditamos.”</p>
-          <span>BY KIM</span>
         </div>
       </section>
 
