@@ -392,3 +392,45 @@ html, body, .bk-page,
 
 /* Espaçamento entre as opções de visita e pedido */
 .bk-visit-copy > .bk-underlined { margin-top: 18px; }
+
+
+/* Ajustes da versão minimalista */
+.bk-about {
+  grid-template-columns: minmax(0, 1fr);
+  padding-top: 82px;
+  padding-bottom: 82px;
+}
+.bk-about-main {
+  max-width: 720px;
+}
+.bk-about-text {
+  max-width: 360px;
+}
+.bk-showcase {
+  padding-top: 82px;
+  padding-bottom: 90px;
+}
+.bk-showcase-head {
+  margin-bottom: 34px;
+}
+.bk-visit {
+  padding-top: 85px;
+  padding-bottom: 85px;
+}
+.bk-visit-copy > .bk-underlined {
+  margin-top: 18px;
+}
+@media (max-width: 620px) {
+  .bk-about {
+    padding-top: 65px;
+    padding-bottom: 65px;
+  }
+  .bk-showcase {
+    padding-top: 65px;
+    padding-bottom: 70px;
+  }
+  .bk-visit {
+    padding-top: 65px;
+    padding-bottom: 65px;
+  }
+}
