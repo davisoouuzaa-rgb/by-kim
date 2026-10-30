@@ -22,6 +22,20 @@ const products = [
     image: "https://s2.glbimg.com/FU_44joyRy56GxQBuhVIFE_9xnU%3D/0x0%3A1080x719/984x0/smart/filters%3Astrip_icc%28%29/i.s3.glbimg.com/v1/AUTH_ba41d7b1ff5f48b28d3c5f84f30a06af/internal_photos/bs/2023/E/w/OUIereQwihSrAzk5rPVQ/snapinsta.app-328294121-1945922509084405-8420018441598608983-n-1080.jpg",
     alt: "Seleção de cheesecakes artesanais da By Kim",
   },
+  {
+    name: "Bolo de cenoura",
+    detail: "Camadas macias, especiarias, nozes e ganache de cream cheese.",
+    price: "Consulte a disponibilidade",
+    image: "https://vejasp.abril.com.br/wp-content/uploads/2024/01/DAN_2497.jpg.jpg?quality=80&strip=info&w=900",
+    alt: "Bolo de cenoura com especiarias, nozes e ganache da By Kim",
+  },
+  {
+    name: "Bolo de brigadeiro",
+    detail: "Camadas generosas de chocolate em uma criação clássica da casa.",
+    price: "Consulte a disponibilidade",
+    image: "https://vejasp.abril.com.br/wp-content/uploads/2024/01/DAN_2478.jpg.jpg?quality=80&strip=info&w=900",
+    alt: "Bolo de brigadeiro da By Kim",
+  },
 ];
 
 function Index() {
