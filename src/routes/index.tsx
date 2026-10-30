@@ -6,33 +6,34 @@ export const Route = createFileRoute("/")({ component: Index });
 const instagram = "https://www.instagram.com/bykimconfeitaria/?hl=en";
 const whatsapp = "https://wa.me/5511913171186?text=Ol%C3%A1%2C%20vim%20pelo%20site%20da%20By%20Kim%20e%20gostaria%20de%20saber%20mais!";
 const menu = "https://bykimconfeitaria.com/";
+const ifood = "https://www.ifood.com.br/delivery/sao-paulo-sp/by-kim-confeitaria-santa-cecilia/6623c15d-18c8-4c00-90ab-61aabacf720b";
 
 const products = [
   {
     name: "Cheesecake de matchá",
-    detail: "Creme delicado, base sablée e calda de morango.",
-    price: "A partir de R$ 35",
+    detail: "Uma das cheesecakes da casa, com o sabor marcante e delicado do matchá.",
+    price: "R$ 35 · fatia",
     image: "https://vejasp.abril.com.br/wp-content/uploads/2024/01/DAN_2535.jpg.jpg?quality=70&strip=info&w=900",
-    alt: "Fatia de cheesecake de matchá com calda de morango da By Kim",
+    alt: "Cheesecake de matchá com calda de morango da By Kim",
   },
   {
-    name: "Cheesecakes autorais",
-    detail: "Sabores que unem técnica e combinações inesperadas.",
-    price: "Consulte os sabores",
-    image: "https://s2.glbimg.com/FU_44joyRy56GxQBuhVIFE_9xnU%3D/0x0%3A1080x719/984x0/smart/filters%3Astrip_icc%28%29/i.s3.glbimg.com/v1/AUTH_ba41d7b1ff5f48b28d3c5f84f30a06af/internal_photos/bs/2023/E/w/OUIereQwihSrAzk5rPVQ/snapinsta.app-328294121-1945922509084405-8420018441598608983-n-1080.jpg",
-    alt: "Seleção de cheesecakes artesanais da By Kim",
+    name: "Cheesecakes da casa",
+    detail: "Clássica, matchá, cookies & cream e cumaru.",
+    price: "Consulte o cardápio",
+    image: "https://s2-pegn.glbimg.com/M_FKVODFFPrPC9-tGQ5QQqtFwME%3D/0x0%3A1080x719/600x0/smart/filters%3Astrip_icc%28%29/i.s3.glbimg.com/v1/AUTH_ba41d7b1ff5f48b28d3c5f84f30a06af/internal_photos/bs/2023/E/w/OUIereQwihSrAzk5rPVQ/snapinsta.app-328294121-1945922509084405-8420018441598608983-n-1080.jpg",
+    alt: "Seleção de cheesecakes da By Kim",
   },
   {
     name: "Bolo de cenoura",
-    detail: "Camadas macias, especiarias, nozes e ganache de cream cheese.",
-    price: "Consulte a disponibilidade",
+    detail: "Bolo de 15 camadas com especiarias, nozes e ganache de cream cheese.",
+    price: "Consulte o cardápio",
     image: "https://vejasp.abril.com.br/wp-content/uploads/2024/01/DAN_2497.jpg.jpg?quality=80&strip=info&w=900",
     alt: "Bolo de cenoura com especiarias, nozes e ganache da By Kim",
   },
   {
     name: "Bolo de brigadeiro",
-    detail: "Camadas generosas de chocolate em uma criação clássica da casa.",
-    price: "Consulte a disponibilidade",
+    detail: "O famoso bolo de chocolate da casa, montado em 15 camadas finas.",
+    price: "Consulte o cardápio",
     image: "https://vejasp.abril.com.br/wp-content/uploads/2024/01/DAN_2478.jpg.jpg?quality=80&strip=info&w=900",
     alt: "Bolo de brigadeiro da By Kim",
   },
@@ -96,7 +97,7 @@ function Index() {
       <section className="bk-showcase" id="vitrine">
         <div className="bk-showcase-head">
           <div><p className="bk-eyebrow">ESCOLHAS DA CASA</p><h2>Pequenas obras<br />de <em>confeitaria.</em></h2></div>
-          <div className="bk-showcase-side"><p>Conheça algumas das criações que fazem parte do universo By Kim. O cardápio pode variar conforme a produção.</p><a className="bk-underlined" href={menu} target="_blank" rel="noreferrer">VER CARDÁPIO COMPLETO <ArrowRight size={15} /></a></div>
+          <div className="bk-showcase-side"><p>Conheça algumas das criações que fazem parte do universo By Kim. O cardápio pode variar conforme a produção.</p><a className="bk-underlined" href={ifood} target="_blank" rel="noreferrer">VER CARDÁPIO NO IFOOD <ArrowRight size={15} /></a></div>
         </div>
         <div className="bk-product-grid">
           {products.map((product, index) => (
@@ -117,7 +118,7 @@ function Index() {
         <div className="bk-visit-copy">
           <p className="bk-eyebrow">VENHA CONHECER</p>
           <h2>Uma pausa<br />com <em>sabor.</em></h2>
-          <p>Estamos em Santa Cecília, com uma vitrine de doces artesanais esperando por você.</p>
+          <p>Estamos em Santa Cecília, com doces autorais, cheesecakes e bolos feitos com técnica e criatividade.</p>
           <div className="bk-details"><div><MapPin size={17} /><span>Rua Tupi, 114<br />Santa Cecília · São Paulo</span></div><div><Clock3 size={17} /><span>Terça a domingo<br />10h às 17h30</span></div></div>
           <a className="bk-button bk-button-dark" href="https://www.google.com/maps/search/?api=1&query=Rua+Tupi+114+Santa+Cecilia+Sao+Paulo" target="_blank" rel="noreferrer">COMO CHEGAR <ArrowRight size={15} /></a>
         </div>
