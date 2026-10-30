@@ -388,3 +388,7 @@ html, body, .bk-page,
   .bk-visit-copy { align-items: flex-start; }
   .bk-details { justify-content: flex-start; }
 }
+
+
+/* Espaçamento entre as opções de visita e pedido */
+.bk-visit-copy > .bk-underlined { margin-top: 18px; }
