@@ -368,3 +368,23 @@ html, body, .bk-page,
 .bk-image-caption { letter-spacing: .14em; }
 .bk-about-aside span, .bk-section-index { color: #999; }
 .bk-underlined { border-color: #f7f7f7; }
+
+
+/* Vitrine ampliada: quatro fotos diferentes, sem repetir a foto principal */
+.bk-product-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 18px; }
+.bk-product-image { height: 320px; }
+.bk-visit { grid-template-columns: minmax(0, 760px); justify-content: center; text-align: center; }
+.bk-visit-copy { display: flex; flex-direction: column; align-items: center; }
+.bk-visit-copy > p:not(.bk-eyebrow) { margin-left: auto; margin-right: auto; }
+.bk-details { justify-content: center; }
+@media (max-width: 900px) {
+  .bk-product-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .bk-product-image { height: 340px; }
+}
+@media (max-width: 620px) {
+  .bk-product-grid { grid-template-columns: 1fr; }
+  .bk-product-image { height: 350px; }
+  .bk-visit { text-align: left; }
+  .bk-visit-copy { align-items: flex-start; }
+  .bk-details { justify-content: flex-start; }
+}
