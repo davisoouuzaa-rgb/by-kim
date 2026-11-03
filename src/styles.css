@@ -516,3 +516,10 @@ html, body, .bk-page,
     scroll-behavior: auto !important;
   }
 }
+
+
+/* Mais respiro entre o título e os botões principais */
+.bk-hero-actions { margin-top: 30px; }
+@media (max-width: 620px) {
+  .bk-hero-actions { margin-top: 26px; }
+}
