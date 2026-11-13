@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { ArrowRight, Instagram, MapPin, Clock3, MessageCircle } from "lucide-react";
+import { ArrowRight, Instagram, MapPin, Clock3, MessageCircle, Sparkles } from "lucide-react";
 
 export const Route = createFileRoute("/")({ component: Index });
 
@@ -74,7 +74,7 @@ function Index() {
       </section>
 
       <section className="bk-marquee" aria-label="Especialidades">
-        <span>CHEESECAKES</span><i>✳</i><span>BOLOS</span><i>✳</i><span>MIL-FOLHAS</span>
+        <span>CHEESECAKES</span><Sparkles className="bk-marquee-sparkle" size={16} strokeWidth={1.5} aria-hidden="true" /><span>BOLOS</span><Sparkles className="bk-marquee-sparkle" size={16} strokeWidth={1.5} aria-hidden="true" /><span>MIL-FOLHAS</span>
       </section>
 
       <section className="bk-about" id="sobre">
