@@ -3,7 +3,7 @@ import { ArrowRight, Instagram, MapPin, Clock3, MessageCircle, Sparkles } from "
 
 export const Route = createFileRoute("/")({ component: Index });
 
-const instagram = "https://www.instagram.com/bykimconfeitaria/?hl=en";
+const instagram = "https://www.instagram.com/bykimconfeitaria";
 const whatsapp = "https://wa.me/5511913171186?text=Ol%C3%A1%2C%20vim%20pelo%20site%20da%20By%20Kim%20e%20gostaria%20de%20saber%20mais!";
 const ifood = "https://www.ifood.com.br/delivery/sao-paulo-sp/by-kim-confeitaria-santa-cecilia/6623c15d-18c8-4c00-90ab-61aabacf720b";
 
@@ -18,7 +18,7 @@ const products = [
   {
     name: "Cheesecakes da casa",
     detail: "Clássica, matchá, cookies & cream e cumaru.",
-    price: "Consulte o cardápio",
+    price: "Ver no iFood",
     image: "https://s2-pegn.glbimg.com/M_FKVODFFPrPC9-tGQ5QQqtFwME%3D/0x0%3A1080x719/600x0/smart/filters%3Astrip_icc%28%29/i.s3.glbimg.com/v1/AUTH_ba41d7b1ff5f48b28d3c5f84f30a06af/internal_photos/bs/2023/E/w/OUIereQwihSrAzk5rPVQ/snapinsta.app-328294121-1945922509084405-8420018441598608983-n-1080.jpg",
     alt: "Seleção de cheesecakes da By Kim",
   },
