@@ -41,7 +41,7 @@ const products = [
 function Index() {
   return (
     <main className="bk-page">
-      <div className="bk-topline">SANTA CECÍLIA · SÃO PAULO</div>
+      <div className="bk-topline">DOCES FORA DA CAIXA</div>
       <header className="bk-header">
         <a className="bk-wordmark" href="#inicio" aria-label="By Kim início">
           <span className="bk-mark">BY KIM</span>
