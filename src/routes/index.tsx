@@ -94,7 +94,7 @@ function Index() {
       <section className="bk-showcase" id="vitrine">
         <div className="bk-showcase-head">
           <div><p className="bk-eyebrow">A VITRINE</p><h2>Nossos <em>doces.</em></h2></div>
-          <div className="bk-showcase-side"><a className="bk-underlined" href={ifood} target="_blank" rel="noreferrer">CARDÁPIO COMPLETO <ArrowRight size={15} /></a></div>
+          <div className="bk-showcase-side"><a className="bk-underlined" href="/cardapio" target="_blank" rel="noopener noreferrer">CARDÁPIO COMPLETO <ArrowRight size={15} /></a></div>
         </div>
         <div className="bk-product-grid">
           {products.map((product, index) => (
