@@ -73,7 +73,6 @@ type Fulfillment = "pickup" | "delivery";
 const allProducts: Product[] = categories.flatMap((category) => category.items.map((item) => ({ ...item, category: category.name })));
 const money = (value: number) => value.toLocaleString("pt-BR", { style: "currency", currency: "BRL" });
 const cents = (price: string) => Math.round(Number(price.replace("R$", "").trim().replace(".", "").replace(",", ".")) * 100);
-const itemLabel = (product: Product) => product.slice ? "fatia" : "";
 const productMessage = (product: Product, quantity: number) => {
   const total = money(cents(product.price) * quantity / 100);
   return `Olá! Vim pelo site da By Kim e quero pedir: ${quantity}x ${product.name}${product.slice ? " (fatia)" : ""}. Total: ${total}`;
@@ -233,7 +232,7 @@ function Cardapio() {
               <p className="bk-eyebrow"><span /> {selected.category.toUpperCase()}</p>
               <h2>{selected.name}</h2>
               {selected.slice && <p className="bk-product-serving">Serve 1 pessoa</p>}
-              <p className="bk-product-description">{selected.description || selected.name}</p>
+              {selected.description && <p className="bk-product-description">{selected.description}</p>}
               <div className="bk-product-modal-price">{selected.price}{selected.slice && <span> · fatia</span>}</div>
               <div className="bk-quantity-row">
                 <span>Quantidade</span>
