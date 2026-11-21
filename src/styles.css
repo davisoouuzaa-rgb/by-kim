@@ -617,3 +617,30 @@ html, body, .bk-page,
 @media (prefers-reduced-motion: reduce) {
   .bk-hero-image { animation: none !important; }
 }
+
+
+/* Link do iFood em cada produto da vitrine */
+.bk-product-ifood {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 13px;
+  color: #f7f7f7;
+  text-decoration: none;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: .13em;
+  border-bottom: 1px solid #777;
+  padding-bottom: 7px;
+  transition: opacity .25s ease, gap .25s ease;
+}
+.bk-product-ifood:hover {
+  opacity: .7;
+  gap: 14px;
+}
+.bk-product-ifood svg {
+  transition: transform .25s ease;
+}
+.bk-product-ifood:hover svg {
+  transform: translateX(3px);
+}
