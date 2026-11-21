@@ -12,7 +12,7 @@ const products = [
     name: "Cheesecake de matchá com calda de morango",
     orderUrl: "https://wa.me/5511913171186?text=" + encodeURIComponent("Olá! Vim pelo site da By Kim e quero pedir: Cheesecake de matchá com calda de morango"),
     detail: "Matchá e calda de morango.",
-    price: "R$ 35 · fatia",
+    price: "Consulte o cardápio",
     image: "https://vejasp.abril.com.br/wp-content/uploads/2024/01/DAN_2535.jpg.jpg?quality=70&strip=info&w=900",
     alt: "Cheesecake de matchá com calda de morango da By Kim",
   },
@@ -20,7 +20,7 @@ const products = [
     name: "Cheesecakes da casa",
     orderUrl: "https://wa.me/5511913171186?text=" + encodeURIComponent("Olá! Vim pelo site da By Kim e quero pedir: Cheesecakes da casa"),
     detail: "Clássica, matchá, cookies & cream e cumaru.",
-    price: "Ver no iFood",
+    price: "Consulte o cardápio",
     image: "https://s2-pegn.glbimg.com/M_FKVODFFPrPC9-tGQ5QQqtFwME%3D/0x0%3A1080x719/600x0/smart/filters%3Astrip_icc%28%29/i.s3.glbimg.com/v1/AUTH_ba41d7b1ff5f48b28d3c5f84f30a06af/internal_photos/bs/2023/E/w/OUIereQwihSrAzk5rPVQ/snapinsta.app-328294121-1945922509084405-8420018441598608983-n-1080.jpg",
     alt: "Seleção de cheesecakes da By Kim",
   },
@@ -104,7 +104,7 @@ function Index() {
                 <span className="bk-product-number">0{index + 1}</span>
                 <span className="bk-product-arrow"><ArrowRight size={18} /></span>
               </a>
-              <div className="bk-product-info"><div><h3>{product.name}</h3><p>{product.detail}</p></div><span>{product.price}</span></div>
+              <div className="bk-product-info"><div><h3>{product.name}</h3><p>{product.detail}</p><a className="bk-product-ifood" href={ifood} target="_blank" rel="noreferrer">VER NO IFOOD <ArrowRight size={14} /></a></div><span>Consulte o cardápio</span></div>
             </article>
           ))}
 
