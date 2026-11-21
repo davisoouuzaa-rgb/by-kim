@@ -83,6 +83,7 @@ function Cardapio() {
   const [selected, setSelected] = useState<Product | null>(null);
   const [productQty, setProductQty] = useState(1);
   const [cart, setCart] = useState<CartItem[]>([]);
+  const [cartLoaded, setCartLoaded] = useState(false);
   const [cartOpen, setCartOpen] = useState(false);
   const [customerName, setCustomerName] = useState("");
   const [notes, setNotes] = useState("");
@@ -96,9 +97,11 @@ function Cardapio() {
         if (Array.isArray(parsed)) setCart(parsed.filter((entry) => allProducts.some((p) => p.name === entry.product?.name) && Number.isFinite(entry.quantity) && entry.quantity > 0));
       }
     } catch { /* armazenamento local indisponível: o carrinho segue em memória */ }
+    finally { setCartLoaded(true); }
   }, []);
 
   useEffect(() => {
+    if (!cartLoaded) return;
     try { window.localStorage.setItem("bykim-cardapio-cart-v1", JSON.stringify(cart)); }
     catch { /* armazenamento local indisponível: o carrinho segue em memória */ }
   }, [cart]);
