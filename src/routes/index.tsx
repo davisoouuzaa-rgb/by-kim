@@ -116,7 +116,7 @@ function Index() {
           <p className="bk-eyebrow">ONDE ESTAMOS</p>
           <h2>Visite a<br /><em>By Kim.</em></h2>
           
-          <div className="bk-details"><div><MapPin size={17} /><span>Rua Tupi, 114<br />Santa Cecília · São Paulo</span></div><div><Clock3 size={17} /><span>Terça a domingo<br />10h às 17h30<br />Segunda-feira: fechado</span></div><div><TrainFront size={17} /><span>Metrô: Santa Cecília ou<br />Marechal Deodoro · Linha 3-Vermelha</span></div></div>
+          <div className="bk-details"><div><MapPin size={17} /><span>Rua Tupi, 114<br />Santa Cecília · São Paulo</span></div><div><TrainFront size={17} /><span>Metrô: estações Santa Cecília e Marechal Deodoro<br />Linha 3-Vermelha</span></div><div><Clock3 size={17} /><span>Terça a domingo: 10h às 17h30<br />Segunda-feira: fechado</span></div></div>
           <a className="bk-button bk-button-dark" href="https://www.google.com/maps/search/?api=1&query=Rua+Tupi+114+Santa+Cecilia+Sao+Paulo" target="_blank" rel="noreferrer">COMO CHEGAR <ArrowRight size={15} /></a>
           <a className="bk-underlined" href={ifood} target="_blank" rel="noreferrer">IFOOD <ArrowRight size={15} /></a>
         </div>
