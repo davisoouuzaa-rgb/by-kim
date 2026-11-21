@@ -78,14 +78,49 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "BY KIM | Confeitaria artesanal em Santa Cecília, São Paulo" },
-      { name: "description", content: "Cheesecakes, bolos e mil-folhas artesanais em Santa Cecília, São Paulo. Rua Tupi, 114. Peça pelo WhatsApp ou pelo iFood." },
+      { title: "By Kim | Confeitaria em Santa Cecília, São Paulo" },
+      { name: "description", content: "Cheesecakes, bolos e doces artesanais em Santa Cecília, São Paulo. Rua Tupi, 114. Peça pelo WhatsApp ou iFood." },
       { name: "author", content: "BY KIM Confeitaria" },
-      { property: "og:title", content: "BY KIM | Confeitaria artesanal em Santa Cecília, São Paulo" },
-      { property: "og:description", content: "Cheesecakes, bolos e mil-folhas artesanais em Santa Cecília, São Paulo. Rua Tupi, 114. Peça pelo WhatsApp ou pelo iFood." },
+      { property: "og:title", content: "By Kim | Confeitaria em Santa Cecília, São Paulo" },
+      { property: "og:description", content: "Cheesecakes, bolos e doces artesanais em Santa Cecília, São Paulo. Rua Tupi, 114. Peça pelo WhatsApp ou iFood." },
       { property: "og:type", content: "website" },
+      { name: "twitter:title", content: "By Kim | Confeitaria em Santa Cecília, São Paulo" },
+      { name: "twitter:description", content: "Cheesecakes, bolos e doces artesanais em Santa Cecília, São Paulo. Rua Tupi, 114. Peça pelo WhatsApp ou iFood." },
       { name: "twitter:card", content: "summary_large_image" },
       { name: "twitter:site", content: "@bykimconfeitaria" },
+    ],
+    scripts: [
+      {
+        type: "application/ld+json",
+        children: JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "Bakery",
+          name: "By Kim",
+          telephone: "+5511913171186",
+          address: {
+            "@type": "PostalAddress",
+            streetAddress: "Rua Tupi, 114",
+            addressLocality: "São Paulo",
+            addressRegion: "SP",
+            addressCountry: "BR",
+          },
+          openingHoursSpecification: [
+            {
+              "@type": "OpeningHoursSpecification",
+              dayOfWeek: [
+                "https://schema.org/Tuesday",
+                "https://schema.org/Wednesday",
+                "https://schema.org/Thursday",
+                "https://schema.org/Friday",
+                "https://schema.org/Saturday",
+                "https://schema.org/Sunday",
+              ],
+              opens: "10:00",
+              closes: "17:30",
+            },
+          ],
+        }),
+      },
     ],
     links: [
       {
