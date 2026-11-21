@@ -265,7 +265,7 @@ function Cardapio() {
                 <div className="bk-cart-content">
                   <div className="bk-cart-items">
                     {cart.map(({ product, quantity }) => (
-                      <article className="bk-cart-item" key={product.name}>
+                      <article className="bk-cart-item" key={cartKey(product)}>
                         <div className="bk-cart-item-info"><h3>{product.name}{product.flavor ? ` - ${product.flavor}` : ""}</h3><p>{product.price}{product.slice ? " · fatia" : ""}</p><strong>{money(cents(product.price) * quantity / 100)}</strong></div>
                         <div className="bk-cart-item-actions">
                           <div className="bk-quantity-control">
