@@ -67,20 +67,20 @@ const categories = [
   },
 ];
 
-type Product = { name: string; description?: string; price: string; slice?: boolean; category: string };
-type CartItem = { product: Product; quantity: number };
+type Product = { name: string; description?: string; price: string; slice?: boolean; category: string; flavor?: string };
+type CartItem = { product: Product; quantity: number };\nconst flavors = ["Composta", "Goiabada", "Morango"];\nconst cheesecakeNames = ["Cheesecake Original", "Cheesecake Cookies n Cream", "Cheesecake Cumaru", "Cheesecake de Trufas"];\nconst hasFlavor = (product: Product) => cheesecakeNames.some((name) => product.name === name);
 type Fulfillment = "pickup" | "delivery";
 const allProducts: Product[] = categories.flatMap((category) => category.items.map((item) => ({ ...item, category: category.name })));
 const money = (value: number) => value.toLocaleString("pt-BR", { style: "currency", currency: "BRL" });
 const cents = (price: string) => Math.round(Number(price.replace("R$", "").trim().replace(".", "").replace(",", ".")) * 100);
 const productMessage = (product: Product, quantity: number) => {
   const total = money(cents(product.price) * quantity / 100);
-  return `Olá! Vim pelo site da By Kim e quero pedir: ${quantity}x ${product.name}${product.slice ? " (fatia)" : ""}. Total: ${total}`;
+  return `Olá! Vim pelo site da By Kim e quero pedir: ${quantity}x ${product.name}${product.slice ? " (fatia)" : ""}${product.flavor ? ` - ${product.flavor}` : ""}. Total: ${total}`;
 };
 
 function Cardapio() {
   const [selected, setSelected] = useState<Product | null>(null);
-  const [productQty, setProductQty] = useState(1);
+  const [productQty, setProductQty] = useState(1);\n  const [flavorSelections, setFlavorSelections] = useState<Record<string, string>>({});\n  const [selectedFlavor, setSelectedFlavor] = useState("Composta");
   const [cart, setCart] = useState<CartItem[]>([]);
   const [cartLoaded, setCartLoaded] = useState(false);
   const [cartOpen, setCartOpen] = useState(false);
@@ -137,7 +137,7 @@ function Cardapio() {
   };
 
   const cartMessage = useMemo(() => {
-    const lines = cart.map(({ product, quantity }) => `- ${quantity}x ${product.name}${product.slice ? " (fatia)" : ""} · ${money(cents(product.price) * quantity / 100)}`);
+    const lines = cart.map(({ product, quantity }) => `- ${quantity}x ${product.name}${product.slice ? " (fatia)" : ""}${product.flavor ? ` - ${product.flavor}` : ""} · ${money(cents(product.price) * quantity / 100)}`);
     const deliveryText = fulfillment === "pickup" ? "Retirada em Santa Cecília" : "Entrega pelo iFood";
     return [
       "Olá! Vim pelo site da By Kim e quero fazer este pedido:",
@@ -182,20 +182,24 @@ function Cardapio() {
             <div className="bk-menu-grid">
               {category.items.map((item) => {
                 const product = allProducts.find((entry) => entry.name === item.name)!;
+                const flavored = hasFlavor(product);
+                const flavor = flavored ? (flavorSelections[item.name] ?? "Composta") : undefined;
+                const listingProduct = flavored ? { ...product, flavor } : product;
                 return (
-                  <button className="bk-menu-item bk-menu-item-button" key={item.name} type="button" onClick={() => { setSelected(product); setProductQty(1); }}>
-                    <span className="bk-menu-item-copy">
+                  <article className="bk-menu-item bk-menu-item-button" key={item.name}>
+                    <button className="bk-menu-item-copy bk-menu-item-open" type="button" onClick={() => { setSelected(listingProduct); setSelectedFlavor(flavor ?? "Composta"); setProductQty(1); }}>
                       <span className="bk-menu-item-title">{item.name}</span>
                       {item.description && <span className="bk-menu-item-description">{item.description}</span>}
-                    </span>
+                    </button>
+                    {flavored && <div className="bk-flavor-picker bk-flavor-picker-list" aria-label="Sabor">
+                      {flavors.map((option) => <button type="button" key={option} className={flavor === option ? "active" : ""} onClick={() => setFlavorSelections((current) => ({ ...current, [item.name]: option }))}>{option}</button>)}
+                    </div>}
                     <span className="bk-menu-item-bottom">
-                      <span className="bk-menu-price">
-                        <strong>{item.price}</strong>
-                        {item.slice && <small>fatia</small>}
-                      </span>
-                      <span className="bk-menu-order">VER DETALHES <ArrowRight size={14} /></span>
+                      <span className="bk-menu-price"><strong>{item.price}</strong>{item.slice && <small>fatia</small>}</span>
+                      <button type="button" className="bk-menu-add" onClick={() => addToCart(listingProduct, 1)}>ADICIONAR</button>
+                      <a className="bk-menu-order" href={whatsappBase + encodeURIComponent(productMessage(listingProduct, 1))} target="_blank" rel="noopener noreferrer">WHATSAPP <ArrowRight size={14} /></a>
                     </span>
-                  </button>
+                  </article>
                 );
               })}
             </div>
@@ -230,7 +234,7 @@ function Cardapio() {
             <div className="bk-product-placeholder"><span>BY KIM</span><strong>{selected.name}</strong><small>{selected.category}</small></div>
             <div className="bk-product-modal-content">
               <p className="bk-eyebrow"><span /> {selected.category.toUpperCase()}</p>
-              <h2>{selected.name}</h2>
+              <h2>{selected.name}</h2>\n              {hasFlavor(selected) && <div className="bk-flavor-picker bk-flavor-picker-detail" aria-label="Escolha o sabor">{flavors.map((option) => <button type="button" key={option} className={selectedFlavor === option ? "active" : ""} onClick={() => { setSelectedFlavor(option); setSelected({ ...selected, flavor: option }); }}>{option}</button>)}</div>}
               {selected.slice && <p className="bk-product-serving">Serve 1 pessoa</p>}
               {selected.description && <p className="bk-product-description">{selected.description}</p>}
               <div className="bk-product-modal-price">{selected.price}{selected.slice && <span> · fatia</span>}</div>
@@ -242,8 +246,8 @@ function Cardapio() {
                   <button type="button" aria-label="Aumentar quantidade" onClick={() => setProductQty((q) => q + 1)}><Plus size={15} /></button>
                 </div>
               </div>
-              <button className="bk-modal-primary" type="button" onClick={() => addToCart(selected, productQty)}>ADICIONAR · {money(selectedSubtotal / 100)}</button>
-              <a className="bk-modal-secondary" href={whatsappBase + encodeURIComponent(productMessage(selected, productQty))} target="_blank" rel="noopener noreferrer">PEDIR PELO WHATSAPP <ArrowRight size={15} /></a>
+              <button className="bk-modal-primary" type="button" onClick={() => addToCart(hasFlavor(selected) ? { ...selected, flavor: selectedFlavor } : selected, productQty)}>ADICIONAR · {money(selectedSubtotal / 100)}</button>
+              <a className="bk-modal-secondary" href={whatsappBase + encodeURIComponent(productMessage(hasFlavor(selected) ? { ...selected, flavor: selectedFlavor } : selected, productQty))} target="_blank" rel="noopener noreferrer">PEDIR PELO WHATSAPP <ArrowRight size={15} /></a>
               <a className="bk-modal-ifood" href={ifood} target="_blank" rel="noopener noreferrer">PEDIR PELO IFOOD <ArrowRight size={14} /></a>
             </div>
           </section>
@@ -262,14 +266,14 @@ function Cardapio() {
                   <div className="bk-cart-items">
                     {cart.map(({ product, quantity }) => (
                       <article className="bk-cart-item" key={product.name}>
-                        <div className="bk-cart-item-info"><h3>{product.name}</h3><p>{product.price}{product.slice ? " · fatia" : ""}</p><strong>{money(cents(product.price) * quantity / 100)}</strong></div>
+                        <div className="bk-cart-item-info"><h3>{product.name}{product.flavor ? ` - ${product.flavor}` : ""}</h3><p>{product.price}{product.slice ? " · fatia" : ""}</p><strong>{money(cents(product.price) * quantity / 100)}</strong></div>
                         <div className="bk-cart-item-actions">
                           <div className="bk-quantity-control">
-                            <button type="button" aria-label={`Diminuir ${product.name}`} onClick={() => updateQuantity(product.name, quantity - 1)}><Minus size={13} /></button>
+                            <button type="button" aria-label={`Diminuir ${product.name}`} onClick={() => updateQuantity(cartKey(product), quantity - 1)}><Minus size={13} /></button>
                             <strong>{quantity}</strong>
-                            <button type="button" aria-label={`Aumentar ${product.name}`} onClick={() => updateQuantity(product.name, quantity + 1)}><Plus size={13} /></button>
+                            <button type="button" aria-label={`Aumentar ${product.name}`} onClick={() => updateQuantity(cartKey(product), quantity + 1)}><Plus size={13} /></button>
                           </div>
-                          <button type="button" className="bk-remove-item" onClick={() => updateQuantity(product.name, 0)} aria-label={`Remover ${product.name}`}><Trash2 size={15} /></button>
+                          <button type="button" className="bk-remove-item" onClick={() => updateQuantity(cartKey(product), 0)} aria-label={`Remover ${product.name}`}><Trash2 size={15} /></button>
                         </div>
                       </article>
                     ))}
