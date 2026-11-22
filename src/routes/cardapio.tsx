@@ -107,6 +107,7 @@ const productMessage = (product: Product, quantity: number) => {
 
 function Cardapio() {
   const [selected, setSelected] = useState<Product | null>(null);
+  const [closingSelected, setClosingSelected] = useState(false);
   const [productQty, setProductQty] = useState(1);
   const [flavorSelections, setFlavorSelections] = useState<Record<string, string>>({});
   const [selectedFlavor, setSelectedFlavor] = useState("Composta");
@@ -135,6 +136,16 @@ function Cardapio() {
   }, [cart]);
 
   useEffect(() => {
+    if (!closingSelected) return;
+    const timeout = window.setTimeout(() => {
+      setSelected(null);
+      setProductQty(1);
+      setClosingSelected(false);
+    }, 250);
+    return () => window.clearTimeout(timeout);
+  }, [closingSelected]);
+
+  useEffect(() => {
     if (!cartOpen) return;
     const onKeyDown = (event: KeyboardEvent) => { if (event.key === "Escape") setCartOpen(false); };
     window.addEventListener("keydown", onKeyDown);
@@ -154,6 +165,7 @@ function Cardapio() {
         : [...current, { product, quantity }];
     });
     setSelected(null);
+    setClosingSelected(false);
     setProductQty(1);
     setCartOpen(true);
   };
@@ -210,12 +222,14 @@ function Cardapio() {
                 const flavored = hasFlavor(product);
                 const flavor = flavored ? (flavorSelections[item.name] ?? "Composta") : undefined;
                 const listingProduct = flavored ? { ...product, flavor } : product;
-                const expanded = selected?.name === product.name;
+                const expanded = selected?.name === product.name && !closingSelected;
+                const showInlineDetail = selected?.name === product.name;
                 const activeProduct = flavored ? { ...product, flavor: selectedFlavor } : product;
                 return (
-                  <article className={`bk-menu-item bk-menu-item-button${expanded ? " bk-menu-item-expanded" : ""}`} key={item.name}>
+                  <article className={`bk-menu-item bk-menu-item-button${showInlineDetail ? " bk-menu-item-expanded" : ""}${showInlineDetail && closingSelected ? " bk-menu-item-closing" : ""}`} key={item.name}>
                     <button className="bk-menu-item-copy bk-menu-item-open" type="button" aria-expanded={expanded} onClick={() => {
-                      if (expanded) { setSelected(null); setProductQty(1); return; }
+                      if (showInlineDetail) { setClosingSelected(true); return; }
+                      setClosingSelected(false);
                       setSelected(listingProduct);
                       setSelectedFlavor(flavor ?? "Composta");
                       setProductQty(1);
@@ -224,9 +238,10 @@ function Cardapio() {
                       <span className="bk-menu-item-title">{item.name}</span>
                       {item.description && <span className="bk-menu-item-description">{item.description}</span>}
                     </button>
-                    {expanded ? (
+                    {showInlineDetail ? (
+                      <div className="bk-menu-inline-clip">
                       <div className="bk-menu-inline-detail">
-                        <button className="bk-menu-inline-close" type="button" aria-label="Fechar detalhes" onClick={() => { setSelected(null); setProductQty(1); }}><X size={17} /></button>
+                        <button className="bk-menu-inline-close" type="button" aria-label="Fechar detalhes" onClick={() => setClosingSelected(true)}><X size={17} /></button>
                         <p className="bk-eyebrow"><span /> {product.category.toUpperCase()}</p>
                         <h3>{product.name}</h3>
                         {product.slice && <p className="bk-product-serving">Serve 1 pessoa</p>}
@@ -244,6 +259,7 @@ function Cardapio() {
                         <button className="bk-modal-primary" type="button" onClick={() => addToCart(flavored ? activeProduct : product, productQty)}>ADICIONAR · {money(cents(product.price) * productQty / 100)}</button>
                         <a className="bk-modal-secondary" href={whatsappBase + encodeURIComponent(productMessage(flavored ? activeProduct : product, productQty))} target="_blank" rel="noopener noreferrer">PEDIR PELO WHATSAPP <ArrowRight size={15} /></a>
                         <a className="bk-modal-ifood" href={ifood} target="_blank" rel="noopener noreferrer">PEDIR PELO IFOOD <ArrowRight size={14} /></a>
+                      </div>
                       </div>
                     ) : (
                       <>
