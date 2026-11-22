@@ -1949,3 +1949,62 @@ html, body, .bk-page,
   background: #292929 !important;
   border-color: #FFFFFF !important;
 }
+
+
+/* BY KIM — vitrine com seis produtos e CTA abaixo da grade */
+.bk-showcase .bk-showcase-head {
+  margin-bottom: 48px;
+}
+.bk-showcase .bk-product-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 30px 22px;
+}
+.bk-showcase .bk-product-info {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 12px;
+}
+.bk-showcase .bk-product-info > div {
+  min-width: 0;
+}
+.bk-showcase .bk-product-info p {
+  max-width: none;
+}
+.bk-showcase .bk-product-info > span {
+  padding-top: 0;
+  font-size: 12px;
+  font-weight: 600;
+}
+.bk-showcase .bk-product-ifood {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 14px;
+  color: inherit;
+  text-decoration: none;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: .12em;
+}
+.bk-showcase .bk-product-ifood svg {
+  transition: transform .22s ease;
+}
+.bk-showcase .bk-product-ifood:hover svg {
+  transform: translateX(4px);
+}
+.bk-showcase-complete {
+  display: flex;
+  justify-content: center;
+  margin-top: 52px;
+}
+@media (max-width: 767px) {
+  .bk-showcase .bk-product-grid {
+    grid-template-columns: 1fr;
+    gap: 34px;
+  }
+  .bk-showcase-complete {
+    margin-top: 38px;
+  }
+}
