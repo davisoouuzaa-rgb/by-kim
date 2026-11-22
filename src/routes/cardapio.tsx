@@ -66,7 +66,7 @@ const categories = [
   },
 ];
 
-type Product = { name: string; description?: string; price: string; slice?: boolean; category: string; flavor?: string; image?: string };
+type Product = { name: string; description?: string; price: string; slice?: boolean; category: string; flavor?: string | undefined; image?: string | undefined };
 const productImages: Record<string, string> = {
   "Bolo de Brigadeiro 15 Camadas": "/bolo%20brigadeiro.jpg",
   "Bolo de Cenoura 15 Camadas": "/bolo%20de%20cenoura.jpg",
@@ -176,8 +176,7 @@ function Cardapio() {
       ...(customerName.trim() ? [`Nome: ${customerName.trim()}`] : []),
       deliveryText,
       ...(notes.trim() ? [`Observações: ${notes.trim()}`] : []),
-    ].join("
-");
+    ].join("\n");
   }, [cart, totalCents, customerName, notes, fulfillment]);
 
   return (
