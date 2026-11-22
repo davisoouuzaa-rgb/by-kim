@@ -9,36 +9,48 @@ const ifood = "https://www.ifood.com.br/delivery/sao-paulo-sp/by-kim-confeitaria
 
 const products = [
   {
-    name: "Cheesecake de matchá com calda de morango",
-    orderUrl: "https://wa.me/5511913171186?text=" + encodeURIComponent("Olá! Vim pelo site da By Kim e quero pedir: Cheesecake de matchá com calda de morango"),
-    detail: "Matchá e calda de morango.",
-    price: "Consulte o cardápio",
-    image: "https://vejasp.abril.com.br/wp-content/uploads/2024/01/DAN_2535.jpg.jpg?quality=70&strip=info&w=900",
-    alt: "Cheesecake de matchá com calda de morango da By Kim",
+    name: "Cheesecake Cookies n Cream",
+    detail: "",
+    price: "R$ 39,00 · fatia",
+    image: "/cheese%20cake%20cookie.jpg?v=20261122",
+    alt: "Cheesecake Cookies n Cream",
+    cheesecake: true,
   },
   {
-    name: "Cheesecakes da casa",
-    orderUrl: "https://wa.me/5511913171186?text=" + encodeURIComponent("Olá! Vim pelo site da By Kim e quero pedir: Cheesecakes da casa"),
-    detail: "Clássica, matchá, cookies & cream e cumaru.",
-    price: "Consulte o cardápio",
-    image: "https://s2-pegn.glbimg.com/M_FKVODFFPrPC9-tGQ5QQqtFwME%3D/0x0%3A1080x719/600x0/smart/filters%3Astrip_icc%28%29/i.s3.glbimg.com/v1/AUTH_ba41d7b1ff5f48b28d3c5f84f30a06af/internal_photos/bs/2023/E/w/OUIereQwihSrAzk5rPVQ/snapinsta.app-328294121-1945922509084405-8420018441598608983-n-1080.jpg",
-    alt: "Seleção de cheesecakes da By Kim",
+    name: "Mil Folhas Palmier Baunilha",
+    detail: "Massa de palmier formando um mil folhas, com creme de confeiteiro clássico de baunilha",
+    price: "R$ 40,04",
+    image: "/mil%20folhas.jpg?v=20261122",
+    alt: "Mil Folhas Palmier Baunilha",
   },
   {
-    name: "Bolo de cenoura com especiarias",
-    orderUrl: "https://wa.me/5511913171186?text=" + encodeURIComponent("Olá! Vim pelo site da By Kim e quero pedir: Bolo de cenoura com especiarias"),
-    detail: "Especiarias, nozes e ganache de cream cheese.",
-    price: "Consulte o cardápio",
-    image: "https://vejasp.abril.com.br/wp-content/uploads/2024/01/DAN_2497.jpg.jpg?quality=70&strip=info&w=900",
-    alt: "Bolo de cenoura com especiarias, nozes e ganache da By Kim",
+    name: "Entremet Espresso",
+    detail: "Bolo de chocolate regado com café, cremoso de chocolate, mousse de chocolate caramelizado com café",
+    price: "R$ 45,50 · fatia",
+    image: "/entremet.jpg?v=20261122",
+    alt: "Entremet Espresso",
   },
   {
-    name: "Bolo de brigadeiro",
-    orderUrl: "https://wa.me/5511913171186?text=" + encodeURIComponent("Olá! Vim pelo site da By Kim e quero pedir: Bolo de brigadeiro"),
-    detail: "Chocolate em 15 camadas.",
-    price: "Consulte o cardápio",
-    image: "https://vejasp.abril.com.br/wp-content/uploads/2024/01/DAN_2478.jpg.jpg?quality=70&strip=info&w=900",
-    alt: "Bolo de brigadeiro da By Kim",
+    name: "Torta de Banana",
+    detail: "Base de sablé, bolo de amêndoas e laranja, doce de leite, purê de banana, banana fresca e creme de doce de leite",
+    price: "R$ 45,50",
+    image: "/torta%20banana.jpg?v=20261122",
+    alt: "Torta de Banana",
+  },
+  {
+    name: "Sablee com Chocolate de Matchá",
+    detail: "Biscoitos amanteigados banhados no chocolate de matchá",
+    price: "R$ 36,00",
+    image: "/sable%20matcha.jpg?v=20261122",
+    alt: "Sablee com Chocolate de Matchá",
+  },
+  {
+    name: "Cheesecake Cumaru",
+    detail: "",
+    price: "R$ 39,00 · fatia",
+    image: "/cheese%20cake%20cumaru.jpg?v=20261122",
+    alt: "Cheesecake Cumaru",
+    cheesecake: true,
   },
 ];
 
@@ -94,18 +106,27 @@ function Index() {
       <section className="bk-showcase" id="vitrine">
         <div className="bk-showcase-head">
           <div><p className="bk-eyebrow">A VITRINE</p><h2>Nossos <em>doces.</em></h2></div>
-          <div className="bk-showcase-side"><a className="bk-underlined" href="/cardapio" target="_blank" rel="noopener noreferrer">CARDÁPIO COMPLETO <ArrowRight size={15} /></a></div>
+
         </div>
         <div className="bk-product-grid">
-          {products.map((product, index) => (
+          {products.map((product) => (
             <article className="bk-product" key={product.name}>
-              <a className="bk-product-image" href={product.orderUrl} target="_blank" rel="noreferrer" aria-label={`Pedir ${product.name} pelo WhatsApp`}>
+              <a className="bk-product-image" href="/cardapio" target="_blank" rel="noopener noreferrer" aria-label={`Ver ${product.name} no cardápio`}>
                 <img src={product.image} alt={product.alt} loading="lazy" />
               </a>
-              <div className="bk-product-info"><div><h3>{product.name}</h3><p>{product.detail}</p><a className="bk-product-ifood" href={ifood} target="_blank" rel="noreferrer">VER NO IFOOD <ArrowRight size={14} /></a></div><span>Consulte o cardápio</span></div>
+              <div className="bk-product-info">
+                <div>
+                  <h3>{product.name}</h3>
+                  {!product.cheesecake && <p>{product.detail}</p>}
+                  <a className="bk-product-ifood" href="/cardapio" target="_blank" rel="noopener noreferrer">VER NO CARDÁPIO <ArrowRight size={14} /></a>
+                </div>
+                <span>{product.price}</span>
+              </div>
             </article>
           ))}
-
+        </div>
+        <div className="bk-showcase-complete">
+          <a className="bk-underlined" href="/cardapio" target="_blank" rel="noopener noreferrer">CARDÁPIO COMPLETO <ArrowRight size={15} /></a>
         </div>
       </section>
 
