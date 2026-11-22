@@ -17,8 +17,7 @@ const categories = [
       { name: "Cheesecake Original", description: "Base amanteigada, 2 texturas de cheesecake (assada e fria), coberto por crumble de chocolate branco", price: "R$ 39,00", slice: true },
       { name: "Cheesecake Cookies n Cream", description: "Base amanteigada de cacau, cheesecake dupla de baunilha e crumble de cacau salgado, coberta com crumble de cacau", price: "R$ 39,00", slice: true },
       { name: "Bolo de Cenoura 15 Camadas", description: "Bolo de cenoura com brigadeiro, 15 camadas, irmãozinho do 15 camadas de chocolate", price: "R$ 49,40", slice: true },
-      { name: "Mil Folhas Palmier Tiramissù", description: "Massa de palmier formando um mil folhas, com creme de confeiteiro clássico de baunilha e creme de tiramissù", price: "R$ 40,04" },
-      { name: "Mil Folhas Palmier Baunilha", description: "Massa de palmier formando um mil folhas, com creme de confeiteiro clássico de baunilha", price: "R$ 40,04" },
+      { name: "Mil Folhas Palmier", description: "Massa de palmier formando um mil folhas, com creme de confeiteiro clássico", price: "R$ 40,04" },
     ],
   },
   {
@@ -67,10 +66,38 @@ const categories = [
   },
 ];
 
-type Product = { name: string; description?: string; price: string; slice?: boolean; category: string; flavor?: string };
-type CartItem = { product: Product; quantity: number };\nconst flavors = ["Composta", "Goiabada", "Morango"];\nconst cheesecakeNames = ["Cheesecake Original", "Cheesecake Cookies n Cream", "Cheesecake Cumaru", "Cheesecake de Trufas"];\nconst hasFlavor = (product: Product) => cheesecakeNames.some((name) => product.name === name);
+type Product = { name: string; description?: string; price: string; slice?: boolean; category: string; flavor?: string; image?: string };
+const productImages: Record<string, string> = {
+  "Bolo de Brigadeiro 15 Camadas": "/bolo%20brigadeiro.jpg",
+  "Bolo de Cenoura 15 Camadas": "/bolo%20de%20cenoura.jpg",
+  "Cheesecake Original": "/cheese-cake.jpg",
+  "Cheesecake Cookies n Cream": "/cheese%20cake%20cookie.jpg",
+  "Cheesecake Cumaru": "/cheese%20cake%20cumaru.jpg",
+  "Mil Folhas Palmier": "/mil%20folhas.jpg",
+  "Carré Palmier com Chocolate Meio Amargo": "/carre%20chocolate%20meio%20amargp.jpg",
+  "Carré Palmier com Chocolate Branco": "/carre%20chocolate%20branco.jpg",
+  "Carré Palmier com Matchá e Flocos de Sal": "/carre%20matcha.jpg",
+  "Carré Palmier": "/carre.jpg",
+  "Entremet Espresso": "/entremet.jpg",
+  "Torta Caramelo e Nozes": "/torta%20caramelo%20nozes.jpg",
+  "Torta de Banana": "/torta%20banana.jpg",
+  "Ugly Bites": "/uggly%20bites.jpg",
+  "Sable com Chocolate Meio Amargo": "/sable%20chocolaye.jpg",
+  "Sablee com Chocolate de Matchá": "/sable%20matcha.jpg",
+  "Chocolate de Matchá com Crispy de Arroz": "/chocolate%20matcha.jpg",
+  "Chocolate Meio Amargo com Crispy de Arroz": "/chocolate%20meio%20amargo.jpg",
+  "Chocolate Branco com Crispy de Arroz": "/chocolte%20branco.jpg",
+  "Nozes Crocantes": "/nozes.jpg",
+  "Caixa Presenteável Carré": "/caixa%20presente.jpg",
+  "Presente Sable": "/presente%20sable.jpg",
+};
+type CartItem = { product: Product; quantity: number };
+const cartKey = (product: Product) => `${product.name}::${product.flavor ?? ""}`;
+const flavors = ["Composta", "Goiabada", "Morango"];
+const cheesecakeNames = ["Cheesecake Original", "Cheesecake Cookies n Cream", "Cheesecake Cumaru", "Cheesecake de Trufas"];
+const hasFlavor = (product: Product) => cheesecakeNames.some((name) => product.name === name);
 type Fulfillment = "pickup" | "delivery";
-const allProducts: Product[] = categories.flatMap((category) => category.items.map((item) => ({ ...item, category: category.name })));
+const allProducts: Product[] = categories.flatMap((category) => category.items.map((item) => ({ ...item, category: category.name, image: productImages[item.name] })));
 const money = (value: number) => value.toLocaleString("pt-BR", { style: "currency", currency: "BRL" });
 const cents = (price: string) => Math.round(Number(price.replace("R$", "").trim().replace(".", "").replace(",", ".")) * 100);
 const productMessage = (product: Product, quantity: number) => {
@@ -80,7 +107,9 @@ const productMessage = (product: Product, quantity: number) => {
 
 function Cardapio() {
   const [selected, setSelected] = useState<Product | null>(null);
-  const [productQty, setProductQty] = useState(1);\n  const [flavorSelections, setFlavorSelections] = useState<Record<string, string>>({});\n  const [selectedFlavor, setSelectedFlavor] = useState("Composta");
+  const [productQty, setProductQty] = useState(1);
+  const [flavorSelections, setFlavorSelections] = useState<Record<string, string>>({});
+  const [selectedFlavor, setSelectedFlavor] = useState("Composta");
   const [cart, setCart] = useState<CartItem[]>([]);
   const [cartLoaded, setCartLoaded] = useState(false);
   const [cartOpen, setCartOpen] = useState(false);
@@ -122,9 +151,10 @@ function Cardapio() {
 
   const addToCart = (product: Product, quantity: number) => {
     setCart((current) => {
-      const existing = current.find((entry) => entry.product.name === product.name);
+      const key = cartKey(product);
+      const existing = current.find((entry) => cartKey(entry.product) === key);
       return existing
-        ? current.map((entry) => entry.product.name === product.name ? { ...entry, quantity: entry.quantity + quantity } : entry)
+        ? current.map((entry) => cartKey(entry.product) === key ? { ...entry, quantity: entry.quantity + quantity } : entry)
         : [...current, { product, quantity }];
     });
     setSelected(null);
@@ -132,8 +162,8 @@ function Cardapio() {
     setCartOpen(true);
   };
 
-  const updateQuantity = (name: string, quantity: number) => {
-    setCart((current) => quantity < 1 ? current.filter((entry) => entry.product.name !== name) : current.map((entry) => entry.product.name === name ? { ...entry, quantity } : entry));
+  const updateQuantity = (key: string, quantity: number) => {
+    setCart((current) => quantity < 1 ? current.filter((entry) => cartKey(entry.product) !== key) : current.map((entry) => cartKey(entry.product) === key ? { ...entry, quantity } : entry));
   };
 
   const cartMessage = useMemo(() => {
@@ -146,7 +176,8 @@ function Cardapio() {
       ...(customerName.trim() ? [`Nome: ${customerName.trim()}`] : []),
       deliveryText,
       ...(notes.trim() ? [`Observações: ${notes.trim()}`] : []),
-    ].join("\n");
+    ].join("
+");
   }, [cart, totalCents, customerName, notes, fulfillment]);
 
   return (
@@ -188,6 +219,7 @@ function Cardapio() {
                 return (
                   <article className="bk-menu-item bk-menu-item-button" key={item.name}>
                     <button className="bk-menu-item-copy bk-menu-item-open" type="button" onClick={() => { setSelected(listingProduct); setSelectedFlavor(flavor ?? "Composta"); setProductQty(1); }}>
+                      {product.image && <img className="bk-menu-product-image" src={product.image} alt={item.name} loading="lazy" />}
                       <span className="bk-menu-item-title">{item.name}</span>
                       {item.description && <span className="bk-menu-item-description">{item.description}</span>}
                     </button>
@@ -231,10 +263,11 @@ function Cardapio() {
         <div className="bk-overlay bk-product-overlay" onMouseDown={(event) => { if (event.target === event.currentTarget) setSelected(null); }}>
           <section className="bk-product-modal" role="dialog" aria-modal="true" aria-label={selected.name}>
             <button className="bk-panel-close" type="button" aria-label="Fechar" onClick={() => setSelected(null)}><X size={20} /></button>
-            <div className="bk-product-placeholder"><span>BY KIM</span><strong>{selected.name}</strong><small>{selected.category}</small></div>
+            <div className="bk-product-placeholder">{selected.image ? <img src={selected.image} alt={selected.name} /> : <><span>BY KIM</span><strong>{selected.name}</strong><small>{selected.category}</small></>}</div>
             <div className="bk-product-modal-content">
               <p className="bk-eyebrow"><span /> {selected.category.toUpperCase()}</p>
-              <h2>{selected.name}</h2>\n              {hasFlavor(selected) && <div className="bk-flavor-picker bk-flavor-picker-detail" aria-label="Escolha o sabor">{flavors.map((option) => <button type="button" key={option} className={selectedFlavor === option ? "active" : ""} onClick={() => { setSelectedFlavor(option); setSelected({ ...selected, flavor: option }); }}>{option}</button>)}</div>}
+              <h2>{selected.name}</h2>
+              {hasFlavor(selected) && <div className="bk-flavor-picker bk-flavor-picker-detail" aria-label="Escolha o sabor">{flavors.map((option) => <button type="button" key={option} className={selectedFlavor === option ? "active" : ""} onClick={() => { setSelectedFlavor(option); setSelected({ ...selected, flavor: option }); }}>{option}</button>)}</div>}
               {selected.slice && <p className="bk-product-serving">Serve 1 pessoa</p>}
               {selected.description && <p className="bk-product-description">{selected.description}</p>}
               <div className="bk-product-modal-price">{selected.price}{selected.slice && <span> · fatia</span>}</div>
