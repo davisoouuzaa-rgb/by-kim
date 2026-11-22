@@ -129,9 +129,11 @@ function Cardapio() {
         const next = card.getBoundingClientRect();
         const dx = previous.left - next.left;
         const dy = previous.top - next.top;
-        if (Math.abs(dx) < 1 && Math.abs(dy) < 1) return;
+        const scaleX = previous.width > 0 && next.width > 0 ? previous.width / next.width : 1;
+        if (Math.abs(dx) < 1 && Math.abs(dy) < 1 && Math.abs(scaleX - 1) < 0.01) return;
         card.style.transition = "none";
-        card.style.transform = `translate(${dx}px, ${dy}px)`;
+        card.style.transformOrigin = "top left";
+        card.style.transform = `translate(${dx}px, ${dy}px) scaleX(${scaleX})`;
         card.getBoundingClientRect();
         card.style.transition = "transform 350ms ease-out";
         card.style.transform = "";
