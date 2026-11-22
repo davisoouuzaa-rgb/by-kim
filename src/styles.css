@@ -1316,3 +1316,106 @@ html, body, .bk-page,
     padding: 28px 24px 30px;
   }
 }
+
+
+/* BY KIM — modal: coluna de compra fixa e foto ocupando o espaço restante */
+@media (min-width: 768px) {
+  .bk-product-overlay {
+    padding: 16px;
+    align-items: center;
+    justify-content: center;
+  }
+  .bk-product-modal {
+    display: grid;
+    grid-template-columns: minmax(0, 640px) 360px;
+    grid-template-rows: minmax(0, 1fr);
+    width: fit-content;
+    max-width: min(1000px, calc(100vw - 32px));
+    height: auto;
+    max-height: calc(100vh - 32px);
+    overflow: auto;
+    align-items: stretch;
+    background: #080808;
+  }
+  .bk-product-placeholder {
+    min-width: 0;
+    min-height: 0;
+    width: auto;
+    height: 100%;
+    aspect-ratio: auto;
+    align-self: stretch;
+    display: flex;
+    align-items: stretch;
+    justify-content: stretch;
+    overflow: hidden;
+    padding: 0;
+    background: #080808;
+  }
+  .bk-product-placeholder > img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    min-width: 0;
+    min-height: 0;
+    max-width: 640px;
+    max-height: none;
+    aspect-ratio: auto;
+    object-fit: cover;
+    object-position: center;
+  }
+  .bk-product-modal-content {
+    box-sizing: border-box;
+    width: 360px;
+    min-width: 360px;
+    max-width: 360px;
+    min-height: 0;
+    padding: 54px 32px 38px;
+    align-self: stretch;
+    gap: 0;
+  }
+}
+@media (max-width: 767px) {
+  .bk-product-overlay {
+    padding: 0;
+    align-items: flex-start;
+    overflow-y: auto;
+  }
+  .bk-product-modal {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: auto;
+    max-height: none;
+    min-height: 0;
+    overflow: visible;
+  }
+  .bk-product-placeholder {
+    display: block;
+    flex: 0 0 50vh;
+    width: 100%;
+    height: 50vh;
+    min-height: 0;
+    max-height: none;
+    aspect-ratio: auto;
+    overflow: hidden;
+    background: #080808;
+  }
+  .bk-product-placeholder > img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    min-height: 0;
+    max-height: none;
+    aspect-ratio: auto;
+    object-fit: cover;
+    object-position: center;
+  }
+  .bk-product-modal-content {
+    box-sizing: border-box;
+    flex: 0 0 auto;
+    width: 100%;
+    min-width: 0;
+    max-width: none;
+    padding: 28px 24px 32px;
+  }
+}
