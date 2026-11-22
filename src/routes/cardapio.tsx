@@ -333,7 +333,7 @@ function Cardapio() {
                 const flavor = flavored ? (flavorSelections[item.name] ?? "Composta") : undefined;
                 const listingProduct = flavored ? { ...product, flavor } : product;
                 const expanded = selected?.name === product.name;
-                const isCovered = coveredIndex === itemIndex && selected?.category === product.category;
+                const isCovered = false;
                 const activeProduct = flavored ? { ...product, flavor: selectedFlavor } : product;
                 return (
                   <article
