@@ -1419,3 +1419,88 @@ html, body, .bk-page,
     padding: 28px 24px 32px;
   }
 }
+
+
+/* BY KIM — detalhes expandidos dentro do próprio item do cardápio */
+.bk-menu-item-expanded {
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: 190px minmax(0, 1fr);
+  align-items: start;
+  gap: 28px;
+  padding: 24px 0;
+}
+.bk-menu-item-expanded .bk-menu-item-open {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  width: 100%;
+  min-width: 0;
+  gap: 0;
+}
+.bk-menu-item-expanded .bk-menu-product-image {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  margin: 0 0 14px;
+}
+.bk-menu-item-expanded .bk-menu-item-title { font-size: 18px; }
+.bk-menu-item-expanded .bk-menu-item-description { margin-top: 7px; }
+.bk-menu-inline-detail {
+  position: relative;
+  min-width: 0;
+  padding: 8px 42px 4px 0;
+  color: #f7f7f5;
+  animation: bk-fade-up .22s ease both;
+}
+.bk-menu-inline-detail .bk-eyebrow { margin: 0 0 12px; font-size: 8px; }
+.bk-menu-inline-detail h3 {
+  margin: 0;
+  color: #f7f7f5;
+  font: 500 clamp(23px, 2.5vw, 31px)/1.2 'Playfair Display', serif;
+}
+.bk-menu-inline-detail .bk-product-serving { margin: 9px 0 0; color: #aaa; font-size: 11px; }
+.bk-menu-inline-detail .bk-product-description { margin: 14px 0 18px; color: #bdbdbd; font-size: 12px; line-height: 1.85; }
+.bk-menu-inline-detail .bk-flavor-picker { margin: 0 0 17px; }
+.bk-menu-inline-detail .bk-product-modal-price { margin: 0 0 16px; color: #f7f7f5; font-size: 20px; font-weight: 700; }
+.bk-menu-inline-detail .bk-product-modal-price span { color: #aaa; font-size: 12px; font-weight: 500; }
+.bk-menu-inline-detail .bk-quantity-row { margin-bottom: 15px; }
+.bk-menu-inline-detail .bk-modal-primary { max-width: 360px; }
+.bk-menu-inline-detail .bk-modal-secondary,
+.bk-menu-inline-detail .bk-modal-ifood { max-width: 360px; }
+.bk-menu-inline-close {
+  position: absolute;
+  top: 0;
+  right: 0;
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  border: 1px solid #444;
+  border-radius: 50%;
+  background: transparent;
+  color: #f7f7f5;
+  cursor: pointer;
+}
+@media (max-width: 767px) {
+  .bk-menu-item-expanded {
+    grid-column: 1 / -1;
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    padding: 22px 0;
+  }
+  .bk-menu-item-expanded .bk-menu-item-open { width: 100%; }
+  .bk-menu-item-expanded .bk-menu-product-image {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 4 / 3;
+    object-fit: cover;
+  }
+  .bk-menu-inline-detail { width: 100%; box-sizing: border-box; padding: 8px 38px 0 0; }
+  .bk-menu-inline-detail .bk-modal-primary,
+  .bk-menu-inline-detail .bk-modal-secondary,
+  .bk-menu-inline-detail .bk-modal-ifood { max-width: none; }
+}
