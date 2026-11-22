@@ -13,7 +13,7 @@ const categories = [
   {
     name: "Memoráveis",
     items: [
-      { name: "Bolo de Brigadeiro 15 Camadas", price: "R$ 49,40", slice: true },
+      { name: "Bolo de Brigadeiro 15 Camadas", description: "Bolo de chocolate com 15 camadas intercaladas de massa e brigadeiro.", price: "R$ 49,40", slice: true },
       { name: "Cheesecake Original", description: "Base amanteigada, 2 texturas de cheesecake (assada e fria), coberto por crumble de chocolate branco", price: "R$ 39,00", slice: true },
       { name: "Cheesecake Cookies n Cream", description: "Base amanteigada de cacau, cheesecake dupla de baunilha e crumble de cacau salgado, coberta com crumble de cacau", price: "R$ 39,00", slice: true },
       { name: "Bolo de Cenoura 15 Camadas", description: "Bolo de cenoura com brigadeiro, 15 camadas, irmãozinho do 15 camadas de chocolate", price: "R$ 49,40", slice: true },
