@@ -118,6 +118,28 @@ function Cardapio() {
   const [notes, setNotes] = useState("");
   const [fulfillment, setFulfillment] = useState<Fulfillment>("pickup");
 
+  const animateMenuReflow = (update: () => void) => {
+    const cards = Array.from(document.querySelectorAll<HTMLElement>(".bk-menu-grid .bk-menu-item"));
+    const before = new Map(cards.map((card) => [card, card.getBoundingClientRect()]));
+    update();
+    window.requestAnimationFrame(() => {
+      cards.forEach((card) => {
+        const previous = before.get(card);
+        if (!previous || !card.isConnected) return;
+        const next = card.getBoundingClientRect();
+        const dx = previous.left - next.left;
+        const dy = previous.top - next.top;
+        if (Math.abs(dx) < 1 && Math.abs(dy) < 1) return;
+        card.style.transition = "none";
+        card.style.transform = `translate(${dx}px, ${dy}px)`;
+        card.getBoundingClientRect();
+        card.style.transition = "transform 350ms ease-out";
+        card.style.transform = "";
+        window.setTimeout(() => { card.style.transition = ""; card.style.transform = ""; }, 370);
+      });
+    });
+  };
+
   useEffect(() => {
     try {
       const saved = window.localStorage.getItem("bykim-cardapio-cart-v1");
@@ -138,9 +160,11 @@ function Cardapio() {
   useEffect(() => {
     if (!closingSelected) return;
     const timeout = window.setTimeout(() => {
-      setSelected(null);
-      setProductQty(1);
-      setClosingSelected(false);
+      animateMenuReflow(() => {
+        setSelected(null);
+        setProductQty(1);
+        setClosingSelected(false);
+      });
     }, 250);
     return () => window.clearTimeout(timeout);
   }, [closingSelected]);
@@ -229,10 +253,12 @@ function Cardapio() {
                   <article className={`bk-menu-item bk-menu-item-button${showInlineDetail ? " bk-menu-item-expanded" : ""}${showInlineDetail && closingSelected ? " bk-menu-item-closing" : ""}`} key={item.name}>
                     <button className="bk-menu-item-copy bk-menu-item-open" type="button" aria-expanded={expanded} onClick={() => {
                       if (showInlineDetail) { setClosingSelected(true); return; }
-                      setClosingSelected(false);
-                      setSelected(listingProduct);
-                      setSelectedFlavor(flavor ?? "Composta");
-                      setProductQty(1);
+                      animateMenuReflow(() => {
+                        setClosingSelected(false);
+                        setSelected(listingProduct);
+                        setSelectedFlavor(flavor ?? "Composta");
+                        setProductQty(1);
+                      });
                     }}>
                       {product.image && <img className="bk-menu-product-image" src={product.image} alt={item.name} loading="lazy" />}
                       <span className="bk-menu-item-title">{item.name}</span>
