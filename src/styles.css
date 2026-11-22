@@ -834,7 +834,23 @@ html, body, .bk-page,
   color:#f7f7f7; padding:12px 14px; cursor:pointer; font:700 9px 'DM Sans',sans-serif; letter-spacing:.12em;
 }
 .bk-cart-trigger b { display:inline-flex; align-items:center; justify-content:center; min-width:20px; height:20px; padding:0 5px; border-radius:50%; background:#f7f7f7; color:#080808; font-size:10px; }
-.bk-menu-item-button { width:100%; text-align:left; color:inherit; background:transparent; border:0; font:inherit; cursor:pointer; }\n/* Cheesecake flavor selectors */\n.bk-menu-item-button { display:flex; flex-direction:column; gap:14px; cursor:default; }\n.bk-menu-item-open { width:100%; padding:0; border:0; background:transparent; color:inherit; text-align:left; cursor:pointer; }\n.bk-menu-item-open:hover .bk-menu-item-title { opacity:.72; }\n.bk-flavor-picker { display:flex; flex-wrap:wrap; gap:7px; }\n.bk-flavor-picker button { border:1px solid #555; background:transparent; color:#bcbcbc; padding:8px 12px; font:600 9px/1 'DM Sans',sans-serif; letter-spacing:.08em; cursor:pointer; transition:background .18s,color .18s,border .18s; }\n.bk-flavor-picker button.active { background:#f7f7f5; border-color:#f7f7f5; color:#111; }\n.bk-flavor-picker button:hover { border-color:#f7f7f5; color:#f7f7f5; }\n.bk-flavor-picker button.active:hover { color:#111; }\n.bk-flavor-picker-detail button { border-color:rgba(0,0,0,.3); color:#666; }\n.bk-flavor-picker-detail button.active { background:#111; border-color:#111; color:#f7f7f5; }\n.bk-menu-item-bottom { align-items:center; flex-wrap:wrap; }\n.bk-menu-add { flex:0 0 auto; padding:9px 12px; border:1px solid #f7f7f7; background:#f7f7f7; color:#111; font:700 8px 'DM Sans',sans-serif; letter-spacing:.12em; cursor:pointer; transition:background .2s,color .2s; }\n.bk-menu-add:hover { background:transparent; color:#f7f7f7; }\n.bk-menu-item-bottom .bk-menu-order { padding:9px 10px; }\n
+.bk-menu-item-button { width:100%; text-align:left; color:inherit; background:transparent; border:0; font:inherit; cursor:pointer; }
+/* Cheesecake flavor selectors */
+.bk-menu-item-button { display:flex; flex-direction:column; gap:14px; cursor:default; }
+.bk-menu-item-open { width:100%; padding:0; border:0; background:transparent; color:inherit; text-align:left; cursor:pointer; }
+.bk-menu-item-open:hover .bk-menu-item-title { opacity:.72; }
+.bk-flavor-picker { display:flex; flex-wrap:wrap; gap:7px; }
+.bk-flavor-picker button { border:1px solid #555; background:transparent; color:#bcbcbc; padding:8px 12px; font:600 9px/1 'DM Sans',sans-serif; letter-spacing:.08em; cursor:pointer; transition:background .18s,color .18s,border .18s; }
+.bk-flavor-picker button.active { background:#f7f7f5; border-color:#f7f7f5; color:#111; }
+.bk-flavor-picker button:hover { border-color:#f7f7f5; color:#f7f7f5; }
+.bk-flavor-picker button.active:hover { color:#111; }
+.bk-flavor-picker-detail button { border-color:rgba(0,0,0,.3); color:#666; }
+.bk-flavor-picker-detail button.active { background:#111; border-color:#111; color:#f7f7f5; }
+.bk-menu-item-bottom { align-items:center; flex-wrap:wrap; }
+.bk-menu-add { flex:0 0 auto; padding:9px 12px; border:1px solid #f7f7f7; background:#f7f7f7; color:#111; font:700 8px 'DM Sans',sans-serif; letter-spacing:.12em; cursor:pointer; transition:background .2s,color .2s; }
+.bk-menu-add:hover { background:transparent; color:#f7f7f7; }
+.bk-menu-item-bottom .bk-menu-order { padding:9px 10px; }
+
 .bk-menu-item-button:hover .bk-menu-item-title { opacity:.72; }
 .bk-menu-item-title { display:block; color:#f7f7f7; font:500 19px/1.35 'Playfair Display',serif; transition:opacity .2s; }
 .bk-menu-item-description { display:block; margin:9px 0 0; max-width:560px; color:#aaa; font:400 11px/1.8 'DM Sans',sans-serif; }
@@ -958,4 +974,32 @@ html, body, .bk-page,
   .bk-cart-item-info h3 { font-size:15px; }
   .bk-cart-item-actions { gap:4px; }
   .bk-fulfillment > div { grid-template-columns:1fr; }
+}
+
+
+/* Fotos dos produtos no cardápio */
+.bk-menu-product-image {
+  display: block;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  margin: 0 0 15px;
+  background: #242321;
+}
+.bk-product-placeholder {
+  overflow: hidden;
+  padding: 0;
+}
+.bk-product-placeholder > img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  min-height: 450px;
+  object-fit: cover;
+}
+@media (max-width: 520px) {
+  .bk-product-placeholder > img {
+    min-height: 220px;
+    height: 220px;
+  }
 }
