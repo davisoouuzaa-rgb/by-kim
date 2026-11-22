@@ -1830,3 +1830,65 @@ html, body, .bk-page,
   background: #F5F3EE;
   color: #0A0A0A;
 }
+
+
+/* BY KIM — reorganização fluida da grade ao abrir/fechar um produto */
+@media (min-width: 768px) {
+  .bk-menu-grid {
+    --bk-expanded-gap: 34px;
+  }
+  .bk-menu-item-expanded {
+    display: grid;
+    grid-column: span 2;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    column-gap: var(--bk-expanded-gap);
+    align-items: stretch;
+  }
+  .bk-menu-item-expanded .bk-menu-item-open {
+    grid-row: 1;
+    width: 100%;
+    min-width: 0;
+    margin: 0;
+  }
+  .bk-menu-item-expanded .bk-menu-purchase-panel {
+    position: relative;
+    top: auto;
+    right: auto;
+    left: auto;
+    grid-row: 1;
+    width: 100%;
+    min-width: 0;
+    height: auto;
+    min-height: 0;
+    overflow: hidden;
+    box-shadow: 0 16px 38px rgba(0,0,0,.28);
+  }
+  .bk-menu-item-expanded .bk-menu-purchase-panel-right {
+    grid-column: 2;
+  }
+  .bk-menu-item-expanded .bk-menu-purchase-panel-left {
+    grid-column: 1;
+  }
+  .bk-menu-item-expanded:has(.bk-menu-purchase-panel-left) .bk-menu-item-open {
+    grid-column: 2;
+  }
+  .bk-menu-item-expanded:has(.bk-menu-purchase-panel-right) .bk-menu-item-open {
+    grid-column: 1;
+  }
+  .bk-menu-item-expanded .bk-menu-item-bottom,
+  .bk-menu-item-expanded .bk-flavor-picker-list {
+    display: none;
+  }
+}
+@media (min-width: 1180px) {
+  .bk-menu-grid { --bk-expanded-gap: 28px; }
+}
+@media (max-width: 767px) {
+  .bk-menu-item-expanded .bk-menu-item-bottom,
+  .bk-menu-item-expanded .bk-flavor-picker-list {
+    display: none;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .bk-menu-grid > .bk-menu-item { transition: none !important; }
+}
