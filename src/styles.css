@@ -1549,8 +1549,8 @@ html, body, .bk-page,
 }
 .bk-menu-purchase-link svg { color: #f5f3ee; transition: transform .22s ease; }
 .bk-menu-purchase-link:hover svg { transform: translateX(4px); }
-.bk-menu-item-expanded .bk-menu-item-bottom { display: none; }
-.bk-menu-item-expanded .bk-flavor-picker-list { display: none; }
+.bk-menu-item-expanded .bk-menu-item-bottom,
+.bk-menu-item-expanded .bk-flavor-picker-list { visibility: hidden; pointer-events: none; }
 @media (min-width: 768px) {
   .bk-menu-item-expanded { overflow: visible; }
   .bk-menu-item-expanded .bk-menu-item-open { cursor: default; }
@@ -1585,7 +1585,7 @@ html, body, .bk-page,
   .bk-menu-purchase-scroll { height: auto; max-height: none; overflow: visible; padding: 24px 20px 20px; }
   .bk-menu-item-expanded .bk-menu-item-title,
   .bk-menu-item-expanded .bk-menu-item-description { display: none; }
-  .bk-menu-item-expanded .bk-menu-flavor-picker-list,
+  .bk-menu-item-expanded .bk-flavor-picker-list,
   .bk-menu-item-expanded .bk-menu-item-bottom { display: none; }
 }
 @media (prefers-reduced-motion: reduce) {
