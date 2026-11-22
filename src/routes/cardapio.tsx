@@ -340,18 +340,16 @@ function Cardapio() {
                         </div>
                       </div>
                     )}
-                    {!expanded && (
-                      <>
-                        {flavored && <div className="bk-flavor-picker bk-flavor-picker-list" aria-label="Sabor">
-                          {flavors.map((option) => <button type="button" key={option} className={flavor === option ? "active" : ""} onClick={() => setFlavorSelections((current) => ({ ...current, [item.name]: option }))}>{option}</button>)}
-                        </div>}
-                        <span className="bk-menu-item-bottom">
-                          <span className="bk-menu-price"><strong>{item.price}</strong>{item.slice && <small>fatia</small>}</span>
-                          <button type="button" className="bk-menu-add" onClick={() => addToCart(listingProduct, 1)}>ADICIONAR</button>
-                          <a className="bk-menu-order" href={whatsappBase + encodeURIComponent(productMessage(listingProduct, 1))} target="_blank" rel="noopener noreferrer">WHATSAPP <ArrowRight size={14} /></a>
-                        </span>
-                      </>
-                    )}
+                    <>
+                      {flavored && <div className="bk-flavor-picker bk-flavor-picker-list" aria-label="Sabor">
+                        {flavors.map((option) => <button type="button" key={option} className={flavor === option ? "active" : ""} onClick={() => setFlavorSelections((current) => ({ ...current, [item.name]: option }))}>{option}</button>)}
+                      </div>}
+                      <span className="bk-menu-item-bottom">
+                        <span className="bk-menu-price"><strong>{item.price}</strong>{item.slice && <small>fatia</small>}</span>
+                        <button type="button" className="bk-menu-add" onClick={() => addToCart(listingProduct, 1)}>ADICIONAR</button>
+                        <a className="bk-menu-order" href={whatsappBase + encodeURIComponent(productMessage(listingProduct, 1))} target="_blank" rel="noopener noreferrer">WHATSAPP <ArrowRight size={14} /></a>
+                      </span>
+                    </>
                   </article>
                 );
               })}
