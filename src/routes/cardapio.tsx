@@ -110,7 +110,7 @@ function Cardapio() {
   const [closingSelected, setClosingSelected] = useState(false);
   const [panelSide, setPanelSide] = useState<"right" | "left">("right");
   const [coveredIndex, setCoveredIndex] = useState<number | null>(null);
-  const [pendingSelection, setPendingSelection] = useState<{ product: Product; flavor: string } | null>(null);
+  const [pendingSelection, setPendingSelection] = useState<{ product: Product; flavor: string; trigger: HTMLButtonElement } | null>(null);
   const [addedFeedback, setAddedFeedback] = useState(false);
   const [productQty, setProductQty] = useState(1);
   const [flavorSelections, setFlavorSelections] = useState<Record<string, string>>({});
@@ -173,13 +173,14 @@ function Cardapio() {
   useEffect(() => {
     if (!closingSelected) return;
     const timeout = window.setTimeout(() => {
-      setSelected(pendingSelection?.product ?? null);
-      if (pendingSelection) setSelectedFlavor(pendingSelection.flavor);
+      const nextSelection = pendingSelection;
+      setSelected(null);
       setPendingSelection(null);
       setCoveredIndex(null);
       setProductQty(1);
       setAddedFeedback(false);
       setClosingSelected(false);
+      if (nextSelection) openProduct(nextSelection.product, nextSelection.flavor, nextSelection.trigger);
     }, 240);
     return () => window.clearTimeout(timeout);
   }, [closingSelected, pendingSelection]);
@@ -303,7 +304,7 @@ function Cardapio() {
                       onClick={(event) => {
                         if (expanded) { closeProduct(); return; }
                         if (selected) {
-                          setPendingSelection({ product: listingProduct, flavor: flavor ?? "Composta" });
+                          setPendingSelection({ product: listingProduct, flavor: flavor ?? "Composta", trigger: event.currentTarget });
                           setClosingSelected(true);
                           return;
                         }
