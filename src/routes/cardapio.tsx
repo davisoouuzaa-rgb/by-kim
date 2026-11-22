@@ -292,7 +292,7 @@ function Cardapio() {
                 const activeProduct = flavored ? { ...product, flavor: selectedFlavor } : product;
                 return (
                   <article
-                    className={`bk-menu-item bk-menu-item-button${expanded ? " bk-menu-item-expanded" : ""}${expanded && closingSelected ? " bk-menu-item-closing" : ""}${isCovered ? " bk-menu-item-covered" : ""}`}
+                    className={`bk-menu-item bk-menu-item-button${expanded ? " bk-menu-item-expanded" : ""}${expanded && closingSelected ? " bk-menu-item-closing" : ""}${isCovered ? " bk-menu-item-covered" : ""}${isCovered && closingSelected ? " bk-menu-item-covered-closing" : ""}`}
                     key={item.name}
                     aria-hidden={isCovered ? true : undefined}
                   >
