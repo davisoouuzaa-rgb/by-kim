@@ -203,10 +203,9 @@ function Cardapio() {
       </section>
 
       <div className="bk-menu-categories">
-        {categories.map((category, index) => (
+        {categories.map((category) => (
           <section className="bk-menu-category" key={category.name}>
             <div className="bk-menu-category-heading">
-              <span>0{index + 1}</span>
               <h2>{category.name}</h2>
             </div>
             <div className="bk-menu-grid">
