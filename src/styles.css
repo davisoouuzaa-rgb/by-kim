@@ -2016,3 +2016,172 @@ html, body, .bk-page,
     display: none;
   }
 }
+
+ 
+/* BY KIM — seção "Visite a By Kim" */
+.bk-visit {
+  box-sizing: border-box;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  grid-template-rows: 360px auto;
+  align-items: stretch;
+  column-gap: 6%;
+  row-gap: 24px;
+  padding: 100px 7.2%;
+  background: #080808;
+  color: #F5F3EE;
+}
+.bk-visit-copy {
+  grid-column: 1;
+  grid-row: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  text-align: left;
+}
+.bk-visit-copy .bk-eyebrow {
+  margin: 0 0 17px;
+  color: #A3A3A3;
+  font-size: 9px;
+  letter-spacing: .24em;
+}
+.bk-visit-copy h2 {
+  color: #F5F3EE;
+  font-size: clamp(42px, 4.4vw, 62px);
+  line-height: 1.04;
+}
+.bk-visit-description {
+  max-width: 540px;
+  margin: 19px 0 18px;
+  color: #F5F3EE;
+  font-size: 12px;
+  line-height: 1.85;
+}
+.bk-visit-facts {
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+  margin-top: 2px;
+}
+.bk-visit-facts p {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  margin: 0;
+  color: #A3A3A3;
+  font-size: 10px;
+  line-height: 1.65;
+}
+.bk-visit-facts svg {
+  flex: 0 0 16px;
+  margin-top: 1px;
+  color: #A3A3A3;
+}
+.bk-visit-map-wrap {
+  grid-column: 2;
+  grid-row: 1;
+  min-width: 0;
+  height: 360px;
+  overflow: hidden;
+  border: 1px solid #303030;
+  border-radius: 12px;
+  background: #141414;
+}
+.bk-visit-map {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border: 0;
+  filter: grayscale(1) invert(.88) contrast(.9);
+}
+.bk-visit-actions {
+  grid-column: 1;
+  grid-row: 2;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 9px;
+}
+.bk-visit-action {
+  box-sizing: border-box;
+  min-width: 0;
+  min-height: 46px;
+  padding: 0 11px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  border: 1px solid #3E3E3E;
+  background: transparent;
+  color: #F5F3EE;
+  text-decoration: none;
+  font-size: 8px;
+  font-weight: 700;
+  letter-spacing: .09em;
+  white-space: nowrap;
+  transition: border-color .22s ease, background .22s ease;
+}
+.bk-visit-action svg {
+  flex: 0 0 auto;
+  transition: transform .22s ease;
+}
+.bk-visit-action:hover {
+  border-color: #F5F3EE;
+  background: #141414;
+}
+.bk-visit-action:hover svg {
+  transform: translateX(4px);
+}
+@media (max-width: 900px) and (min-width: 621px) {
+  .bk-visit {
+    column-gap: 4%;
+    padding-left: 5%;
+    padding-right: 5%;
+  }
+  .bk-visit-copy h2 { font-size: 44px; }
+  .bk-visit-description { font-size: 11px; }
+  .bk-visit-action { padding: 0 8px; font-size: 7px; }
+}
+@media (max-width: 620px) {
+  .bk-visit {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 22px;
+    padding: 68px 7%;
+    text-align: left;
+  }
+  .bk-visit-copy {
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-start;
+    text-align: left;
+  }
+  .bk-visit-copy h2 { font-size: 48px; }
+  .bk-visit-description {
+    margin: 18px 0 17px;
+    font-size: 12px;
+  }
+  .bk-visit-facts { gap: 11px; }
+  .bk-visit-facts p { font-size: 10px; }
+  .bk-visit-map-wrap {
+    order: 2;
+    width: 100%;
+    height: 280px;
+    flex: 0 0 280px;
+    border-radius: 10px;
+  }
+  .bk-visit-actions {
+    order: 3;
+    display: flex;
+    flex-direction: column;
+    gap: 9px;
+  }
+  .bk-visit-action {
+    width: 100%;
+    min-height: 48px;
+    padding: 0 16px;
+    font-size: 9px;
+  }
+}
