@@ -2185,3 +2185,201 @@ html, body, .bk-page,
     font-size: 9px;
   }
 }
+
+ 
+/* BY KIM — hero de vídeo em tela cheia e cabeçalho revelado por interação */
+.bk-topline {
+  position: absolute;
+  z-index: 12;
+  top: 0;
+  left: 0;
+  width: 100%;
+  box-sizing: border-box;
+}
+.bk-header {
+  position: absolute;
+  z-index: 11;
+  top: 30px;
+  left: 0;
+  width: 100%;
+  box-sizing: border-box;
+  background: rgba(10, 10, 10, .72);
+  border-bottom: 1px solid rgba(245, 243, 238, .16);
+  color: #F5F3EE;
+  transform: translateY(-100%);
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: transform 400ms ease, opacity 400ms ease, visibility 400ms ease;
+}
+.bk-header.bk-header-visible {
+  transform: translateY(0);
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+}
+.bk-header .bk-wordmark,
+.bk-header .bk-nav a,
+.bk-header .bk-header-cta {
+  color: #F5F3EE;
+}
+.bk-header .bk-header-cta {
+  border-color: #F5F3EE;
+}
+.bk-header .bk-header-cta:hover {
+  background: #F5F3EE;
+  color: #0A0A0A;
+}
+.bk-video-hero {
+  position: relative;
+  isolation: isolate;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  height: 100vh;
+  min-height: 640px;
+  box-sizing: border-box;
+  overflow: hidden;
+  padding: 0 8%;
+  background: #0A0A0A;
+  color: #F5F3EE;
+}
+.bk-hero-video {
+  position: absolute;
+  z-index: -2;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  background-color: #0A0A0A;
+}
+.bk-hero-video-gradient {
+  position: absolute;
+  z-index: -1;
+  inset: 0;
+  background: linear-gradient(to right, rgba(10,10,10,0.9) 0%, rgba(10,10,10,0.6) 40%, rgba(10,10,10,0) 70%);
+  pointer-events: none;
+}
+.bk-video-hero .bk-hero-copy {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  width: 100%;
+  max-width: 560px;
+  padding: 0;
+  color: #F5F3EE;
+}
+.bk-video-hero .bk-hero-copy h1 {
+  margin: 0;
+  color: #F5F3EE;
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(54px, 6.3vw, 88px);
+  font-weight: 500;
+  line-height: 1.04;
+  letter-spacing: -.045em;
+}
+.bk-video-hero .bk-hero-copy h1 em {
+  font-weight: 500;
+}
+.bk-hero-subtitle {
+  max-width: 470px;
+  margin: 25px 0 30px;
+  color: #F5F3EE;
+  font-size: 15px;
+  line-height: 1.8;
+}
+.bk-video-hero .bk-hero-actions {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+.bk-video-hero .bk-button {
+  min-height: 50px;
+  padding: 0 19px;
+  gap: 14px;
+  font-size: 9px;
+  letter-spacing: .11em;
+}
+.bk-video-hero .bk-button-dark {
+  border-color: #F5F3EE;
+  background: #F5F3EE;
+  color: #0A0A0A;
+}
+.bk-video-hero .bk-button-dark:hover {
+  border-color: #F5F3EE;
+  background: transparent;
+  color: #F5F3EE;
+}
+.bk-video-hero .bk-button-outline {
+  border: 1px solid rgba(245,243,238,.8);
+  background: transparent;
+  color: #F5F3EE;
+}
+.bk-video-hero .bk-button-outline:hover {
+  background: #F5F3EE;
+  color: #0A0A0A;
+}
+@media (max-width: 767px) {
+  .bk-video-hero {
+    height: 100vh;
+    height: 100dvh;
+    min-height: 560px;
+    align-items: flex-end;
+    padding: 0 7% max(9%, 54px);
+  }
+  .bk-hero-video-gradient {
+    background: linear-gradient(to top, rgba(10,10,10,0.95) 0%, rgba(10,10,10,0.5) 50%, rgba(10,10,10,0) 80%);
+  }
+  .bk-video-hero .bk-hero-copy {
+    max-width: 560px;
+  }
+  .bk-video-hero .bk-hero-copy h1 {
+    font-size: clamp(46px, 12vw, 66px);
+  }
+  .bk-hero-subtitle {
+    margin: 18px 0 23px;
+    font-size: 13px;
+    line-height: 1.7;
+  }
+  .bk-video-hero .bk-hero-actions {
+    width: 100%;
+    align-items: stretch;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .bk-video-hero .bk-button {
+    width: 100%;
+    min-height: 49px;
+    box-sizing: border-box;
+    justify-content: space-between;
+  }
+  .bk-header {
+    top: 30px;
+    height: 72px;
+    padding: 0 6%;
+  }
+  .bk-header .bk-nav {
+    gap: 12px;
+  }
+  .bk-header .bk-nav a {
+    font-size: 8px;
+  }
+  .bk-header .bk-header-cta {
+    padding: 10px 11px;
+    font-size: 8px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .bk-header {
+    transform: none;
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+    transition: none;
+  }
+}
