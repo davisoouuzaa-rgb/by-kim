@@ -1460,9 +1460,15 @@ html, body, .bk-page,
 .bk-menu-inline-clip {
   min-width: 0;
   max-width: 420px;
-  max-height: 1100px;
+  max-height: 0;
   overflow: hidden;
-  transition: max-height 250ms ease-out;
+}
+.bk-menu-item-expanded:not(.bk-menu-item-closing) .bk-menu-inline-clip {
+  animation: bk-menu-expand 350ms ease-out both;
+}
+@keyframes bk-menu-expand {
+  from { max-height: 0; }
+  to { max-height: 1100px; }
 }
 .bk-menu-inline-detail {
   position: relative;
@@ -1477,7 +1483,7 @@ html, body, .bk-page,
   from { opacity: 0; transform: translateX(-14px); }
   to { opacity: 1; transform: translateX(0); }
 }
-.bk-menu-item-closing .bk-menu-inline-clip { max-height: 0; }
+.bk-menu-item-closing .bk-menu-inline-clip { max-height: 0; animation: none; transition: max-height 250ms ease-out; }
 .bk-menu-item-closing .bk-menu-inline-detail {
   opacity: 0;
   transform: translateX(-14px);
