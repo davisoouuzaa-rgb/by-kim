@@ -135,15 +135,12 @@ function Cardapio() {
   }, [cart]);
 
   useEffect(() => {
-    const open = Boolean(selected || cartOpen);
-    if (!open) return;
-    const onKeyDown = (event: KeyboardEvent) => {
-      if (event.key === "Escape") { setSelected(null); setCartOpen(false); }
-    };
+    if (!cartOpen) return;
+    const onKeyDown = (event: KeyboardEvent) => { if (event.key === "Escape") setCartOpen(false); };
     window.addEventListener("keydown", onKeyDown);
     document.body.style.overflow = "hidden";
     return () => { window.removeEventListener("keydown", onKeyDown); document.body.style.overflow = ""; };
-  }, [selected, cartOpen]);
+  }, [cartOpen]);
 
   const itemCount = cart.reduce((sum, entry) => sum + entry.quantity, 0);
   const totalCents = cart.reduce((sum, entry) => sum + cents(entry.product.price) * entry.quantity, 0);
@@ -214,21 +211,53 @@ function Cardapio() {
                 const flavored = hasFlavor(product);
                 const flavor = flavored ? (flavorSelections[item.name] ?? "Composta") : undefined;
                 const listingProduct = flavored ? { ...product, flavor } : product;
+                const expanded = selected?.name === product.name;
+                const activeProduct = flavored ? { ...product, flavor: selectedFlavor } : product;
                 return (
-                  <article className="bk-menu-item bk-menu-item-button" key={item.name}>
-                    <button className="bk-menu-item-copy bk-menu-item-open" type="button" onClick={() => { setSelected(listingProduct); setSelectedFlavor(flavor ?? "Composta"); setProductQty(1); }}>
+                  <article className={`bk-menu-item bk-menu-item-button${expanded ? " bk-menu-item-expanded" : ""}`} key={item.name}>
+                    <button className="bk-menu-item-copy bk-menu-item-open" type="button" aria-expanded={expanded} onClick={() => {
+                      if (expanded) { setSelected(null); setProductQty(1); return; }
+                      setSelected(listingProduct);
+                      setSelectedFlavor(flavor ?? "Composta");
+                      setProductQty(1);
+                    }}>
                       {product.image && <img className="bk-menu-product-image" src={product.image} alt={item.name} loading="lazy" />}
                       <span className="bk-menu-item-title">{item.name}</span>
                       {item.description && <span className="bk-menu-item-description">{item.description}</span>}
                     </button>
-                    {flavored && <div className="bk-flavor-picker bk-flavor-picker-list" aria-label="Sabor">
-                      {flavors.map((option) => <button type="button" key={option} className={flavor === option ? "active" : ""} onClick={() => setFlavorSelections((current) => ({ ...current, [item.name]: option }))}>{option}</button>)}
-                    </div>}
-                    <span className="bk-menu-item-bottom">
-                      <span className="bk-menu-price"><strong>{item.price}</strong>{item.slice && <small>fatia</small>}</span>
-                      <button type="button" className="bk-menu-add" onClick={() => addToCart(listingProduct, 1)}>ADICIONAR</button>
-                      <a className="bk-menu-order" href={whatsappBase + encodeURIComponent(productMessage(listingProduct, 1))} target="_blank" rel="noopener noreferrer">WHATSAPP <ArrowRight size={14} /></a>
-                    </span>
+                    {expanded ? (
+                      <div className="bk-menu-inline-detail">
+                        <button className="bk-menu-inline-close" type="button" aria-label="Fechar detalhes" onClick={() => { setSelected(null); setProductQty(1); }}><X size={17} /></button>
+                        <p className="bk-eyebrow"><span /> {product.category.toUpperCase()}</p>
+                        <h3>{product.name}</h3>
+                        {product.slice && <p className="bk-product-serving">Serve 1 pessoa</p>}
+                        {product.description && <p className="bk-product-description">{product.description}</p>}
+                        {flavored && <div className="bk-flavor-picker bk-flavor-picker-detail" aria-label="Escolha o sabor">{flavors.map((option) => <button type="button" key={option} className={selectedFlavor === option ? "active" : ""} onClick={() => { setSelectedFlavor(option); setFlavorSelections((current) => ({ ...current, [item.name]: option })); }}>{option}</button>)}</div>}
+                        <div className="bk-product-modal-price">{product.price}{product.slice && <span> · fatia</span>}</div>
+                        <div className="bk-quantity-row">
+                          <span>Quantidade</span>
+                          <div className="bk-quantity-control">
+                            <button type="button" aria-label="Diminuir quantidade" onClick={() => setProductQty((q) => Math.max(1, q - 1))}><Minus size={15} /></button>
+                            <strong>{productQty}</strong>
+                            <button type="button" aria-label="Aumentar quantidade" onClick={() => setProductQty((q) => q + 1)}><Plus size={15} /></button>
+                          </div>
+                        </div>
+                        <button className="bk-modal-primary" type="button" onClick={() => addToCart(flavored ? activeProduct : product, productQty)}>ADICIONAR · {money(cents(product.price) * productQty / 100)}</button>
+                        <a className="bk-modal-secondary" href={whatsappBase + encodeURIComponent(productMessage(flavored ? activeProduct : product, productQty))} target="_blank" rel="noopener noreferrer">PEDIR PELO WHATSAPP <ArrowRight size={15} /></a>
+                        <a className="bk-modal-ifood" href={ifood} target="_blank" rel="noopener noreferrer">PEDIR PELO IFOOD <ArrowRight size={14} /></a>
+                      </div>
+                    ) : (
+                      <>
+                        {flavored && <div className="bk-flavor-picker bk-flavor-picker-list" aria-label="Sabor">
+                          {flavors.map((option) => <button type="button" key={option} className={flavor === option ? "active" : ""} onClick={() => setFlavorSelections((current) => ({ ...current, [item.name]: option }))}>{option}</button>)}
+                        </div>}
+                        <span className="bk-menu-item-bottom">
+                          <span className="bk-menu-price"><strong>{item.price}</strong>{item.slice && <small>fatia</small>}</span>
+                          <button type="button" className="bk-menu-add" onClick={() => addToCart(listingProduct, 1)}>ADICIONAR</button>
+                          <a className="bk-menu-order" href={whatsappBase + encodeURIComponent(productMessage(listingProduct, 1))} target="_blank" rel="noopener noreferrer">WHATSAPP <ArrowRight size={14} /></a>
+                        </span>
+                      </>
+                    )}
                   </article>
                 );
               })}
@@ -257,33 +286,6 @@ function Cardapio() {
         <small>© {new Date().getFullYear()} BY KIM CONFEITARIA</small>
       </footer>
 
-      {selected && (
-        <div className="bk-overlay bk-product-overlay" onMouseDown={(event) => { if (event.target === event.currentTarget) setSelected(null); }}>
-          <section className="bk-product-modal" role="dialog" aria-modal="true" aria-label={selected.name}>
-            <button className="bk-panel-close" type="button" aria-label="Fechar" onClick={() => setSelected(null)}><X size={20} /></button>
-            <div className="bk-product-placeholder">{selected.image ? <img src={selected.image} alt={selected.name} /> : <><span>BY KIM</span><strong>{selected.name}</strong><small>{selected.category}</small></>}</div>
-            <div className="bk-product-modal-content">
-              <p className="bk-eyebrow"><span /> {selected.category.toUpperCase()}</p>
-              <h2>{selected.name}</h2>
-              {hasFlavor(selected) && <div className="bk-flavor-picker bk-flavor-picker-detail" aria-label="Escolha o sabor">{flavors.map((option) => <button type="button" key={option} className={selectedFlavor === option ? "active" : ""} onClick={() => { setSelectedFlavor(option); setSelected({ ...selected, flavor: option }); }}>{option}</button>)}</div>}
-              {selected.slice && <p className="bk-product-serving">Serve 1 pessoa</p>}
-              {selected.description && <p className="bk-product-description">{selected.description}</p>}
-              <div className="bk-product-modal-price">{selected.price}{selected.slice && <span> · fatia</span>}</div>
-              <div className="bk-quantity-row">
-                <span>Quantidade</span>
-                <div className="bk-quantity-control">
-                  <button type="button" aria-label="Diminuir quantidade" onClick={() => setProductQty((q) => Math.max(1, q - 1))}><Minus size={15} /></button>
-                  <strong>{productQty}</strong>
-                  <button type="button" aria-label="Aumentar quantidade" onClick={() => setProductQty((q) => q + 1)}><Plus size={15} /></button>
-                </div>
-              </div>
-              <button className="bk-modal-primary" type="button" onClick={() => addToCart(hasFlavor(selected) ? { ...selected, flavor: selectedFlavor } : selected, productQty)}>ADICIONAR · {money(selectedSubtotal / 100)}</button>
-              <a className="bk-modal-secondary" href={whatsappBase + encodeURIComponent(productMessage(hasFlavor(selected) ? { ...selected, flavor: selectedFlavor } : selected, productQty))} target="_blank" rel="noopener noreferrer">PEDIR PELO WHATSAPP <ArrowRight size={15} /></a>
-              <a className="bk-modal-ifood" href={ifood} target="_blank" rel="noopener noreferrer">PEDIR PELO IFOOD <ArrowRight size={14} /></a>
-            </div>
-          </section>
-        </div>
-      )}
 
       {cartOpen && (
         <div className="bk-overlay bk-cart-overlay" onMouseDown={(event) => { if (event.target === event.currentTarget) setCartOpen(false); }}>
