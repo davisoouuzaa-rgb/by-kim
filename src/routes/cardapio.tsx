@@ -109,6 +109,7 @@ function Cardapio() {
   const [selected, setSelected] = useState<Product | null>(null);
   const [closingSelected, setClosingSelected] = useState(false);
   const [panelSide, setPanelSide] = useState<"right" | "left">("right");
+  const [panelPosition, setPanelPosition] = useState<{ left: number; top: number; width: number } | null>(null);
   const [coveredIndex, setCoveredIndex] = useState<number | null>(null);
   const [pendingSelection, setPendingSelection] = useState<{ product: Product; flavor: string; trigger: HTMLButtonElement } | null>(null);
   const [addedFeedback, setAddedFeedback] = useState(false);
@@ -123,25 +124,25 @@ function Cardapio() {
   const [fulfillment, setFulfillment] = useState<Fulfillment>("pickup");
 
   const openProduct = useCallback((product: Product, flavor: string, trigger: HTMLButtonElement) => {
-    const grid = trigger.closest(".bk-menu-grid");
-    const cards = grid ? Array.from(grid.querySelectorAll<HTMLElement>(":scope > .bk-menu-item")) : [];
+    const grid = trigger.closest<HTMLElement>(".bk-menu-grid");
     const current = trigger.closest<HTMLElement>(".bk-menu-item");
-    const index = current ? cards.indexOf(current) : -1;
+    const gridRect = grid?.getBoundingClientRect();
     const rect = current?.getBoundingClientRect();
-    const sameRow = rect ? cards.map((card, i) => ({ card, i, rect: card.getBoundingClientRect() })).filter((entry) => Math.abs(entry.rect.top - rect.top) < 2) : [];
-    const position = sameRow.findIndex((entry) => entry.i === index);
-    const next = sameRow[position + 1];
-    const previous = sameRow[position - 1];
-    if (next) {
-      setPanelSide("right");
-      setCoveredIndex(next.i);
-    } else if (previous) {
-      setPanelSide("left");
-      setCoveredIndex(previous.i);
-    } else {
-      setPanelSide("right");
-      setCoveredIndex(null);
+    const cards = grid ? Array.from(grid.querySelectorAll<HTMLElement>(":scope > .bk-menu-item")) : [];
+    const index = current ? cards.indexOf(current) : -1;
+    const sameRow = rect ? cards.map((card, i) => ({ i, rect: card.getBoundingClientRect() })).filter((entry) => Math.abs(entry.rect.top - rect.top) < 2) : [];
+    const rowPosition = sameRow.findIndex((entry) => entry.i === index);
+    const side: "right" | "left" = rect && gridRect && rect.left + rect.width / 2 > gridRect.left + gridRect.width / 2 ? "left" : "right";
+    if (rect && gridRect) {
+      const panelWidth = Math.min(rect.width, 420);
+      setPanelPosition({
+        left: side === "right" ? rect.right - gridRect.left : rect.left - gridRect.left - panelWidth,
+        top: rect.top - gridRect.top,
+        width: panelWidth,
+      });
     }
+    setPanelSide(side);
+    setCoveredIndex(side === "right" ? (sameRow[rowPosition + 1]?.i ?? null) : (sameRow[rowPosition - 1]?.i ?? null));
     setSelected(product);
     setSelectedFlavor(flavor);
     setProductQty(1);
@@ -177,6 +178,7 @@ function Cardapio() {
       setSelected(null);
       setPendingSelection(null);
       setCoveredIndex(null);
+      setPanelPosition(null);
       setProductQty(1);
       setAddedFeedback(false);
       setClosingSelected(false);
@@ -316,7 +318,7 @@ function Cardapio() {
                       {item.description && <span className="bk-menu-item-description">{item.description}</span>}
                     </button>
                     {expanded && (
-                      <div className={`bk-menu-purchase-panel bk-menu-purchase-panel-${panelSide}${closingSelected ? " bk-menu-purchase-panel-closing" : ""}`} role="dialog" aria-label={`Comprar ${product.name}`}>
+                      <div className={`bk-menu-purchase-panel bk-menu-purchase-panel-${panelSide}${closingSelected ? " bk-menu-purchase-panel-closing" : ""}`} style={panelPosition ? { left: panelPosition.left, top: panelPosition.top, width: panelPosition.width } : undefined} role="dialog" aria-label={`Comprar ${product.name}`}>
                         <button className="bk-menu-inline-close" type="button" aria-label="Fechar detalhes" onClick={closeProduct}><X size={20} /></button>
                         <div className="bk-menu-purchase-scroll">
                           <p className="bk-eyebrow"><span /> {product.category.toUpperCase()}</p>
