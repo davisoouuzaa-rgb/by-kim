@@ -1892,3 +1892,60 @@ html, body, .bk-page,
 @media (prefers-reduced-motion: reduce) {
   .bk-menu-grid > .bk-menu-item { transition: none !important; }
 }
+
+
+/* BY KIM — contraste consistente nas ações do painel de produto */
+.bk-menu-purchase-scroll .bk-menu-purchase-link,
+.bk-menu-purchase-scroll .bk-menu-purchase-link:link,
+.bk-menu-purchase-scroll .bk-menu-purchase-link:visited,
+.bk-menu-purchase-scroll .bk-menu-purchase-link:hover,
+.bk-menu-purchase-scroll .bk-menu-purchase-link:focus,
+.bk-menu-purchase-scroll .bk-menu-purchase-link:active {
+  color: #F5F3EE !important;
+  opacity: 1 !important;
+  filter: none !important;
+  visibility: visible !important;
+  pointer-events: auto !important;
+  background: transparent !important;
+  border-color: #3E3E3E !important;
+  text-decoration: none;
+  transition: color .22s ease, border-color .22s ease;
+}
+.bk-menu-purchase-scroll .bk-menu-purchase-link svg {
+  color: #F5F3EE !important;
+  opacity: 1 !important;
+  transition: transform .22s ease;
+}
+.bk-menu-purchase-scroll .bk-menu-purchase-link:hover svg {
+  transform: translateX(4px);
+}
+.bk-menu-purchase-scroll .bk-menu-purchase-link:hover {
+  border-color: #F5F3EE !important;
+}
+.bk-menu-purchase-scroll .bk-menu-add-primary,
+.bk-menu-purchase-scroll .bk-menu-add-primary:hover,
+.bk-menu-purchase-scroll .bk-menu-add-primary:focus,
+.bk-menu-purchase-scroll .bk-menu-add-primary:active {
+  color: #F5F3EE !important;
+  background: #141414 !important;
+  border: 1px solid #555 !important;
+  opacity: 1 !important;
+}
+.bk-menu-purchase-scroll .bk-menu-quantity-control button {
+  display: grid;
+  place-items: center;
+  border: 1px solid #F5F3EE !important;
+  border-radius: 50%;
+  background: #141414 !important;
+  color: #F5F3EE !important;
+  opacity: 1 !important;
+}
+.bk-menu-purchase-scroll .bk-menu-quantity-control button svg {
+  color: #F5F3EE !important;
+  stroke: #F5F3EE !important;
+  opacity: 1 !important;
+}
+.bk-menu-purchase-scroll .bk-menu-quantity-control button:hover {
+  background: #292929 !important;
+  border-color: #FFFFFF !important;
+}
