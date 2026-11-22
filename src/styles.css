@@ -2008,3 +2008,11 @@ html, body, .bk-page,
     margin-top: 38px;
   }
 }
+
+
+/* BY KIM — no celular, a vitrine exibe somente os três primeiros produtos */
+@media (max-width: 767px) {
+  .bk-showcase .bk-product-grid > .bk-product:nth-child(n + 4) {
+    display: none;
+  }
+}
