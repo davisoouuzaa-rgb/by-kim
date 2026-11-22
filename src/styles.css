@@ -1226,3 +1226,93 @@ html, body, .bk-page,
     object-fit: contain;
   }
 }
+
+
+/* Modal de produto — imagem integrada à altura do painel */
+@media (min-width: 621px) {
+  .bk-product-overlay {
+    padding: 16px;
+    align-items: center;
+    justify-content: center;
+  }
+  .bk-product-modal {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(320px, 420px);
+    width: min(900px, calc(100vw - 32px));
+    max-width: 900px;
+    height: auto;
+    max-height: calc(100vh - 32px);
+    overflow: auto;
+    align-items: stretch;
+    background: #080808;
+  }
+  .bk-product-placeholder {
+    width: 100%;
+    height: 100%;
+    min-height: 0;
+    aspect-ratio: 4 / 5;
+    align-self: stretch;
+    display: flex;
+    align-items: stretch;
+    justify-content: stretch;
+    overflow: hidden;
+    padding: 0;
+    background: transparent;
+  }
+  .bk-product-placeholder > img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    min-height: 0;
+    max-height: none;
+    aspect-ratio: auto;
+    object-fit: cover;
+    object-position: center;
+  }
+  .bk-product-modal-content {
+    min-width: 0;
+    padding: 54px 38px 38px;
+    align-self: center;
+  }
+}
+@media (max-width: 620px) {
+  .bk-product-overlay {
+    padding: 8px;
+    align-items: flex-start;
+    overflow-y: auto;
+  }
+  .bk-product-modal {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: auto;
+    max-height: none;
+    min-height: 0;
+    overflow: visible;
+  }
+  .bk-product-placeholder {
+    display: block;
+    flex: 0 0 auto;
+    width: 100%;
+    height: auto;
+    min-height: 0;
+    aspect-ratio: 4 / 5;
+    max-height: 45vh;
+    overflow: hidden;
+    background: transparent;
+  }
+  .bk-product-placeholder > img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    min-height: 0;
+    max-height: 45vh;
+    aspect-ratio: 4 / 5;
+    object-fit: cover;
+    object-position: center;
+  }
+  .bk-product-modal-content {
+    flex: 0 0 auto;
+    padding: 28px 24px 30px;
+  }
+}
