@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import { ArrowRight, Instagram, MessageCircle, ShoppingBag, X, Plus, Minus, Trash2 } from "lucide-react";
 
 export const Route = createFileRoute("/cardapio")({ component: Cardapio });
@@ -122,6 +122,8 @@ function Cardapio() {
   const [customerName, setCustomerName] = useState("");
   const [notes, setNotes] = useState("");
   const [fulfillment, setFulfillment] = useState<Fulfillment>("pickup");
+  const gridPositionsRef = useRef<Map<HTMLElement, Map<HTMLElement, DOMRect>>>(new Map());
+  const animateGridRef = useRef(false);
 
   const openProduct = useCallback((product: Product, flavor: string, trigger: HTMLButtonElement) => {
     const grid = trigger.closest(".bk-menu-grid");
@@ -143,6 +145,7 @@ function Cardapio() {
       setPanelSide("right");
       setCoveredIndex(null);
     }
+    animateGridRef.current = true;
     setSelected(product);
     setSelectedFlavor(flavor);
     setProductQty(1);
@@ -175,6 +178,7 @@ function Cardapio() {
     if (!closingSelected) return;
     const timeout = window.setTimeout(() => {
       const nextSelection = pendingSelection;
+      animateGridRef.current = true;
       setSelected(null);
       setPendingSelection(null);
       setCoveredIndex(null);
@@ -185,6 +189,46 @@ function Cardapio() {
     }, 240);
     return () => window.clearTimeout(timeout);
   }, [closingSelected, pendingSelection, openProduct]);
+
+  useLayoutEffect(() => {
+    const grids = Array.from(document.querySelectorAll<HTMLElement>(".bk-menu-grid"));
+    const nextPositions = new Map<HTMLElement, Map<HTMLElement, DOMRect>>();
+
+    grids.forEach((grid) => {
+      const cards = Array.from(grid.querySelectorAll<HTMLElement>(":scope > .bk-menu-item"));
+      const previous = gridPositionsRef.current.get(grid);
+      const current = new Map<HTMLElement, DOMRect>();
+
+      cards.forEach((card) => current.set(card, card.getBoundingClientRect()));
+
+      if (animateGridRef.current && previous) {
+        cards.forEach((card) => {
+          const before = previous.get(card);
+          const after = current.get(card);
+          if (!before || !after) return;
+          const dx = before.left - after.left;
+          const dy = before.top - after.top;
+          if (Math.abs(dx) < 1 && Math.abs(dy) < 1) return;
+
+          card.style.transition = "none";
+          card.style.transform = `translate(${dx}px, ${dy}px)`;
+          requestAnimationFrame(() => {
+            card.style.transition = "transform 350ms cubic-bezier(.22,1,.36,1)";
+            card.style.transform = "translate(0, 0)";
+            window.setTimeout(() => {
+              card.style.transition = "";
+              card.style.transform = "";
+            }, 370);
+          });
+        });
+      }
+
+      nextPositions.set(grid, current);
+    });
+
+    gridPositionsRef.current = nextPositions;
+    animateGridRef.current = false;
+  }, [selected, closingSelected]);
 
   useEffect(() => {
     if (!selected) return;
