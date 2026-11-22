@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { ArrowRight, Instagram, MessageCircle, ShoppingBag, X, Plus, Minus, Trash2 } from "lucide-react";
 
 export const Route = createFileRoute("/cardapio")({ component: Cardapio });
@@ -122,7 +122,7 @@ function Cardapio() {
   const [notes, setNotes] = useState("");
   const [fulfillment, setFulfillment] = useState<Fulfillment>("pickup");
 
-  const openProduct = (product: Product, flavor: string, trigger: HTMLButtonElement) => {
+  const openProduct = useCallback((product: Product, flavor: string, trigger: HTMLButtonElement) => {
     const grid = trigger.closest(".bk-menu-grid");
     const cards = grid ? Array.from(grid.querySelectorAll<HTMLElement>(":scope > .bk-menu-item")) : [];
     const current = trigger.closest<HTMLElement>(".bk-menu-item");
@@ -147,11 +147,11 @@ function Cardapio() {
     setProductQty(1);
     setAddedFeedback(false);
     setClosingSelected(false);
-  };
+  }, []);
 
-  const closeProduct = () => {
+  const closeProduct = useCallback(() => {
     if (selected && !closingSelected) setClosingSelected(true);
-  };
+  }, [selected, closingSelected]);
 
   useEffect(() => {
     try {
@@ -183,7 +183,7 @@ function Cardapio() {
       if (nextSelection) openProduct(nextSelection.product, nextSelection.flavor, nextSelection.trigger);
     }, 240);
     return () => window.clearTimeout(timeout);
-  }, [closingSelected, pendingSelection]);
+  }, [closingSelected, pendingSelection, openProduct]);
 
   useEffect(() => {
     if (!selected) return;
@@ -199,7 +199,7 @@ function Cardapio() {
       document.removeEventListener("pointerdown", onPointerDown);
       window.removeEventListener("keydown", onKeyDown);
     };
-  }, [selected, closingSelected]);
+  }, [selected, closeProduct]);
 
   useEffect(() => {
     if (!addedFeedback) return;
