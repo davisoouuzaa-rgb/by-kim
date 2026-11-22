@@ -1,3 +1,4 @@
+import { useEffect, useRef, useState } from "react";
 import { createFileRoute } from "@tanstack/react-router";
 import { ArrowRight, Instagram, MapPin, Clock3, MessageCircle, Sparkles, TrainFront } from "lucide-react";
 
@@ -55,10 +56,69 @@ const products = [
 ];
 
 function Index() {
+  const videoRef = useRef<HTMLVideoElement | null>(null);
+  const [reducedMotion, setReducedMotion] = useState(
+    () => typeof window !== "undefined" && window.matchMedia("(prefers-reduced-motion: reduce)").matches
+  );
+  const [headerVisible, setHeaderVisible] = useState(
+    () => typeof window !== "undefined" && window.matchMedia("(prefers-reduced-motion: reduce)").matches
+  );
+
+  useEffect(() => {
+    const media = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const syncMotionPreference = () => {
+      setReducedMotion(media.matches);
+      if (media.matches) setHeaderVisible(true);
+    };
+    syncMotionPreference();
+    media.addEventListener?.("change", syncMotionPreference);
+
+    if (media.matches) return () => media.removeEventListener?.("change", syncMotionPreference);
+
+    const revealHeader = () => setHeaderVisible(true);
+    const onScroll = () => {
+      if (window.scrollY > 20) revealHeader();
+    };
+    const onWheel = (event: WheelEvent) => {
+      if (Math.abs(event.deltaY) > 20) revealHeader();
+    };
+    let touchStartY = 0;
+    const onTouchStart = (event: TouchEvent) => {
+      touchStartY = event.touches[0]?.clientY ?? 0;
+      const video = videoRef.current;
+      if (video && video.paused && !video.ended) void video.play().catch(() => undefined);
+    };
+    const onTouchMove = (event: TouchEvent) => {
+      const currentY = event.touches[0]?.clientY ?? touchStartY;
+      if (Math.abs(currentY - touchStartY) > 20) revealHeader();
+    };
+
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("wheel", onWheel, { passive: true });
+    window.addEventListener("touchstart", onTouchStart, { passive: true });
+    window.addEventListener("touchmove", onTouchMove, { passive: true });
+    const fallback = window.setTimeout(revealHeader, 6000);
+
+    return () => {
+      media.removeEventListener?.("change", syncMotionPreference);
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("wheel", onWheel);
+      window.removeEventListener("touchstart", onTouchStart);
+      window.removeEventListener("touchmove", onTouchMove);
+      window.clearTimeout(fallback);
+    };
+  }, []);
+
+  const handleVideoEnded = () => setHeaderVisible(true);
+  const handleVideoCanPlay = () => {
+    const video = videoRef.current;
+    if (video && video.paused && !video.ended) void video.play().catch(() => undefined);
+  };
+
   return (
     <main className="bk-page">
       <div className="bk-topline">DOCES FORA DA CAIXA</div>
-      <header className="bk-header">
+      <header className={`bk-header${headerVisible ? " bk-header-visible" : ""}`}>
         <a className="bk-wordmark" href="#inicio" aria-label="By Kim início">
           <span className="bk-mark">BY KIM</span>
           <span className="bk-submark">CONFEITARIA</span>
@@ -71,21 +131,29 @@ function Index() {
         <a className="bk-header-cta" href={whatsapp} target="_blank" rel="noreferrer">PEDIR <ArrowRight size={14} /></a>
       </header>
 
-      <section className="bk-hero" id="inicio">
+      <section className={`bk-hero bk-video-hero${reducedMotion ? " bk-video-hero-reduced" : ""}`} id="inicio">
+        {!reducedMotion && (
+          <video
+            ref={videoRef}
+            className="bk-hero-video"
+            src="/hero-chef.mp4"
+            autoPlay
+            muted
+            playsInline
+            preload="auto"
+            onEnded={handleVideoEnded}
+            onCanPlay={handleVideoCanPlay}
+            onError={handleVideoEnded}
+          />
+        )}
+        <div className="bk-hero-video-gradient" aria-hidden="true" />
         <div className="bk-hero-copy">
-          <p className="bk-eyebrow"><span /> BY KIM</p>
           <h1>Doce, com<br /><em>personalidade.</em></h1>
-          
+          <p className="bk-hero-subtitle">Cheesecakes, bolos e doces autorais em Santa Cecília, São Paulo.</p>
           <div className="bk-hero-actions">
-            <a className="bk-button bk-button-dark" href="#vitrine">VER DOCES <ArrowRight size={15} /></a>
-            <a className="bk-text-link" href={instagram} target="_blank" rel="noreferrer"><Instagram size={16} /> INSTAGRAM</a>
+            <a className="bk-button bk-button-dark" href="/cardapio">VER CARDÁPIO <ArrowRight size={15} /></a>
+            <a className="bk-button bk-button-outline" href="https://wa.me/5511913171186" target="_blank" rel="noopener noreferrer">PEDIR PELO WHATSAPP <ArrowRight size={15} /></a>
           </div>
-          
-        </div>
-        <div className="bk-hero-image-wrap">
-          <img className="bk-hero-image" src="https://cloudfront-us-east-1.images.arcpublishing.com/estadao/MEVLYPTJWRCCNMINS2H6FSI7WY.jpg" alt="Chef confeiteira finalizando uma criação artesanal" />
-          <div className="bk-image-stamp"><span>BY</span><strong>KIM</strong><small>CONFEITARIA</small></div>
-          
         </div>
       </section>
 
