@@ -83,6 +83,7 @@ const productImages: Record<string, string> = {
   "Torta de Banana": "/torta%20banana.jpg?v=20261122",
   "Ugly Bites": "/uggly%20bites.jpg?v=20261122",
   "Sable com Chocolate Meio Amargo": "/sable%20chocolaye.jpg?v=20261122",
+  "Sable da Debora com Chocolate Branco": "/sable-chocolate-branco.jpg?v=20261122",
   "Sablee com Chocolate de Matchá": "/sable%20matcha.jpg?v=20261122",
   "Chocolate de Matchá com Crispy de Arroz": "/chocolate%20matcha.jpg?v=20261122",
   "Chocolate Meio Amargo com Crispy de Arroz": "/chocolate%20meio%20amargo.jpg?v=20261122",
