@@ -144,7 +144,6 @@ function Cardapio() {
 
   const itemCount = cart.reduce((sum, entry) => sum + entry.quantity, 0);
   const totalCents = cart.reduce((sum, entry) => sum + cents(entry.product.price) * entry.quantity, 0);
-  const selectedSubtotal = selected ? cents(selected.price) * productQty : 0;
 
   const addToCart = (product: Product, quantity: number) => {
     setCart((current) => {
