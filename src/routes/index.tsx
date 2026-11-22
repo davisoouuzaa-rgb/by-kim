@@ -140,11 +140,6 @@ function Index() {
             <p><Clock3 size={16} /><span>[HORÁRIO CONFIRMADO]</span></p>
             <p><TrainFront size={16} /><span>Estação Santa Cecília, Linha 3-Vermelha</span></p>
           </div>
-          <div className="bk-visit-actions">
-            <a className="bk-visit-action" href="https://www.google.com/maps/search/?api=1&query=Rua+Tupi+114+Santa+Cecilia+Sao+Paulo" target="_blank" rel="noopener noreferrer">COMO CHEGAR <ArrowRight size={14} /></a>
-            <a className="bk-visit-action" href="https://wa.me/5511913171186" target="_blank" rel="noopener noreferrer">FALAR NO WHATSAPP <ArrowRight size={14} /></a>
-            <a className="bk-visit-action" href="https://www.ifood.com.br/delivery/sao-paulo-sp/by-kim-confeitaria-santa-cecilia/6623c15d-18c8-4c00-90ab-61aabacf720b" target="_blank" rel="noopener noreferrer">VER NO IFOOD <ArrowRight size={14} /></a>
-          </div>
         </div>
         <div className="bk-visit-map-wrap">
           <iframe
@@ -155,6 +150,11 @@ function Index() {
             referrerPolicy="no-referrer-when-downgrade"
             allowFullScreen
           />
+        </div>
+        <div className="bk-visit-actions">
+          <a className="bk-visit-action" href="https://www.google.com/maps/search/?api=1&query=Rua+Tupi+114+Santa+Cecilia+Sao+Paulo" target="_blank" rel="noopener noreferrer">COMO CHEGAR <ArrowRight size={14} /></a>
+          <a className="bk-visit-action" href="https://wa.me/5511913171186" target="_blank" rel="noopener noreferrer">FALAR NO WHATSAPP <ArrowRight size={14} /></a>
+          <a className="bk-visit-action" href="https://www.ifood.com.br/delivery/sao-paulo-sp/by-kim-confeitaria-santa-cecilia/6623c15d-18c8-4c00-90ab-61aabacf720b" target="_blank" rel="noopener noreferrer">VER NO IFOOD <ArrowRight size={14} /></a>
         </div>
       </section>
 
