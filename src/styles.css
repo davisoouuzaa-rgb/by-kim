@@ -1442,6 +1442,10 @@ html, body, .bk-page,
   pointer-events: none;
   transition: opacity 320ms ease;
 }
+.bk-menu-item-covered-closing {
+  opacity: 1;
+  transition-duration: 240ms;
+}
 .bk-menu-item-covered .bk-menu-item-open,
 .bk-menu-item-covered a,
 .bk-menu-item-covered button { pointer-events: none; }
