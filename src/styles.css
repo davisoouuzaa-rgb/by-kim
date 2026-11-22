@@ -1597,3 +1597,92 @@ html, body, .bk-page,
   .bk-menu-item,
   .bk-menu-item-covered { animation: none !important; transition: none !important; }
 }
+
+
+/* BY KIM — painel de compra sem rolagem interna e com altura natural */
+.bk-menu-purchase-panel {
+  height: auto;
+  min-height: 0;
+  overflow: hidden;
+}
+.bk-menu-purchase-scroll {
+  height: auto;
+  min-height: 0;
+  max-height: none;
+  overflow: hidden;
+  padding: 22px 24px 18px;
+}
+.bk-menu-inline-close {
+  width: 36px;
+  height: 36px;
+}
+.bk-menu-purchase-scroll > .bk-eyebrow {
+  margin: 2px 48px 8px 0;
+  padding-right: 48px;
+}
+.bk-menu-purchase-scroll > h3 {
+  box-sizing: border-box;
+  max-width: none;
+  padding-right: 48px;
+}
+.bk-menu-purchase-scroll .bk-product-serving {
+  margin: 8px 0 0;
+}
+.bk-menu-purchase-scroll .bk-product-description {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+  overflow: hidden;
+  margin: 8px 0 12px;
+  line-height: 1.5;
+}
+.bk-menu-purchase-scroll .bk-flavor-picker {
+  margin: 0 0 12px;
+}
+.bk-menu-purchase-scroll .bk-product-modal-price {
+  margin: 0 0 12px;
+}
+.bk-menu-purchase-scroll .bk-quantity-row {
+  margin: 0 0 12px;
+}
+.bk-menu-quantity-control button {
+  width: 40px;
+  height: 40px;
+}
+.bk-menu-add-primary {
+  height: 40px;
+  min-height: 40px;
+  padding-top: 0;
+  padding-bottom: 0;
+}
+.bk-menu-purchase-separator {
+  margin: 12px 0 0;
+}
+.bk-menu-purchase-link,
+.bk-menu-purchase-link:visited {
+  padding-top: 12px;
+  padding-bottom: 12px;
+}
+@media (min-width: 768px) {
+  .bk-menu-purchase-panel {
+    height: auto;
+    min-height: 0;
+  }
+  .bk-menu-purchase-scroll {
+    height: auto;
+    overflow: hidden;
+  }
+}
+@media (max-width: 767px) {
+  .bk-menu-purchase-panel {
+    height: auto;
+    min-height: 0;
+    overflow: hidden;
+  }
+  .bk-menu-purchase-scroll {
+    height: auto;
+    max-height: none;
+    overflow: hidden;
+    padding: 24px 20px 20px;
+  }
+}
