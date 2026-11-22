@@ -1422,25 +1422,34 @@ html, body, .bk-page,
 
 
 /* BY KIM — detalhes expandidos dentro do próprio item do cardápio */
+.bk-menu-item {
+  transition: max-width 350ms ease-out, transform 350ms ease-out;
+}
 .bk-menu-item-expanded {
   grid-column: 1 / -1;
+  width: 100%;
+  max-width: 900px;
+  justify-self: center;
+  box-sizing: border-box;
   display: grid;
-  grid-template-columns: 190px minmax(0, 1fr);
+  grid-template-columns: 220px minmax(0, 420px);
   align-items: start;
+  justify-content: start;
   gap: 28px;
   padding: 24px 0;
+  transition: max-width 350ms ease-out, padding 350ms ease-out;
 }
 .bk-menu-item-expanded .bk-menu-item-open {
   display: flex;
   flex-direction: column;
   align-items: stretch;
-  width: 100%;
+  width: 220px;
   min-width: 0;
   gap: 0;
 }
 .bk-menu-item-expanded .bk-menu-product-image {
   display: block;
-  width: 100%;
+  width: 220px;
   height: auto;
   aspect-ratio: 4 / 3;
   object-fit: cover;
@@ -1448,12 +1457,32 @@ html, body, .bk-page,
 }
 .bk-menu-item-expanded .bk-menu-item-title { font-size: 18px; }
 .bk-menu-item-expanded .bk-menu-item-description { margin-top: 7px; }
+.bk-menu-inline-clip {
+  min-width: 0;
+  max-width: 420px;
+  max-height: 1100px;
+  overflow: hidden;
+  transition: max-height 250ms ease-out;
+}
 .bk-menu-inline-detail {
   position: relative;
   min-width: 0;
   padding: 8px 42px 4px 0;
   color: #f7f7f5;
-  animation: bk-fade-up .22s ease both;
+  opacity: 1;
+  transform: translateX(0);
+  animation: bk-menu-detail-in 250ms ease-out both;
+}
+@keyframes bk-menu-detail-in {
+  from { opacity: 0; transform: translateX(-14px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+.bk-menu-item-closing .bk-menu-inline-clip { max-height: 0; }
+.bk-menu-item-closing .bk-menu-inline-detail {
+  opacity: 0;
+  transform: translateX(-14px);
+  animation: none;
+  transition: opacity 250ms ease-out, transform 250ms ease-out;
 }
 .bk-menu-inline-detail .bk-eyebrow { margin: 0 0 12px; font-size: 8px; }
 .bk-menu-inline-detail h3 {
@@ -1489,6 +1518,8 @@ html, body, .bk-page,
     grid-column: 1 / -1;
     display: flex;
     flex-direction: column;
+    width: 100%;
+    max-width: 900px;
     gap: 18px;
     padding: 22px 0;
   }
@@ -1499,6 +1530,7 @@ html, body, .bk-page,
     aspect-ratio: 4 / 3;
     object-fit: cover;
   }
+  .bk-menu-inline-clip { width: 100%; max-width: none; }
   .bk-menu-inline-detail { width: 100%; box-sizing: border-box; padding: 8px 38px 0 0; }
   .bk-menu-inline-detail .bk-modal-primary,
   .bk-menu-inline-detail .bk-modal-secondary,
