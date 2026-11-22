@@ -108,6 +108,10 @@ const productMessage = (product: Product, quantity: number) => {
 function Cardapio() {
   const [selected, setSelected] = useState<Product | null>(null);
   const [closingSelected, setClosingSelected] = useState(false);
+  const [panelSide, setPanelSide] = useState<"right" | "left">("right");
+  const [coveredIndex, setCoveredIndex] = useState<number | null>(null);
+  const [pendingSelection, setPendingSelection] = useState<{ product: Product; flavor: string } | null>(null);
+  const [addedFeedback, setAddedFeedback] = useState(false);
   const [productQty, setProductQty] = useState(1);
   const [flavorSelections, setFlavorSelections] = useState<Record<string, string>>({});
   const [selectedFlavor, setSelectedFlavor] = useState("Composta");
@@ -118,28 +122,35 @@ function Cardapio() {
   const [notes, setNotes] = useState("");
   const [fulfillment, setFulfillment] = useState<Fulfillment>("pickup");
 
-  const animateMenuReflow = (update: () => void) => {
-    const cards = Array.from(document.querySelectorAll<HTMLElement>(".bk-menu-grid .bk-menu-item"));
-    const before = new Map(cards.map((card) => [card, card.getBoundingClientRect()]));
-    update();
-    window.requestAnimationFrame(() => {
-      cards.forEach((card) => {
-        const previous = before.get(card);
-        if (!previous || !card.isConnected) return;
-        const next = card.getBoundingClientRect();
-        const dx = previous.left - next.left;
-        const dy = previous.top - next.top;
-        const scaleX = previous.width > 0 && next.width > 0 ? previous.width / next.width : 1;
-        if (Math.abs(dx) < 1 && Math.abs(dy) < 1 && Math.abs(scaleX - 1) < 0.01) return;
-        card.style.transition = "none";
-        card.style.transformOrigin = "top left";
-        card.style.transform = `translate(${dx}px, ${dy}px) scaleX(${scaleX})`;
-        card.getBoundingClientRect();
-        card.style.transition = "transform 350ms ease-out";
-        card.style.transform = "";
-        window.setTimeout(() => { card.style.transition = ""; card.style.transform = ""; }, 370);
-      });
-    });
+  const openProduct = (product: Product, flavor: string, trigger: HTMLButtonElement) => {
+    const grid = trigger.closest(".bk-menu-grid");
+    const cards = grid ? Array.from(grid.querySelectorAll<HTMLElement>(":scope > .bk-menu-item")) : [];
+    const current = trigger.closest<HTMLElement>(".bk-menu-item");
+    const index = current ? cards.indexOf(current) : -1;
+    const rect = current?.getBoundingClientRect();
+    const sameRow = rect ? cards.map((card, i) => ({ card, i, rect: card.getBoundingClientRect() })).filter((entry) => Math.abs(entry.rect.top - rect.top) < 2) : [];
+    const position = sameRow.findIndex((entry) => entry.i === index);
+    const next = sameRow[position + 1];
+    const previous = sameRow[position - 1];
+    if (next) {
+      setPanelSide("right");
+      setCoveredIndex(next.i);
+    } else if (previous) {
+      setPanelSide("left");
+      setCoveredIndex(previous.i);
+    } else {
+      setPanelSide("right");
+      setCoveredIndex(null);
+    }
+    setSelected(product);
+    setSelectedFlavor(flavor);
+    setProductQty(1);
+    setAddedFeedback(false);
+    setClosingSelected(false);
+  };
+
+  const closeProduct = () => {
+    if (selected && !closingSelected) setClosingSelected(true);
   };
 
   useEffect(() => {
@@ -162,14 +173,38 @@ function Cardapio() {
   useEffect(() => {
     if (!closingSelected) return;
     const timeout = window.setTimeout(() => {
-      animateMenuReflow(() => {
-        setSelected(null);
-        setProductQty(1);
-        setClosingSelected(false);
-      });
-    }, 250);
+      setSelected(pendingSelection?.product ?? null);
+      if (pendingSelection) setSelectedFlavor(pendingSelection.flavor);
+      setPendingSelection(null);
+      setCoveredIndex(null);
+      setProductQty(1);
+      setAddedFeedback(false);
+      setClosingSelected(false);
+    }, 240);
     return () => window.clearTimeout(timeout);
-  }, [closingSelected]);
+  }, [closingSelected, pendingSelection]);
+
+  useEffect(() => {
+    if (!selected) return;
+    const onPointerDown = (event: PointerEvent) => {
+      const target = event.target as HTMLElement | null;
+      if (target?.closest(".bk-menu-purchase-panel") || target?.closest(".bk-menu-item-open")) return;
+      closeProduct();
+    };
+    const onKeyDown = (event: KeyboardEvent) => { if (event.key === "Escape") closeProduct(); };
+    document.addEventListener("pointerdown", onPointerDown);
+    window.addEventListener("keydown", onKeyDown);
+    return () => {
+      document.removeEventListener("pointerdown", onPointerDown);
+      window.removeEventListener("keydown", onKeyDown);
+    };
+  }, [selected, closingSelected]);
+
+  useEffect(() => {
+    if (!addedFeedback) return;
+    const timeout = window.setTimeout(() => setAddedFeedback(false), 1500);
+    return () => window.clearTimeout(timeout);
+  }, [addedFeedback]);
 
   useEffect(() => {
     if (!cartOpen) return;
@@ -182,7 +217,7 @@ function Cardapio() {
   const itemCount = cart.reduce((sum, entry) => sum + entry.quantity, 0);
   const totalCents = cart.reduce((sum, entry) => sum + cents(entry.product.price) * entry.quantity, 0);
 
-  const addToCart = (product: Product, quantity: number) => {
+  const addToCart = (product: Product, quantity: number, openCart = true) => {
     setCart((current) => {
       const key = cartKey(product);
       const existing = current.find((entry) => cartKey(entry.product) === key);
@@ -190,10 +225,13 @@ function Cardapio() {
         ? current.map((entry) => cartKey(entry.product) === key ? { ...entry, quantity: entry.quantity + quantity } : entry)
         : [...current, { product, quantity }];
     });
-    setSelected(null);
-    setClosingSelected(false);
-    setProductQty(1);
-    setCartOpen(true);
+    if (openCart) {
+      setSelected(null);
+      setClosingSelected(false);
+      setCoveredIndex(null);
+      setProductQty(1);
+      setCartOpen(true);
+    }
   };
 
   const updateQuantity = (key: string, quantity: number) => {
@@ -243,53 +281,65 @@ function Cardapio() {
               <h2>{category.name}</h2>
             </div>
             <div className="bk-menu-grid">
-              {category.items.map((item) => {
+              {category.items.map((item, itemIndex) => {
                 const product = allProducts.find((entry) => entry.name === item.name)!;
                 const flavored = hasFlavor(product);
                 const flavor = flavored ? (flavorSelections[item.name] ?? "Composta") : undefined;
                 const listingProduct = flavored ? { ...product, flavor } : product;
-                const expanded = selected?.name === product.name && !closingSelected;
-                const showInlineDetail = selected?.name === product.name;
+                const expanded = selected?.name === product.name;
+                const isCovered = coveredIndex === itemIndex && selected?.category === product.category;
                 const activeProduct = flavored ? { ...product, flavor: selectedFlavor } : product;
                 return (
-                  <article className={`bk-menu-item bk-menu-item-button${showInlineDetail ? " bk-menu-item-expanded" : ""}${showInlineDetail && closingSelected ? " bk-menu-item-closing" : ""}`} key={item.name}>
-                    <button className="bk-menu-item-copy bk-menu-item-open" type="button" aria-expanded={expanded} onClick={() => {
-                      if (showInlineDetail) { setClosingSelected(true); return; }
-                      animateMenuReflow(() => {
-                        setClosingSelected(false);
-                        setSelected(listingProduct);
-                        setSelectedFlavor(flavor ?? "Composta");
-                        setProductQty(1);
-                      });
-                    }}>
+                  <article
+                    className={`bk-menu-item bk-menu-item-button${expanded ? " bk-menu-item-expanded" : ""}${expanded && closingSelected ? " bk-menu-item-closing" : ""}${isCovered ? " bk-menu-item-covered" : ""}`}
+                    key={item.name}
+                    aria-hidden={isCovered ? true : undefined}
+                  >
+                    <button
+                      className="bk-menu-item-copy bk-menu-item-open"
+                      type="button"
+                      aria-expanded={expanded && !closingSelected}
+                      disabled={isCovered}
+                      onClick={(event) => {
+                        if (expanded) { closeProduct(); return; }
+                        if (selected) {
+                          setPendingSelection({ product: listingProduct, flavor: flavor ?? "Composta" });
+                          setClosingSelected(true);
+                          return;
+                        }
+                        openProduct(listingProduct, flavor ?? "Composta", event.currentTarget);
+                      }}
+                    >
                       {product.image && <img className="bk-menu-product-image" src={product.image} alt={item.name} loading="lazy" />}
                       <span className="bk-menu-item-title">{item.name}</span>
                       {item.description && <span className="bk-menu-item-description">{item.description}</span>}
                     </button>
-                    {showInlineDetail ? (
-                      <div className="bk-menu-inline-clip">
-                      <div className="bk-menu-inline-detail">
-                        <button className="bk-menu-inline-close" type="button" aria-label="Fechar detalhes" onClick={() => setClosingSelected(true)}><X size={17} /></button>
-                        <p className="bk-eyebrow"><span /> {product.category.toUpperCase()}</p>
-                        <h3>{product.name}</h3>
-                        {product.slice && <p className="bk-product-serving">Serve 1 pessoa</p>}
-                        {product.description && <p className="bk-product-description">{product.description}</p>}
-                        {flavored && <div className="bk-flavor-picker bk-flavor-picker-detail" aria-label="Escolha o sabor">{flavors.map((option) => <button type="button" key={option} className={selectedFlavor === option ? "active" : ""} onClick={() => { setSelectedFlavor(option); setFlavorSelections((current) => ({ ...current, [item.name]: option })); }}>{option}</button>)}</div>}
-                        <div className="bk-product-modal-price">{product.price}{product.slice && <span> · fatia</span>}</div>
-                        <div className="bk-quantity-row">
-                          <span>Quantidade</span>
-                          <div className="bk-quantity-control">
-                            <button type="button" aria-label="Diminuir quantidade" onClick={() => setProductQty((q) => Math.max(1, q - 1))}><Minus size={15} /></button>
-                            <strong>{productQty}</strong>
-                            <button type="button" aria-label="Aumentar quantidade" onClick={() => setProductQty((q) => q + 1)}><Plus size={15} /></button>
+                    {expanded && (
+                      <div className={`bk-menu-purchase-panel bk-menu-purchase-panel-${panelSide}${closingSelected ? " bk-menu-purchase-panel-closing" : ""}`} role="dialog" aria-label={`Comprar ${product.name}`}>
+                        <button className="bk-menu-inline-close" type="button" aria-label="Fechar detalhes" onClick={closeProduct}><X size={20} /></button>
+                        <div className="bk-menu-purchase-scroll">
+                          <p className="bk-eyebrow"><span /> {product.category.toUpperCase()}</p>
+                          <h3>{product.name}</h3>
+                          {product.slice && <p className="bk-product-serving">Serve 1 pessoa</p>}
+                          {product.description && <p className="bk-product-description">{product.description}</p>}
+                          {flavored && <div className="bk-flavor-picker bk-flavor-picker-detail" aria-label="Escolha o sabor">{flavors.map((option) => <button type="button" key={option} className={selectedFlavor === option ? "active" : ""} onClick={() => { setSelectedFlavor(option); setFlavorSelections((current) => ({ ...current, [item.name]: option })); }}>{option}</button>)}</div>}
+                          <div className="bk-product-modal-price">{product.price}{product.slice && <span> · fatia</span>}</div>
+                          <div className="bk-quantity-row">
+                            <span>Quantidade</span>
+                            <div className="bk-quantity-control bk-menu-quantity-control">
+                              <button type="button" aria-label="Diminuir quantidade" onClick={() => setProductQty((q) => Math.max(1, q - 1))}><Minus size={17} /></button>
+                              <strong>{productQty}</strong>
+                              <button type="button" aria-label="Aumentar quantidade" onClick={() => setProductQty((q) => q + 1)}><Plus size={17} /></button>
+                            </div>
                           </div>
+                          <button className="bk-modal-primary bk-menu-add-primary" type="button" onClick={() => { addToCart(flavored ? activeProduct : product, productQty, false); setAddedFeedback(true); }}>{addedFeedback ? "ADICIONADO ✓" : `ADICIONAR · ${money(cents(product.price) * productQty / 100)}`}</button>
+                          <div className="bk-menu-purchase-separator" />
+                          <a className="bk-modal-secondary bk-menu-purchase-link" href={whatsappBase + encodeURIComponent(productMessage(flavored ? activeProduct : product, productQty))} target="_blank" rel="noopener noreferrer">PEDIR PELO WHATSAPP <ArrowRight size={15} /></a>
+                          <a className="bk-modal-ifood bk-menu-purchase-link" href={ifood} target="_blank" rel="noopener noreferrer">PEDIR PELO IFOOD <ArrowRight size={14} /></a>
                         </div>
-                        <button className="bk-modal-primary" type="button" onClick={() => addToCart(flavored ? activeProduct : product, productQty)}>ADICIONAR · {money(cents(product.price) * productQty / 100)}</button>
-                        <a className="bk-modal-secondary" href={whatsappBase + encodeURIComponent(productMessage(flavored ? activeProduct : product, productQty))} target="_blank" rel="noopener noreferrer">PEDIR PELO WHATSAPP <ArrowRight size={15} /></a>
-                        <a className="bk-modal-ifood" href={ifood} target="_blank" rel="noopener noreferrer">PEDIR PELO IFOOD <ArrowRight size={14} /></a>
                       </div>
-                      </div>
-                    ) : (
+                    )}
+                    {!expanded && (
                       <>
                         {flavored && <div className="bk-flavor-picker bk-flavor-picker-list" aria-label="Sabor">
                           {flavors.map((option) => <button type="button" key={option} className={flavor === option ? "active" : ""} onClick={() => setFlavorSelections((current) => ({ ...current, [item.name]: option }))}>{option}</button>)}
