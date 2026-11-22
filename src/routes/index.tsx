@@ -101,8 +101,6 @@ function Index() {
             <article className="bk-product" key={product.name}>
               <a className="bk-product-image" href={product.orderUrl} target="_blank" rel="noreferrer" aria-label={`Pedir ${product.name} pelo WhatsApp`}>
                 <img src={product.image} alt={product.alt} loading="lazy" />
-                <span className="bk-product-number">0{index + 1}</span>
-                <span className="bk-product-arrow"><ArrowRight size={18} /></span>
               </a>
               <div className="bk-product-info"><div><h3>{product.name}</h3><p>{product.detail}</p><a className="bk-product-ifood" href={ifood} target="_blank" rel="noreferrer">VER NO IFOOD <ArrowRight size={14} /></a></div><span>Consulte o cardápio</span></div>
             </article>
