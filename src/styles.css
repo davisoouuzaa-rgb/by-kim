@@ -1686,3 +1686,147 @@ html, body, .bk-page,
     padding: 24px 20px 20px;
   }
 }
+
+
+/* BY KIM — identidade escura do carrinho lateral */
+.bk-cart-drawer {
+  background: #0A0A0A;
+  color: #F5F3EE;
+}
+.bk-cart-heading {
+  border-bottom-color: #2A2A2A;
+}
+.bk-cart-heading .bk-eyebrow,
+.bk-cart-heading h2,
+.bk-cart-heading h2 span {
+  color: #F5F3EE;
+}
+.bk-cart-heading .bk-panel-close {
+  color: #F5F3EE;
+  border-color: #2A2A2A;
+  background: transparent;
+}
+.bk-cart-content {
+  background: #0A0A0A;
+}
+.bk-cart-items {
+  border-bottom-color: #2A2A2A;
+}
+.bk-cart-item {
+  padding: 16px;
+  margin: 12px 0;
+  border: 1px solid #2A2A2A;
+  background: #141414;
+}
+.bk-cart-item:last-child {
+  border-bottom: 1px solid #2A2A2A;
+}
+.bk-cart-item-info h3,
+.bk-cart-item-info > strong {
+  color: #F5F3EE;
+}
+.bk-cart-item-info p {
+  color: #A3A3A3;
+}
+.bk-cart-item-actions .bk-quantity-control {
+  border-color: #F5F3EE;
+  color: #F5F3EE;
+  background: transparent;
+}
+.bk-cart-item-actions .bk-quantity-control button,
+.bk-cart-item-actions .bk-quantity-control strong {
+  color: #F5F3EE;
+}
+.bk-remove-item {
+  color: #F5F3EE;
+  background: transparent;
+}
+.bk-cart-fields {
+  border-color: #2A2A2A;
+}
+.bk-cart-fields label {
+  color: #A3A3A3;
+}
+.bk-cart-fields input,
+.bk-cart-fields textarea {
+  border: 1px solid #2A2A2A;
+  background: #141414;
+  color: #F5F3EE;
+}
+.bk-cart-fields input::placeholder,
+.bk-cart-fields textarea::placeholder {
+  color: #737373;
+  opacity: 1;
+}
+.bk-cart-fields input:focus,
+.bk-cart-fields textarea:focus {
+  border-color: #F5F3EE;
+}
+.bk-fulfillment > span {
+  color: #A3A3A3;
+}
+.bk-fulfillment button {
+  border-color: #F5F3EE;
+  background: transparent;
+  color: #F5F3EE;
+}
+.bk-fulfillment button.active {
+  border-color: #F5F3EE;
+  background: #F5F3EE;
+  color: #0A0A0A;
+}
+.bk-cart-footer {
+  border-top: 1px solid #2A2A2A;
+  background: #0A0A0A;
+}
+.bk-cart-total span {
+  color: #A3A3A3;
+}
+.bk-cart-total strong {
+  color: #F5F3EE;
+}
+.bk-cart-checkout,
+.bk-cart-empty .bk-modal-primary {
+  border-color: #F5F3EE;
+  background: #F5F3EE;
+  color: #0A0A0A;
+}
+.bk-cart-checkout:hover,
+.bk-cart-empty .bk-modal-primary:hover {
+  border-color: #F5F3EE;
+  background: #e8e6e1;
+  color: #0A0A0A;
+}
+.bk-cart-notice {
+  color: #A3A3A3;
+}
+.bk-cart-ifood {
+  border: 1px solid #F5F3EE;
+  background: transparent;
+  color: #F5F3EE;
+  text-decoration: none;
+}
+.bk-cart-clear {
+  border: 1px solid #F5F3EE;
+  background: transparent;
+  color: #F5F3EE;
+}
+.bk-cart-empty {
+  color: #F5F3EE;
+  background: #0A0A0A;
+}
+.bk-cart-empty > svg,
+.bk-cart-empty h3 {
+  color: #F5F3EE;
+}
+.bk-menu-header .bk-cart-trigger {
+  color: #F5F3EE;
+}
+.bk-menu-header .bk-cart-trigger svg {
+  color: #F5F3EE;
+}
+.bk-menu-header .bk-cart-trigger b {
+  border-color: #F5F3EE;
+  background: #F5F3EE;
+  color: #0A0A0A;
+}
