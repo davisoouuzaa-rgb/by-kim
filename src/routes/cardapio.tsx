@@ -361,15 +361,6 @@ function Cardapio() {
 
       <p className="bk-menu-allergens">Alérgenos: consulte a loja antes de pedir.</p>
 
-      <section className="bk-menu-events">
-        <div>
-          <p className="bk-eyebrow">MOMENTOS ESPECIAIS</p>
-          <h2>Encomendas para festas</h2>
-          <p>Peça com [X] dias de antecedência pelo WhatsApp.</p>
-        </div>
-        <a className="bk-button bk-button-dark" href={ifood} target="_blank" rel="noopener noreferrer">PEDIR PELO IFOOD <ArrowRight size={15} /></a>
-      </section>
-
       <footer className="bk-footer bk-menu-footer">
         <a className="bk-footer-brand" href="/">By Kim <span>CONFEITARIA</span></a>
         <div className="bk-footer-links">
