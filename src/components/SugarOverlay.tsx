@@ -57,6 +57,10 @@ export default function SugarOverlay() {
     let animationFrame = 0;
     let previousTime = 0;
     let elapsed = 0;
+    let scrollYCurrent = window.scrollY;
+    let scrollYPreviousFrame = window.scrollY;
+    let scrollMultiplier = 1;
+    let horizontalWind = 0;
     let sprite: HTMLCanvasElement;
 
     const createSprite = () => {
@@ -93,10 +97,23 @@ export default function SugarOverlay() {
       ];
     };
 
+    const particleLimit = () => (window.innerWidth > 768 ? 220 : 110);
+
     const emitBurst = () => {
-      for (let i = 0; i < 90; i += 1) {
+      for (let i = 0; i < 90 && particles.length < particleLimit(); i += 1) {
         const layer = i % 10 < 6 ? 0 : i % 10 < 9 ? 1 : 2;
         particles.push(createParticle(width, height, layer, true));
+      }
+    };
+
+    const emitScrollParticles = () => {
+      if (particles.length >= particleLimit()) return;
+      for (let i = 0; i < 2 && particles.length < particleLimit(); i += 1) {
+        const layer = Math.floor(Math.random() * 10) < 6 ? 0 : Math.floor(Math.random() * 10) < 9 ? 1 : 2;
+        const particle = createParticle(width, height, layer);
+        particle.y = i === 0 ? random(-8, -2) : random(height + 2, height + 8);
+        particle.x = random(0, width);
+        particles.push(particle);
       }
     };
 
@@ -109,11 +126,24 @@ export default function SugarOverlay() {
       const delta = previousTime ? Math.min(time - previousTime, 50) / FRAME_MS : 1;
       previousTime = time;
       elapsed += delta;
+
+      const scrollDelta = Math.abs(scrollYCurrent - scrollYPreviousFrame);
+      const signedScrollDelta = scrollYCurrent - scrollYPreviousFrame;
+      scrollYPreviousFrame = scrollYCurrent;
+      const targetMultiplier = 1 + Math.min(scrollDelta * 0.12, 2.6);
+      scrollMultiplier += (targetMultiplier - scrollMultiplier) * 0.12;
+
+      const targetWind = Math.sign(signedScrollDelta) * Math.min(scrollDelta * 0.01, 0.8);
+      horizontalWind += (targetWind - horizontalWind) * 0.12;
+
+      if (scrollMultiplier > 2) emitScrollParticles();
+
       context.clearRect(0, 0, width, height);
 
       for (const particle of particles) {
-        particle.y += particle.speed * delta;
-        particle.x += (Math.sin(elapsed * particle.frequency + particle.phase) * particle.amplitude + particle.drift) * delta;
+        const verticalSpeed = Math.min(particle.speed * scrollMultiplier, 6);
+        particle.y += verticalSpeed * delta;
+        particle.x += (Math.sin(elapsed * particle.frequency + particle.phase) * particle.amplitude + particle.drift + horizontalWind) * delta;
         if (particle.y - particle.radius > height) {
           particle.y = random(-40, -5);
           particle.x = random(0, width);
@@ -144,13 +174,19 @@ export default function SugarOverlay() {
       }
     };
 
+    const handleScroll = () => {
+      scrollYCurrent = window.scrollY;
+    };
+
     window.addEventListener("resize", resize, { passive: true });
+    window.addEventListener("scroll", handleScroll, { passive: true });
     document.addEventListener("visibilitychange", handleVisibility);
     animationFrame = window.requestAnimationFrame(draw);
 
     return () => {
       if (animationFrame) window.cancelAnimationFrame(animationFrame);
       window.removeEventListener("resize", resize);
+      window.removeEventListener("scroll", handleScroll);
       document.removeEventListener("visibilitychange", handleVisibility);
     };
   }, []);
