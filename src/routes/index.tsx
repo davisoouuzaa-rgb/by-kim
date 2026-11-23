@@ -200,7 +200,7 @@ function Index() {
       <section className="bk-visit" id="visite">
         <div className="bk-visit-copy">
           <p className="bk-eyebrow">VISITE A BY KIM</p>
-          <h2>Doce, com<br /><em>personalidade.</em></h2>
+          <h2>Feito à mão, em<br /><em>Santa Cecília.</em></h2>
           <p className="bk-visit-description">Desde 2021, Veronica Kim cria doces com referências coreanas, francesas e brasileiras. Em 2023, a By Kim ganhou uma loja física em Santa Cecília, onde você pode acompanhar a produção de perto.</p>
           <div className="bk-visit-facts">
             <p><MapPin size={16} /><span>Rua Tupi, 114, Loja 01 · Santa Cecília, São Paulo</span></p>
