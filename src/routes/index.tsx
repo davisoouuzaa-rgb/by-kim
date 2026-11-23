@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { createFileRoute } from "@tanstack/react-router";
+import SugarOverlay from "../components/SugarOverlay";
 import { ArrowRight, Instagram, MapPin, Clock3, MessageCircle, Sparkles, TrainFront } from "lucide-react";
 
 export const Route = createFileRoute("/")({ component: Index });
@@ -117,6 +118,7 @@ function Index() {
 
   return (
     <main className="bk-page">
+      <SugarOverlay />
       <header className={`bk-header${headerVisible ? " bk-header-visible" : ""}`}>
         <a className="bk-wordmark" href="#inicio" aria-label="By Kim início">
           <span className="bk-mark">BY KIM</span>
