@@ -14,6 +14,7 @@ type Particle = {
 
 const TAU = Math.PI * 2;
 const FRAME_MS = 1000 / 60;
+type BurstParticle = Particle & { remaining: number };
 
 function random(min: number, max: number) {
   return min + Math.random() * (max - min);
@@ -54,6 +55,7 @@ export default function SugarOverlay() {
     let height = window.innerHeight;
     let dpr = Math.min(window.devicePixelRatio || 1, 2);
     let particles: Particle[] = [];
+    let burstParticles: BurstParticle[] = [];
     let animationFrame = 0;
     let previousTime = 0;
     let elapsed = 0;
@@ -118,6 +120,25 @@ export default function SugarOverlay() {
       }
     };
 
+
+    const handleSugarBurst = (event: Event) => {
+      const detail = (event as CustomEvent<{ x?: number; y?: number; count?: number }>).detail;
+      if (!detail || !Number.isFinite(detail.x) || !Number.isFinite(detail.y)) return;
+      const count = Math.max(0, Math.min(80, Math.floor(detail.count ?? 18)));
+      for (let i = 0; i < count; i += 1) {
+        const roll = Math.random();
+        const layer = roll < 0.6 ? 0 : roll < 0.9 ? 1 : 2;
+        const particle = createParticle(width, height, layer);
+        particle.x = Math.max(-8, Math.min(width + 8, detail.x! + random(-40, 40)));
+        particle.y = Math.max(-8, Math.min(height + 8, detail.y! + random(-40, 40)));
+        particle.alpha = random(0.6, 0.9);
+        particle.speed = random(0.35, 0.7);
+        particle.drift = random(-0.35, 0.35);
+        particle.amplitude = random(0.15, 0.45);
+        burstParticles.push({ ...particle, remaining: random(40, 120) });
+      }
+    };
+
     const draw = (time: number) => {
       if (document.hidden) {
         animationFrame = 0;
@@ -157,6 +178,17 @@ export default function SugarOverlay() {
         context.globalAlpha = Math.max(0, alpha);
         context.drawImage(sprite, particle.x - particle.radius, particle.y - particle.radius, diameter, diameter);
       }
+      for (let i = burstParticles.length - 1; i >= 0; i -= 1) {
+        const particle = burstParticles[i];
+        const step = Math.min(particle.speed * delta, particle.remaining);
+        particle.y += step;
+        particle.remaining -= step;
+        particle.x += (Math.sin(elapsed * particle.frequency + particle.phase) * particle.amplitude + particle.drift) * delta;
+        context.globalAlpha = particle.alpha * Math.min(1, particle.remaining / 18);
+        const diameter = particle.radius * 2;
+        context.drawImage(sprite, particle.x - particle.radius, particle.y - particle.radius, diameter, diameter);
+        if (particle.remaining <= 0) burstParticles.splice(i, 1);
+      }
       context.globalAlpha = 1;
       animationFrame = window.requestAnimationFrame(draw);
     };
@@ -180,6 +212,7 @@ export default function SugarOverlay() {
     };
 
     window.addEventListener("resize", resize, { passive: true });
+    window.addEventListener("sugar:burst", handleSugarBurst as EventListener);
     window.addEventListener("scroll", handleScroll, { passive: true });
     document.addEventListener("visibilitychange", handleVisibility);
     animationFrame = window.requestAnimationFrame(draw);
@@ -187,6 +220,8 @@ export default function SugarOverlay() {
     return () => {
       if (animationFrame) window.cancelAnimationFrame(animationFrame);
       window.removeEventListener("resize", resize);
+      window.removeEventListener("sugar:burst", handleSugarBurst as EventListener);
+      burstParticles = [];
       window.removeEventListener("scroll", handleScroll);
       document.removeEventListener("visibilitychange", handleVisibility);
     };
