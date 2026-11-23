@@ -67,7 +67,7 @@ export default function SugarOverlay() {
     const emissionRate = () => (isMobile ? 120 : 220);
 
     // Pool fixo: os objetos são criados uma única vez e reutilizados após a morte.
-    const poolCapacity = particleLimit();
+    const poolCapacity = 4000;
     particles = Array.from({ length: poolCapacity }, () => ({
       x: 0, y: 0, vx: 0, vy: 0, dirX: 0, spreadK: 0, swayPhase: 0,
       radius: 1, alpha: 0.5, life: 1, age: 0,
