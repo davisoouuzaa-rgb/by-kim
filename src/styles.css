@@ -2544,3 +2544,94 @@ html, body, .bk-page,
     line-height: 1.5;
   }
 }
+
+
+/* BY KIM — hero mobile reconstruído para evitar cortes no vídeo e no texto */
+@media (max-width: 767px) {
+  .bk-video-hero {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: stretch;
+    width: 100%;
+    height: 100svh;
+    min-height: 600px;
+    padding: 0 7% 42px;
+    overflow: hidden;
+    background: #0A0A0A;
+  }
+
+  .bk-video-hero .bk-hero-video {
+    position: absolute;
+    inset: 0 0 auto 0;
+    display: block;
+    width: 100%;
+    height: auto;
+    max-height: 64svh;
+    margin: 0;
+    object-fit: contain;
+    object-position: center top;
+    background: #0A0A0A;
+  }
+
+  .bk-video-hero .bk-hero-video-gradient {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      to bottom,
+      rgba(10, 10, 10, 0) 0%,
+      rgba(10, 10, 10, .04) 34%,
+      rgba(10, 10, 10, .72) 57%,
+      #0A0A0A 76%,
+      #0A0A0A 100%
+    );
+    pointer-events: none;
+  }
+
+  .bk-video-hero .bk-hero-copy {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    flex: 0 0 auto;
+    flex-direction: column;
+    align-items: flex-start;
+    width: 100%;
+    max-width: none;
+    min-width: 0;
+    margin: 0;
+    padding: 0;
+  }
+
+  .bk-video-hero .bk-hero-copy h1 {
+    display: block;
+    width: 100%;
+    max-width: 100%;
+    margin: 0;
+    font-size: clamp(36px, 9.2vw, 44px);
+    line-height: 1.06;
+    letter-spacing: -.04em;
+    white-space: normal;
+    overflow-wrap: normal;
+    word-break: normal;
+  }
+
+  .bk-video-hero .bk-hero-copy h1 br {
+    display: block;
+  }
+
+  .bk-video-hero .bk-hero-subtitle {
+    display: block;
+    width: 100%;
+    max-width: 33ch;
+    margin: 13px 0 0;
+    font-size: 12px;
+    line-height: 1.55;
+    white-space: normal;
+    overflow-wrap: break-word;
+  }
+
+  .bk-video-hero .bk-hero-actions {
+    display: none;
+  }
+}
