@@ -2447,3 +2447,59 @@ html, body, .bk-page,
     top: 0;
   }
 }
+
+
+/* BY KIM — correção exclusiva do hero em telas pequenas */
+@media (max-width: 767px) {
+  .bk-video-hero {
+    height: 100svh;
+    min-height: 620px;
+    align-items: flex-end;
+    padding: 0 7% max(7svh, 42px);
+  }
+
+  .bk-video-hero .bk-hero-video {
+    object-fit: cover;
+    object-position: 62% center;
+  }
+
+  .bk-video-hero .bk-hero-video-gradient {
+    background: linear-gradient(
+      to top,
+      rgba(10, 10, 10, .98) 0%,
+      rgba(10, 10, 10, .78) 34%,
+      rgba(10, 10, 10, .22) 68%,
+      rgba(10, 10, 10, .04) 100%
+    );
+  }
+
+  .bk-video-hero .bk-hero-copy {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    padding: 0;
+  }
+
+  .bk-video-hero .bk-hero-copy h1 {
+    width: 100%;
+    max-width: 100%;
+    font-size: clamp(38px, 10.5vw, 48px);
+    line-height: 1.08;
+    letter-spacing: -.04em;
+    overflow-wrap: normal;
+    word-break: normal;
+  }
+
+  .bk-video-hero .bk-hero-copy h1 br {
+    display: block;
+  }
+
+  .bk-video-hero .bk-hero-subtitle {
+    width: 100%;
+    max-width: 34ch;
+    margin: 14px 0 0;
+    font-size: 12px;
+    line-height: 1.55;
+    overflow-wrap: break-word;
+  }
+}
