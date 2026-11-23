@@ -55,6 +55,7 @@ export default function SugarOverlay() {
     let origin = { x: 0, y: 0 };
     let isMobile = window.matchMedia("(max-width: 767px)").matches;
     let disposed = false;
+    // Efeito de pó desativado a pedido: não emitir nem desenhar partículas.
 
     const particleLimit = () => (isMobile ? 700 : 1200);
     const emissionRate = () => (isMobile ? 50 : 90);
@@ -212,6 +213,11 @@ export default function SugarOverlay() {
     };
 
     resize();
+    return () => {
+      disposed = true;
+      if (frame) window.cancelAnimationFrame(frame);
+    };
+
     window.addEventListener("resize", resize, { passive: true });
     window.addEventListener("pointerdown", resumeOnInteraction, { once: true, passive: true });
     window.addEventListener("touchstart", resumeOnInteraction, { once: true, passive: true });
