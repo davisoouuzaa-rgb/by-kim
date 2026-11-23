@@ -109,7 +109,8 @@ export default function SugarOverlay() {
     const emitScrollParticles = () => {
       if (particles.length >= particleLimit()) return;
       for (let i = 0; i < 2 && particles.length < particleLimit(); i += 1) {
-        const layer = Math.floor(Math.random() * 10) < 6 ? 0 : Math.floor(Math.random() * 10) < 9 ? 1 : 2;
+        const layerRoll = Math.random();
+        const layer = layerRoll < 0.6 ? 0 : layerRoll < 0.9 ? 1 : 2;
         const particle = createParticle(width, height, layer);
         particle.y = i === 0 ? random(-8, -2) : random(height + 2, height + 8);
         particle.x = random(0, width);
