@@ -152,6 +152,11 @@ function Index() {
         </div>
       </section>
 
+      <section className="bk-mobile-hero-copy" aria-label="Apresentação da By Kim">
+        <h1>Doce, com<br /><em>personalidade.</em></h1>
+        <p>Cheesecakes, bolos e doces autorais em Santa Cecília, São Paulo.</p>
+      </section>
+
       <section className="bk-marquee" aria-label="Especialidades">
         <span>CHEESECAKES</span><Sparkles className="bk-marquee-sparkle" size={16} strokeWidth={1.5} aria-hidden="true" /><span>BOLOS</span><Sparkles className="bk-marquee-sparkle" size={16} strokeWidth={1.5} aria-hidden="true" /><span>MIL-FOLHAS</span>
       </section>
