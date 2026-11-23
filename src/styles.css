@@ -2198,7 +2198,7 @@ html, body, .bk-page,
 }
 .bk-header {
   position: absolute;
-  z-index: 11;
+  z-index: 50;
   top: 30px;
   left: 0;
   width: 100%;
