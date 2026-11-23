@@ -185,7 +185,6 @@ function Index() {
               <div className="bk-product-info">
                 <div>
                   <h3>{product.name}</h3>
-                  {!product.cheesecake && <p>{product.detail}</p>}
                   <a className="bk-product-ifood" href="/cardapio" target="_blank" rel="noopener noreferrer">VER NO CARDÁPIO <ArrowRight size={14} /></a>
                 </div>
                 <span>{product.price}</span>
