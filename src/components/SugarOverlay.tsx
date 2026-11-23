@@ -16,7 +16,6 @@ const SIEVE_Y = 400;
 const SOURCE_WIDTH = 1280;
 const SOURCE_HEIGHT = 720;
 const EMISSION_DURATION = 8;
-const DEBUG = new URLSearchParams(window.location.search).get("debug") === "1";
 
 function random(min: number, max: number) {
   return min + Math.random() * (max - min);
@@ -37,6 +36,7 @@ export default function SugarOverlay() {
     const canvas = canvasRef.current;
     const context = canvas?.getContext("2d");
     const video = document.querySelector<HTMLVideoElement>("[data-sieve-video]");
+    const debug = new URLSearchParams(window.location.search).get("debug") === "1";
     if (!canvas || !context || !video || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
     let width = window.innerWidth;
@@ -100,7 +100,7 @@ export default function SugarOverlay() {
     });
 
     const drawDebugMarker = () => {
-      if (!DEBUG) return;
+      if (!debug) return;
       context.save();
       context.globalAlpha = 1;
       context.beginPath();
@@ -146,7 +146,7 @@ export default function SugarOverlay() {
         if (elapsedVideo < EMISSION_DURATION && !emissionStopped) {
           const requested = emissionRate() * (deltaMs / 1000);
           const count = Math.floor(requested) + (Math.random() < requested % 1 ? 1 : 0);
-          for (let i = 0; i < count && particles.length < particleLimit(); i += 1) {
+          for (let i = 0; i < count && particles.length < particleLimit() && emittedTotal < particleLimit(); i += 1) {
             particles.push(createParticle());
             emittedTotal += 1;
           }
