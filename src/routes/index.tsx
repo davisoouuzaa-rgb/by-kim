@@ -150,10 +150,6 @@ function Index() {
         <div className="bk-hero-copy">
           <h1>Doce, com<br /><em>personalidade.</em></h1>
           <p className="bk-hero-subtitle">Cheesecakes, bolos e doces autorais em Santa Cecília, São Paulo.</p>
-          <div className="bk-hero-actions">
-            <a className="bk-button bk-button-dark" href="/cardapio">VER CARDÁPIO <ArrowRight size={15} /></a>
-            <a className="bk-button bk-button-outline" href="https://wa.me/5511913171186" target="_blank" rel="noopener noreferrer">PEDIR PELO WHATSAPP <ArrowRight size={15} /></a>
-          </div>
         </div>
       </section>
 
