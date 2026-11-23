@@ -2503,3 +2503,44 @@ html, body, .bk-page,
     overflow-wrap: break-word;
   }
 }
+
+
+/* BY KIM — ajuste final de enquadramento e quebra do hero mobile */
+@media (max-width: 767px) {
+  .bk-video-hero {
+    min-height: 100svh;
+    height: 100svh;
+    padding: 0 7% 34px;
+    align-items: flex-end;
+  }
+
+  .bk-video-hero .bk-hero-video {
+    object-fit: cover;
+    object-position: center center;
+  }
+
+  .bk-video-hero .bk-hero-copy {
+    width: 100%;
+    max-width: none;
+  }
+
+  .bk-video-hero .bk-hero-copy h1 {
+    max-width: 100%;
+    width: 100%;
+    font-size: clamp(34px, 9vw, 43px);
+    line-height: 1.08;
+    letter-spacing: -.035em;
+    white-space: normal;
+  }
+
+  .bk-video-hero .bk-hero-copy h1 br {
+    display: none;
+  }
+
+  .bk-video-hero .bk-hero-subtitle {
+    max-width: 31ch;
+    margin-top: 12px;
+    font-size: 12px;
+    line-height: 1.5;
+  }
+}
