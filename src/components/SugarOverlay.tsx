@@ -5,6 +5,9 @@ type Particle = {
   y: number;
   vx: number;
   vy: number;
+  dirX: number;
+  spreadK: number;
+  swayPhase: number;
   radius: number;
   alpha: number;
   life: number;
@@ -89,13 +92,16 @@ export default function SugarOverlay() {
     };
 
     const createParticle = (): Particle => ({
-      x: origin.x + random(-24, 24),
-      y: origin.y + random(-3, 3),
-      vx: random(-0.42, 0.42),
-      vy: random(1.1, 2.7),
+      x: origin.x + random(-2, 2),
+      y: origin.y + random(-2, 2),
+      vx: 0,
+      vy: random(30, 60),
+      dirX: random(-1, 1),
+      spreadK: random(28, 45),
+      swayPhase: random(0, Math.PI * 2),
       radius: isMobile ? random(1, 2.4) : random(1.2, 3),
       alpha: random(0.7, 1),
-      life: random(75, 150),
+      life: random(3.5, 4.5),
       age: 0,
     });
 
@@ -134,7 +140,9 @@ export default function SugarOverlay() {
       frame = 0;
       if (disposed || document.hidden) return;
       const deltaMs = lastFrame ? Math.min(time - lastFrame, 50) : 16.67;
-      const delta = deltaMs / 16.67;
+      const deltaSeconds = deltaMs / 1000;
+      const deltaFrames = deltaMs / (1000 / 60);
+      const airResistance = Math.pow(0.985, deltaFrames);
       lastFrame = time;
       calculateOrigin();
       context.clearRect(0, 0, width, height);
@@ -157,13 +165,28 @@ export default function SugarOverlay() {
 
       for (let i = particles.length - 1; i >= 0; i -= 1) {
         const particle = particles[i];
-        particle.age += delta;
-        particle.x += particle.vx * delta;
-        particle.y += particle.vy * delta;
+        particle.age += deltaSeconds;
+
+        // A abertura horizontal cresce com a idade individual de cada partícula.
+        particle.vx = particle.dirX * particle.spreadK * particle.age;
+        particle.vx *= airResistance;
+        particle.vy += 40 * deltaSeconds;
+
+        // Após 2s, o pó perde sustentação vertical e permanece mais tempo em nuvem.
+        if (particle.age > 2) {
+          particle.vy *= Math.pow(0.45, deltaSeconds);
+        }
+        particle.vy *= airResistance;
+
+        particle.x += particle.vx * deltaSeconds;
+        particle.y += particle.vy * deltaSeconds;
+
         const fade = Math.max(0, 1 - particle.age / particle.life);
-        context.globalAlpha = particle.alpha * fade;
+        const shimmer = 0.92 + Math.sin(particle.age * 5 + particle.swayPhase) * 0.08;
+        const sway = Math.sin(particle.age * 3.2 + particle.swayPhase) * 3;
+        context.globalAlpha = particle.alpha * fade * shimmer;
         context.beginPath();
-        context.arc(particle.x, particle.y, particle.radius, 0, Math.PI * 2);
+        context.arc(particle.x + sway, particle.y, particle.radius, 0, Math.PI * 2);
         context.fillStyle = "#F5F3EE";
         context.fill();
         if (particle.age >= particle.life) particles.splice(i, 1);
