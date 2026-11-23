@@ -51,13 +51,41 @@ export default function SugarOverlay() {
     let emittedTotal = 0;
     let emissionStartedAt: number | null = null;
     let emissionStopped = false;
+    let burstEmitted = false;
+    let emissionAccumulator = 0;
     let particles: Particle[] = [];
+    let activeCount = 0;
+    const fpsSamples = new Float32Array(60);
+    let fpsSampleCount = 0;
+    let fpsSampleIndex = 0;
+    let reducedEmission = false;
     let origin = { x: 0, y: 0 };
     let isMobile = window.matchMedia("(max-width: 767px)").matches;
     let disposed = false;
 
-    const particleLimit = () => (isMobile ? 700 : 1200);
-    const emissionRate = () => (isMobile ? 50 : 90);
+    const particleLimit = () => (isMobile ? 2200 : 4000);
+    const emissionRate = () => (isMobile ? 120 : 220);
+
+    // Pool fixo: os objetos são criados uma única vez e reutilizados após a morte.
+    const poolCapacity = particleLimit();
+    particles = Array.from({ length: poolCapacity }, () => ({
+      x: 0, y: 0, vx: 0, vy: 0, dirX: 0, spreadK: 0, swayPhase: 0,
+      radius: 1, alpha: 0.5, life: 1, age: 0,
+    }));
+
+    // Sprite radial pré-renderizada; cada partícula é composta com drawImage.
+    const sprite = document.createElement("canvas");
+    sprite.width = 32;
+    sprite.height = 32;
+    const spriteContext = sprite.getContext("2d");
+    if (spriteContext) {
+      const gradient = spriteContext.createRadialGradient(16, 16, 0, 16, 16, 16);
+      gradient.addColorStop(0, "rgba(255,255,255,1)");
+      gradient.addColorStop(0.35, "rgba(245,243,238,0.95)");
+      gradient.addColorStop(1, "rgba(245,243,238,0)");
+      spriteContext.fillStyle = gradient;
+      spriteContext.fillRect(0, 0, 32, 32);
+    }
 
     const calculateOrigin = () => {
       const rect = video.getBoundingClientRect();
@@ -91,19 +119,31 @@ export default function SugarOverlay() {
       calculateOrigin();
     };
 
-    const createParticle = (): Particle => ({
-      x: origin.x + random(-2, 2),
-      y: origin.y + random(-2, 2),
-      vx: 0,
-      vy: random(30, 60),
-      dirX: random(-1, 1),
-      spreadK: random(28, 45),
-      swayPhase: random(0, Math.PI * 2),
-      radius: isMobile ? random(1, 2.4) : random(1.2, 3),
-      alpha: random(0.7, 1),
-      life: random(3.5, 4.5),
-      age: 0,
-    });
+    const initializeParticle = (particle: Particle) => {
+      particle.x = origin.x + random(-2, 2);
+      particle.y = origin.y + random(-2, 2);
+      particle.vx = 0;
+      particle.vy = random(30, 60);
+      particle.dirX = random(-1, 1);
+      particle.spreadK = random(28, 45);
+      particle.swayPhase = random(0, Math.PI * 2);
+      particle.radius = isMobile ? random(0.6, 1.6) : random(0.8, 2);
+      particle.alpha = random(0.5, 0.95);
+      particle.life = random(3.5, 4.5);
+      particle.age = 0;
+    };
+
+    const emitParticles = (requestedCount: number) => {
+      let emitted = 0;
+      while (emitted < requestedCount && activeCount < particleLimit()) {
+        const particle = particles[activeCount];
+        initializeParticle(particle);
+        activeCount += 1;
+        emittedTotal += 1;
+        emitted += 1;
+      }
+      return emitted;
+    };
 
     const drawDebugMarker = () => {
       if (!debug) return;
@@ -148,22 +188,42 @@ export default function SugarOverlay() {
       context.clearRect(0, 0, width, height);
 
       const playing = !video.paused && !video.ended;
+      const instantaneousFps = deltaMs > 0 ? 1000 / deltaMs : 60;
+      fpsSamples[fpsSampleIndex] = instantaneousFps;
+      fpsSampleIndex = (fpsSampleIndex + 1) % fpsSamples.length;
+      fpsSampleCount = Math.min(fpsSampleCount + 1, fpsSamples.length);
+      let fpsTotal = 0;
+      for (let sample = 0; sample < fpsSampleCount; sample += 1) fpsTotal += fpsSamples[sample];
+      const averageFps = fpsSampleCount ? fpsTotal / fpsSampleCount : 60;
+      if (averageFps < 45 && !reducedEmission) {
+        reducedEmission = true;
+        if (debug) console.log("[hero-video] FPS baixo: emissão reduzida pela metade", { averageFps: Number(averageFps.toFixed(1)) });
+      } else if (averageFps >= 45 && reducedEmission) {
+        reducedEmission = false;
+        if (debug) console.log("[hero-video] FPS recuperado: emissão normal", { averageFps: Number(averageFps.toFixed(1)) });
+      }
+
       if (playing) {
-        if (emissionStartedAt === null) emissionStartedAt = video.currentTime;
+        if (emissionStartedAt === null) {
+          emissionStartedAt = video.currentTime;
+          if (!burstEmitted) {
+            emitParticles(60);
+            burstEmitted = true;
+          }
+        }
         const elapsedVideo = video.currentTime - emissionStartedAt;
         if (elapsedVideo < EMISSION_DURATION && !emissionStopped) {
-          const requested = emissionRate() * (deltaMs / 1000);
-          const count = Math.floor(requested) + (Math.random() < requested % 1 ? 1 : 0);
-          for (let i = 0; i < count && particles.length < particleLimit() && emittedTotal < particleLimit(); i += 1) {
-            particles.push(createParticle());
-            emittedTotal += 1;
-          }
+          const effectiveRate = emissionRate() * (reducedEmission ? 0.5 : 1);
+          emissionAccumulator += effectiveRate * deltaSeconds;
+          const count = Math.floor(emissionAccumulator);
+          emissionAccumulator -= count;
+          emitParticles(count);
         } else {
           emissionStopped = true;
         }
       }
 
-      for (let i = particles.length - 1; i >= 0; i -= 1) {
+      for (let i = activeCount - 1; i >= 0; i -= 1) {
         const particle = particles[i];
         particle.age += deltaSeconds;
 
@@ -185,11 +245,14 @@ export default function SugarOverlay() {
         const shimmer = 0.92 + Math.sin(particle.age * 5 + particle.swayPhase) * 0.08;
         const sway = Math.sin(particle.age * 3.2 + particle.swayPhase) * 3;
         context.globalAlpha = particle.alpha * fade * shimmer;
-        context.beginPath();
-        context.arc(particle.x + sway, particle.y, particle.radius, 0, Math.PI * 2);
-        context.fillStyle = "#F5F3EE";
-        context.fill();
-        if (particle.age >= particle.life) particles.splice(i, 1);
+        const diameter = particle.radius * 2;
+        context.drawImage(sprite, particle.x + sway - particle.radius, particle.y - particle.radius, diameter, diameter);
+        if (particle.age >= particle.life) {
+          activeCount -= 1;
+          const lastActive = particles[activeCount];
+          particles[activeCount] = particle;
+          particles[i] = lastActive;
+        }
       }
       context.globalAlpha = 1;
       drawDebugMarker();
