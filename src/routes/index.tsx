@@ -125,6 +125,7 @@ function Index() {
         <nav className="bk-nav" aria-label="Navegação principal">
           <a href="#sobre">Sobre</a>
           <a href="#vitrine">Vitrine</a>
+          <a href="/cardapio">Cardápio</a>
           <a href="#visite">Visite a By Kim</a>
         </nav>
         <a className="bk-header-cta" href={whatsapp} target="_blank" rel="noreferrer">PEDIR <ArrowRight size={14} /></a>
