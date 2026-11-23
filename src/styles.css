@@ -2684,3 +2684,38 @@ body::-webkit-scrollbar {
   width: 0;
   height: 0;
 }
+
+
+/* BY KIM — apresentação do hero transferida para uma seção somente mobile */
+.bk-mobile-hero-copy {
+  display: none;
+}
+@media (max-width: 767px) {
+  .bk-mobile-hero-copy {
+    display: block;
+    box-sizing: border-box;
+    width: 100%;
+    padding: 42px 7% 46px;
+    background: #0A0A0A;
+    color: #F5F3EE;
+  }
+  .bk-mobile-hero-copy h1 {
+    margin: 0;
+    color: #F5F3EE;
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(42px, 11vw, 54px);
+    font-weight: 500;
+    line-height: 1.04;
+    letter-spacing: -.045em;
+  }
+  .bk-mobile-hero-copy h1 em {
+    font-weight: 500;
+  }
+  .bk-mobile-hero-copy p {
+    max-width: 34ch;
+    margin: 16px 0 0;
+    color: #B5B5B5;
+    font-size: 13px;
+    line-height: 1.7;
+  }
+}
