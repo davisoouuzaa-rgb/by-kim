@@ -2436,3 +2436,14 @@ html, body, .bk-page,
     text-align: center;
   }
 }
+
+
+/* BY KIM — cabeçalho alinhado ao topo após remoção da faixa superior */
+.bk-header {
+  top: 0;
+}
+@media (max-width: 767px) {
+  .bk-header {
+    top: 0;
+  }
+}
