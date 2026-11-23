@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { createFileRoute } from "@tanstack/react-router";
 import SugarOverlay from "../components/SugarOverlay";
 import { ArrowRight, Instagram, MapPin, Clock3, MessageCircle, Sparkles, TrainFront } from "lucide-react";
@@ -110,6 +110,83 @@ function Index() {
     };
   }, []);
 
+
+  useLayoutEffect(() => {
+    const root = document.documentElement;
+    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const all = Array.from(document.querySelectorAll<HTMLElement>(".bk-page [data-reveal]"));
+    const hero = all.filter((element) =>
+      element.classList.contains("bk-hero-copy") ||
+      element.classList.contains("bk-mobile-hero-copy")
+    );
+    const observed = all.filter((element) => !hero.includes(element));
+    let observer: IntersectionObserver | null = null;
+
+    const setSiblingDelays = () => {
+      const maxDelay = window.matchMedia("(max-width: 767px)").matches ? 300 : 450;
+      const parents = new Set(observed.map((element) => element.parentElement).filter(Boolean));
+      parents.forEach((parent) => {
+        const siblings = Array.from(parent!.children).filter(
+          (child): child is HTMLElement => child instanceof HTMLElement && child.hasAttribute("data-reveal")
+        );
+        siblings.forEach((element, index) => {
+          element.style.setProperty("--reveal-delay", `${Math.min(index * 90, maxDelay)}ms`);
+        });
+      });
+    };
+
+    root.classList.add("js-reveal");
+    setSiblingDelays();
+
+    if (reducedMotion.matches) {
+      all.forEach((element) => element.classList.add("is-in"));
+      all.forEach((element) => element.style.setProperty("--reveal-delay", "0ms"));
+      return () => root.classList.remove("js-reveal");
+    }
+
+    const heroFrame = window.requestAnimationFrame(() => {
+      hero.forEach((element) => {
+        element.style.setProperty("--reveal-delay", "300ms");
+        element.classList.add("is-in");
+      });
+    });
+
+    observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting) return;
+        const element = entry.target as HTMLElement;
+        const rect = element.getBoundingClientRect();
+        element.classList.add("is-in");
+        window.dispatchEvent(new CustomEvent("sugar:burst", {
+          detail: { x: rect.left + rect.width / 2, y: rect.top + rect.height / 2, count: 18 },
+        }));
+        observer?.unobserve(element);
+      });
+    }, { threshold: 0.15, rootMargin: "0px 0px -8% 0px" });
+
+    observed.forEach((element) => observer?.observe(element));
+
+    const onMotionPreferenceChange = (event: MediaQueryListEvent) => {
+      if (!event.matches) return;
+      observer?.disconnect();
+      all.forEach((element) => {
+        element.classList.add("is-in");
+        element.style.setProperty("--reveal-delay", "0ms");
+      });
+    };
+    const onResize = () => setSiblingDelays();
+    reducedMotion.addEventListener?.("change", onMotionPreferenceChange);
+    window.addEventListener("resize", onResize, { passive: true });
+
+    return () => {
+      window.cancelAnimationFrame(heroFrame);
+      observer?.disconnect();
+      reducedMotion.removeEventListener?.("change", onMotionPreferenceChange);
+      window.removeEventListener("resize", onResize);
+      root.classList.remove("js-reveal");
+    };
+  }, []);
+
   const handleVideoEnded = () => setHeaderVisible(true);
   const handleVideoCanPlay = () => {
     const video = videoRef.current;
@@ -149,13 +226,13 @@ function Index() {
           />
         )}
         <div className="bk-hero-video-gradient" aria-hidden="true" />
-        <div className="bk-hero-copy">
+        <div className="bk-hero-copy" data-reveal>
           <h1>Doce, com<br /><em>personalidade.</em></h1>
           <p className="bk-hero-subtitle">Cheesecakes, bolos e doces autorais em Santa Cecília, São Paulo.</p>
         </div>
       </section>
 
-      <section className="bk-mobile-hero-copy" aria-label="Apresentação da By Kim">
+      <section className="bk-mobile-hero-copy" aria-label="Apresentação da By Kim" data-reveal>
         <h1>Doce, com<br /><em>personalidade.</em></h1>
         <p>Cheesecakes, bolos e doces autorais em Santa Cecília, São Paulo.</p>
       </section>
@@ -168,20 +245,20 @@ function Index() {
         
         <div className="bk-about-main">
           
-          <h2>A casa<br /><em>By Kim.</em></h2>
-          <p className="bk-about-text">Confeitaria autoral em Santa Cecília.</p>
+          <h2 data-reveal>A casa<br /><em>By Kim.</em></h2>
+          <p className="bk-about-text" data-reveal>Confeitaria autoral em Santa Cecília.</p>
           <a className="bk-underlined" href={instagram} target="_blank" rel="noreferrer">CONHEÇA NO INSTAGRAM <ArrowRight size={15} /></a>
         </div>
       </section>
 
       <section className="bk-showcase" id="vitrine">
         <div className="bk-showcase-head">
-          <div><p className="bk-eyebrow">A VITRINE</p><h2>Nossos <em>doces.</em></h2></div>
+          <div><p className="bk-eyebrow" data-reveal>A VITRINE</p><h2 data-reveal>Nossos <em>doces.</em></h2></div>
 
         </div>
         <div className="bk-product-grid">
           {products.map((product) => (
-            <article className="bk-product" key={product.name}>
+            <article className="bk-product" key={product.name} data-reveal>
               <a className="bk-product-image" href="/cardapio" target="_blank" rel="noopener noreferrer" aria-label={`Ver ${product.name} no cardápio`}>
                 <img src={product.image} alt={product.alt} loading="lazy" />
               </a>
@@ -202,16 +279,16 @@ function Index() {
 
       <section className="bk-visit" id="visite">
         <div className="bk-visit-copy">
-          <p className="bk-eyebrow">VISITE A BY KIM</p>
-          <h2>Feito à mão, em<br /><em>Santa Cecília.</em></h2>
-          <p className="bk-visit-description">Desde 2021, Veronica Kim cria doces com referências coreanas, francesas e brasileiras. Em 2023, a By Kim ganhou uma loja física em Santa Cecília, onde você pode acompanhar a produção de perto.</p>
+          <p className="bk-eyebrow" data-reveal>VISITE A BY KIM</p>
+          <h2 data-reveal>Feito à mão, em<br /><em>Santa Cecília.</em></h2>
+          <p className="bk-visit-description" data-reveal>Desde 2021, Veronica Kim cria doces com referências coreanas, francesas e brasileiras. Em 2023, a By Kim ganhou uma loja física em Santa Cecília, onde você pode acompanhar a produção de perto.</p>
           <div className="bk-visit-facts">
-            <p><MapPin size={16} /><span>Rua Tupi, 114, Loja 01 · Santa Cecília, São Paulo</span></p>
-            <p><Clock3 size={16} /><span>Terça a domingo, 10h às 17h30</span></p>
-            <p><TrainFront size={16} /><span>Estação Santa Cecília, Linha 3-Vermelha</span></p>
+            <p data-reveal><MapPin size={16} /><span>Rua Tupi, 114, Loja 01 · Santa Cecília, São Paulo</span></p>
+            <p data-reveal><Clock3 size={16} /><span>Terça a domingo, 10h às 17h30</span></p>
+            <p data-reveal><TrainFront size={16} /><span>Estação Santa Cecília, Linha 3-Vermelha</span></p>
           </div>
         </div>
-        <div className="bk-visit-map-wrap">
+        <div className="bk-visit-map-wrap" data-reveal>
           <iframe
             className="bk-visit-map"
             title="Mapa da By Kim Confeitaria — Rua Tupi, 114, Santa Cecília, São Paulo"
