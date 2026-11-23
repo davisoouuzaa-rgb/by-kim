@@ -215,6 +215,7 @@ function Index() {
           <video
             ref={videoRef}
             className="bk-hero-video"
+            data-sieve-video
             src="/hero-chef.mp4"
             autoPlay
             muted
