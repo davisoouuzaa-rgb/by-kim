@@ -204,7 +204,7 @@ function Index() {
           <p className="bk-visit-description">Desde 2021, Veronica Kim cria doces com referências coreanas, francesas e brasileiras. Em 2023, a By Kim ganhou uma loja física em Santa Cecília, onde você pode acompanhar a produção de perto.</p>
           <div className="bk-visit-facts">
             <p><MapPin size={16} /><span>Rua Tupi, 114, Loja 01 · Santa Cecília, São Paulo</span></p>
-            <p><Clock3 size={16} /><span>Terça a domingo · 10h–17h30</span></p>
+            <p><Clock3 size={16} /><span>Terça a domingo, 10h às 17h30</span></p>
             <p><TrainFront size={16} /><span>Estação Santa Cecília, Linha 3-Vermelha</span></p>
           </div>
         </div>
