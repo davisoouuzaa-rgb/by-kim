@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { createPortal } from "react-dom";
+import type { RefObject } from "react";
 import { ArrowRight, Minus, Plus, ShoppingBag, Trash2, X } from "lucide-react";
 import { useCart } from "../context/CartContext";
 
@@ -18,7 +19,7 @@ export function CartButton() {
   </>;
 }
 
-export function CartDrawer({ onClose, returnFocusRef }: { onClose: () => void; returnFocusRef: React.RefObject<HTMLButtonElement | null> }) {
+export function CartDrawer({ onClose, returnFocusRef }: { onClose: () => void; returnFocusRef: RefObject<HTMLButtonElement | null> }) {
   const { items, count, subtotal, setQuantity, removeItem, clear } = useCart();
   const [name, setName] = useState("");
   const [notes, setNotes] = useState("");
@@ -72,7 +73,7 @@ export function CartDrawer({ onClose, returnFocusRef }: { onClose: () => void; r
       }
       const first = focusable[0];
       const last = focusable[focusable.length - 1];
-      if (event.shiftKey && (document.activeElement === first || !dialogRef.current.contains(document.activeElement))) {
+      if (event.shiftKey && (document.activeElement === first || document.activeElement === titleRef.current || !dialogRef.current.contains(document.activeElement))) {
         event.preventDefault();
         last.focus();
       } else if (!event.shiftKey && (document.activeElement === last || !dialogRef.current.contains(document.activeElement))) {
