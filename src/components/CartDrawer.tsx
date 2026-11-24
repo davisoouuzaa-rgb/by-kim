@@ -34,7 +34,7 @@ export function CartDrawer({ onClose, returnFocusRef }: { onClose: () => void; r
     setPortalHost(host);
     const page = document.querySelector<HTMLElement>(".bk-page");
     const previousInert = page?.inert ?? false;
-    const previousAriaHidden = page?.getAttribute("aria-hidden");
+    const previousAriaHidden = page?.getAttribute("aria-hidden") ?? null;
     if (page) {
       page.inert = true;
       page.setAttribute("aria-hidden", "true");
@@ -73,6 +73,7 @@ export function CartDrawer({ onClose, returnFocusRef }: { onClose: () => void; r
       }
       const first = focusable[0];
       const last = focusable[focusable.length - 1];
+      if (!first || !last) return;
       if (event.shiftKey && (document.activeElement === first || document.activeElement === titleRef.current || !dialogRef.current.contains(document.activeElement))) {
         event.preventDefault();
         last.focus();

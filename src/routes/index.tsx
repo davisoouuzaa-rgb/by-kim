@@ -169,7 +169,7 @@ function Index() {
           muted
           playsInline
           preload={motionPreferenceReady && !reducedMotion ? "metadata" : "none"}
-          fetchPriority="high"
+          {...{ fetchPriority: "high" }}
           poster="/hero-chef-poster.jpg"
           onError={() => setVideoFailed(true)}
         />
