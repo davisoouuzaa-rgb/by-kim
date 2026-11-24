@@ -147,7 +147,7 @@ function Cardapio() {
     return () => window.clearTimeout(timeout);
   }, [addedFeedback]);
 
-  const addToCart = (product: Product, quantity: number, openCart = true) => {
+  const addToCart = (product: Product, quantity: number, shouldOpenCart = true) => {
     addItem({
       id: product.name.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[^a-z0-9]+/g, "-"),
       name: product.name,
@@ -155,7 +155,7 @@ function Cardapio() {
       unit: product.slice ? "fatia" : "unidade",
       ...(product.flavor ? { option: product.flavor } : {}),
     }, quantity);
-    if (openCart) {
+    if (shouldOpenCart) {
       setSelected(null);
       setClosingSelected(false);
       setCoveredIndex(null);
