@@ -215,7 +215,7 @@ function Index() {
             loop
             preload="auto"
             fetchPriority="high"
-            poster="/hero-poster.jpg"
+            poster="/hero-chef-poster.jpg"
           />
         )}
         <div className="bk-hero-video-gradient" aria-hidden="true" />
