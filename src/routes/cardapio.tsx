@@ -1,6 +1,8 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
-import { ArrowRight, Instagram, MessageCircle, ShoppingBag, X, Plus, Minus, Trash2 } from "lucide-react";
+import { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
+import { ArrowRight, Instagram, MessageCircle, X, Plus, Minus } from "lucide-react";
+import { useCart } from "../context/CartContext";
+import { CartButton } from "../components/CartDrawer";
 
 export const Route = createFileRoute("/cardapio")({ component: Cardapio });
 
@@ -92,8 +94,6 @@ const productImages: Record<string, string> = {
   "Caixa Presenteável Carré": "/caixa%20presente.jpg?v=20261122",
   "Presente Sable": "/presente%20sable.jpg?v=20261122",
 };
-type CartItem = { product: Product; quantity: number };
-const cartKey = (product: Product) => `${product.name}::${product.flavor ?? ""}`;
 const flavors = ["Composta", "Goiabada", "Morango"];
 const cheesecakeNames = ["Cheesecake Original", "Cheesecake Cookies n Cream", "Cheesecake Cumaru", "Cheesecake de Trufas"];
 const hasFlavor = (product: Product) => cheesecakeNames.some((name) => product.name === name);
@@ -116,12 +116,7 @@ function Cardapio() {
   const [productQty, setProductQty] = useState(1);
   const [flavorSelections, setFlavorSelections] = useState<Record<string, string>>({});
   const [selectedFlavor, setSelectedFlavor] = useState("Composta");
-  const [cart, setCart] = useState<CartItem[]>([]);
-  const [cartLoaded, setCartLoaded] = useState(false);
-  const [cartOpen, setCartOpen] = useState(false);
-  const [customerName, setCustomerName] = useState("");
-  const [notes, setNotes] = useState("");
-  const [fulfillment, setFulfillment] = useState<Fulfillment>("pickup");
+  const { addItem } = useCart();
   const gridPositionsRef = useRef<Map<HTMLElement, Map<HTMLElement, DOMRect>>>(new Map());
   const animateGridRef = useRef(false);
 
@@ -158,23 +153,6 @@ function Cardapio() {
   const closeProduct = useCallback(() => {
     if (selected && !closingSelected) setClosingSelected(true);
   }, [selected, closingSelected]);
-
-  useEffect(() => {
-    try {
-      const saved = window.localStorage.getItem("bykim-cardapio-cart-v1");
-      if (saved) {
-        const parsed = JSON.parse(saved) as CartItem[];
-        if (Array.isArray(parsed)) setCart(parsed.filter((entry) => allProducts.some((p) => p.name === entry.product?.name) && Number.isFinite(entry.quantity) && entry.quantity > 0));
-      }
-    } catch { /* armazenamento local indisponível: o carrinho segue em memória */ }
-    finally { setCartLoaded(true); }
-  }, []);
-
-  useEffect(() => {
-    if (!cartLoaded) return;
-    try { window.localStorage.setItem("bykim-cardapio-cart-v1", JSON.stringify(cart)); }
-    catch { /* armazenamento local indisponível: o carrinho segue em memória */ }
-  }, [cart]);
 
   useEffect(() => {
     if (!closingSelected) return;
@@ -262,42 +240,21 @@ function Cardapio() {
     return () => { window.removeEventListener("keydown", onKeyDown); document.body.style.overflow = ""; };
   }, [cartOpen]);
 
-  const itemCount = cart.reduce((sum, entry) => sum + entry.quantity, 0);
-  const totalCents = cart.reduce((sum, entry) => sum + cents(entry.product.price) * entry.quantity, 0);
-
   const addToCart = (product: Product, quantity: number, openCart = true) => {
-    setCart((current) => {
-      const key = cartKey(product);
-      const existing = current.find((entry) => cartKey(entry.product) === key);
-      return existing
-        ? current.map((entry) => cartKey(entry.product) === key ? { ...entry, quantity: entry.quantity + quantity } : entry)
-        : [...current, { product, quantity }];
-    });
+    addItem({
+      id: product.name.toLowerCase().normalize("NFD").replace(/[\\u0300-\\u036f]/g, "").replace(/[^a-z0-9]+/g, "-"),
+      name: product.name,
+      unitPrice: cents(product.price) / 100,
+      unit: product.slice ? "fatia" : "unidade",
+      option: product.flavor,
+    }, quantity);
     if (openCart) {
       setSelected(null);
       setClosingSelected(false);
       setCoveredIndex(null);
       setProductQty(1);
-      setCartOpen(true);
     }
   };
-
-  const updateQuantity = (key: string, quantity: number) => {
-    setCart((current) => quantity < 1 ? current.filter((entry) => cartKey(entry.product) !== key) : current.map((entry) => cartKey(entry.product) === key ? { ...entry, quantity } : entry));
-  };
-
-  const cartMessage = useMemo(() => {
-    const lines = cart.map(({ product, quantity }) => `- ${quantity}x ${product.name}${product.slice ? " (fatia)" : ""}${product.flavor ? ` - ${product.flavor}` : ""} · ${money(cents(product.price) * quantity / 100)}`);
-    const deliveryText = fulfillment === "pickup" ? "Retirada em Santa Cecília" : "Entrega pelo iFood";
-    return [
-      "Olá! Vim pelo site da By Kim e quero fazer este pedido:",
-      ...lines,
-      `Total: ${money(totalCents / 100)}`,
-      ...(customerName.trim() ? [`Nome: ${customerName.trim()}`] : []),
-      deliveryText,
-      ...(notes.trim() ? [`Observações: ${notes.trim()}`] : []),
-    ].join("\n");
-  }, [cart, totalCents, customerName, notes, fulfillment]);
 
   return (
     <main className="bk-page bk-menu-page">
@@ -309,9 +266,7 @@ function Cardapio() {
         </a>
         <a className="bk-menu-back" href="/">← VOLTAR AO SITE</a>
         <div className="bk-menu-header-actions">
-          <button className="bk-cart-trigger" type="button" onClick={() => setCartOpen(true)} aria-label={`Abrir carrinho, ${itemCount} itens`}>
-            <ShoppingBag size={17} /><span>CARRINHO</span><b>{itemCount}</b>
-          </button>
+          <CartButton />
           <a className="bk-header-cta" href={whatsappBase + encodeURIComponent("Olá, vim pelo site da By Kim e gostaria de saber mais!")} target="_blank" rel="noopener noreferrer">PEDIR <ArrowRight size={14} /></a>
         </div>
       </header>
@@ -382,8 +337,6 @@ function Cardapio() {
                           </div>
                           <button className="bk-modal-primary bk-menu-add-primary" type="button" onClick={() => { addToCart(flavored ? activeProduct : product, productQty, false); setAddedFeedback(true); }}>{addedFeedback ? "ADICIONADO ✓" : `ADICIONAR · ${money(cents(product.price) * productQty / 100)}`}</button>
                           <div className="bk-menu-purchase-separator" />
-                          <a className="bk-modal-secondary bk-menu-purchase-link" href={whatsappBase + encodeURIComponent(productMessage(flavored ? activeProduct : product, productQty))} target="_blank" rel="noopener noreferrer">PEDIR PELO WHATSAPP <ArrowRight size={15} /></a>
-                          <a className="bk-modal-ifood bk-menu-purchase-link" href={ifood} target="_blank" rel="noopener noreferrer">PEDIR PELO IFOOD <ArrowRight size={14} /></a>
                         </div>
                       </div>
                     )}
@@ -394,7 +347,7 @@ function Cardapio() {
                       <span className="bk-menu-item-bottom">
                         <span className="bk-menu-price"><strong>{item.price}</strong>{item.slice && <small>fatia</small>}</span>
                         <button type="button" className="bk-menu-add" onClick={() => addToCart(listingProduct, 1)}>ADICIONAR</button>
-                        <a className="bk-menu-order" href={whatsappBase + encodeURIComponent(productMessage(listingProduct, 1))} target="_blank" rel="noopener noreferrer">WHATSAPP <ArrowRight size={14} /></a>
+
                       </span>
                     </>
                   </article>
@@ -417,48 +370,7 @@ function Cardapio() {
       </footer>
 
 
-      {cartOpen && (
-        <div className="bk-overlay bk-cart-overlay" onMouseDown={(event) => { if (event.target === event.currentTarget) setCartOpen(false); }}>
-          <aside className="bk-cart-drawer" role="dialog" aria-modal="true" aria-label="Carrinho de compras">
-            <header className="bk-cart-heading"><div><p className="bk-eyebrow">BY KIM</p><h2>Sua sacola <span>({itemCount})</span></h2></div><button className="bk-panel-close" type="button" aria-label="Fechar carrinho" onClick={() => setCartOpen(false)}><X size={20} /></button></header>
-            {cart.length === 0 ? (
-              <div className="bk-cart-empty"><ShoppingBag size={32} strokeWidth={1.2} /><h3>Seu carrinho está vazio</h3><button type="button" className="bk-modal-primary" onClick={() => setCartOpen(false)}>VOLTAR AO CARDÁPIO</button></div>
-            ) : (
-              <>
-                <div className="bk-cart-content">
-                  <div className="bk-cart-items">
-                    {cart.map(({ product, quantity }) => (
-                      <article className="bk-cart-item" key={cartKey(product)}>
-                        <div className="bk-cart-item-info"><h3>{product.name}{product.flavor ? ` - ${product.flavor}` : ""}</h3><p>{product.price}{product.slice ? " · fatia" : ""}</p><strong>{money(cents(product.price) * quantity / 100)}</strong></div>
-                        <div className="bk-cart-item-actions">
-                          <div className="bk-quantity-control">
-                            <button type="button" aria-label={`Diminuir ${product.name}`} onClick={() => updateQuantity(cartKey(product), quantity - 1)}><Minus size={13} /></button>
-                            <strong>{quantity}</strong>
-                            <button type="button" aria-label={`Aumentar ${product.name}`} onClick={() => updateQuantity(cartKey(product), quantity + 1)}><Plus size={13} /></button>
-                          </div>
-                          <button type="button" className="bk-remove-item" onClick={() => updateQuantity(cartKey(product), 0)} aria-label={`Remover ${product.name}`}><Trash2 size={15} /></button>
-                        </div>
-                      </article>
-                    ))}
-                  </div>
-                  <div className="bk-cart-fields">
-                    <label>Seu nome <input value={customerName} onChange={(event) => setCustomerName(event.target.value)} placeholder="Opcional" /></label>
-                    <label>Observações <textarea value={notes} onChange={(event) => setNotes(event.target.value)} placeholder="Ex.: sabor sem nozes, horário de retirada" rows={2} /></label>
-                    <div className="bk-fulfillment"><span>Como deseja receber?</span><div><button type="button" className={fulfillment === "pickup" ? "active" : ""} onClick={() => setFulfillment("pickup")}>Retirada em Santa Cecília</button><button type="button" className={fulfillment === "delivery" ? "active" : ""} onClick={() => setFulfillment("delivery")}>Entrega pelo iFood</button></div></div>
-                  </div>
-                </div>
-                <div className="bk-cart-footer">
-                  <div className="bk-cart-total"><span>Subtotal</span><strong>{money(totalCents / 100)}</strong></div>
-                  <a className="bk-modal-primary bk-cart-checkout" href={whatsappBase + encodeURIComponent(cartMessage)} target="_blank" rel="noopener noreferrer">FINALIZAR PELO WHATSAPP <ArrowRight size={16} /></a>
-                  <p className="bk-cart-notice">Para entrega, o pagamento é combinado no WhatsApp. Pedidos pelo iFood são feitos direto no app.</p>
-                  <a className="bk-cart-ifood" href={ifood} target="_blank" rel="noopener noreferrer">PEDIR PELO IFOOD</a>
-                  <button className="bk-cart-clear" type="button" onClick={() => { if (window.confirm("Deseja esvaziar o carrinho?")) setCart([]); }}>ESVAZIAR CARRINHO</button>
-                </div>
-              </>
-            )}
-          </aside>
-        </div>
-      )}
+
     </main>
   );
 }
