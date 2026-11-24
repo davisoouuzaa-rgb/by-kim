@@ -3269,3 +3269,30 @@ html.js-reveal .bk-mobile-hero-copy[data-reveal] {
     font-size: 6px;
   }
 }
+
+
+/* BY KIM — ajuste mobile: dois produtos por linha */
+@media (max-width: 767px) {
+  .bk-menu-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    column-gap: 16px;
+    row-gap: 24px;
+  }
+
+  .bk-menu-item-title {
+    font-size: clamp(14px, 4vw, 17px);
+  }
+
+  .bk-menu-item-description {
+    font-size: 10px;
+    line-height: 1.55;
+  }
+
+  .bk-menu-price strong {
+    font-size: 12px;
+  }
+
+  .bk-menu-add {
+    font-size: 8px;
+  }
+}
