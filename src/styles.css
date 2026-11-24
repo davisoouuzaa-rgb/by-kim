@@ -3564,3 +3564,15 @@ html.js-reveal .bk-mobile-hero-copy[data-reveal] {
   .bk-menu-whatsapp { width: 30px; height: 30px; }
   .bk-menu-whatsapp svg { width: 14px; height: 14px; }
 }
+
+
+/* HOME — o cabeçalho é revelado na rolagem, mas era position:absolute no topo do
+   documento: ao aparecer já estava fora da tela. Fixo no viewport para que o
+   botão do WhatsApp e a sacola fiquem acessíveis. Não afeta o cabeçalho do
+   cardápio (.bk-menu-header). */
+.bk-header:not(.bk-menu-header) {
+  position: fixed;
+}
+@media (max-width: 767px) {
+  .bk-header:not(.bk-menu-header) { height: 64px; padding: 0 5%; }
+}
