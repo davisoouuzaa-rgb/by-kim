@@ -3458,3 +3458,50 @@ html.js-reveal .bk-mobile-hero-copy[data-reveal] {
     -webkit-appearance: none;
   }
 }
+
+
+/* CARDÁPIO — manter acesso à sacola e retorno à home visíveis em mobile */
+@media (max-width: 760px) {
+  .bk-menu-header .bk-cart-trigger .bk-cart-trigger-label {
+    display: inline !important;
+    font-size: 8px;
+    letter-spacing: .06em;
+    white-space: nowrap;
+  }
+  .bk-menu-header .bk-cart-trigger {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    padding: 9px 8px;
+    min-height: 36px;
+    white-space: nowrap;
+  }
+  .bk-menu-header .bk-menu-back {
+    display: inline-flex !important;
+    min-height: 36px;
+    max-width: none;
+    padding: 0 8px;
+    margin-left: 0;
+    font-size: 8px;
+    white-space: nowrap;
+  }
+  .bk-menu-header-actions {
+    flex: 0 0 auto;
+    margin-left: auto;
+    gap: 6px;
+  }
+}
+@media (max-width: 390px) {
+  .bk-menu-header .bk-cart-trigger .bk-cart-trigger-label {
+    font-size: 7px;
+  }
+  .bk-menu-header .bk-cart-trigger {
+    padding: 8px 6px;
+    gap: 5px;
+  }
+  .bk-menu-header .bk-menu-back {
+    padding: 0 6px;
+    font-size: 7px;
+  }
+}
