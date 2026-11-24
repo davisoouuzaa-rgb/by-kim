@@ -2801,3 +2801,28 @@ html.js-reveal .bk-mobile-hero-copy[data-reveal] {
     animation: none !important;
   }
 }
+
+
+/* BY KIM — hero começa oculto e revela uma única vez após o atraso */
+.bk-video-hero .bk-hero-copy {
+  opacity: 0;
+  transform: translateY(16px);
+  filter: blur(6px);
+  transition: none;
+}
+.bk-video-hero .bk-hero-copy.is-in {
+  opacity: 1;
+  transform: none;
+  filter: none;
+  transition: opacity 1000ms cubic-bezier(0.22, 1, 0.36, 1),
+    transform 1000ms cubic-bezier(0.22, 1, 0.36, 1),
+    filter 1000ms ease;
+}
+@media (prefers-reduced-motion: reduce) {
+  .bk-video-hero .bk-hero-copy {
+    opacity: 1;
+    transform: none;
+    filter: none;
+    transition: none;
+  }
+}
