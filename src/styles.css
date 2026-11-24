@@ -2767,3 +2767,29 @@ html.js-reveal .bk-mobile-hero-copy[data-reveal] {
   transform: translateY(16px);
   transition: opacity 1000ms cubic-bezier(0.22, 1, 0.36, 1), transform 1000ms cubic-bezier(0.22, 1, 0.36, 1), filter 1000ms ease;
 }
+
+
+/* BY KIM — poster de reserva e dimensões estáveis do hero */
+.bk-video-hero {
+  aspect-ratio: 16 / 9;
+  background-color: #0A0A0A;
+  background-image: url("/hero-poster.jpg");
+  background-position: center;
+  background-size: cover;
+}
+.bk-video-hero .bk-hero-video {
+  width: 100%;
+  height: 100%;
+  background-color: #0A0A0A;
+}
+@media (max-width: 767px) {
+  .bk-video-hero {
+    aspect-ratio: auto;
+    background-position: 72% center;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .bk-video-hero {
+    background-image: url("/hero-poster.jpg");
+  }
+}
