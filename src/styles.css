@@ -3505,3 +3505,37 @@ html.js-reveal .bk-mobile-hero-copy[data-reveal] {
     font-size: 7px;
   }
 }
+
+
+/* CARDÁPIO — cabeçalho sempre visível.
+   .bk-header (compartilhada com a home) fica oculta até a rolagem; no cardápio
+   não existe .bk-header-visible, então o cabeçalho inteiro sumia. */
+.bk-header.bk-menu-header {
+  position: relative;
+  top: auto;
+  transform: none;
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #0A0A0A;
+}
+.bk-menu-header .bk-wordmark { flex: 0 0 auto; min-width: 0; }
+.bk-menu-header .bk-cart-trigger .bk-cart-trigger-label { display: inline; }
+.bk-menu-header .bk-cart-trigger .bk-sr-only { display: block; }
+@media (max-width: 760px) {
+  .bk-header.bk-menu-header { height: 64px; padding: 0 4%; gap: 8px; }
+  .bk-menu-header .bk-menu-back { margin-left: auto; }
+  .bk-menu-header-actions { margin-left: 0; gap: 6px; }
+}
+@media (max-width: 420px) {
+  .bk-header.bk-menu-header { padding: 0 3%; gap: 6px; }
+  .bk-menu-header .bk-mark { font-size: 16px; letter-spacing: .1em; }
+  .bk-menu-header .bk-submark { font-size: 5.5px; }
+  .bk-menu-header .bk-header-cta { padding: 9px 7px; gap: 5px; font-size: 7.5px; min-height: 36px; box-sizing: border-box; }
+  .bk-menu-header .bk-header-cta svg { display: none; }
+  .bk-menu-header .bk-cart-trigger svg { width: 14px; height: 14px; }
+  .bk-menu-header .bk-cart-trigger b { min-width: 16px; height: 16px; font-size: 8px; padding: 0 3px; }
+}
