@@ -3361,3 +3361,100 @@ html.js-reveal .bk-mobile-hero-copy[data-reveal] {
   }
 }
 
+/* BY KIM — regra definitiva do hero mobile: texto sobre o vídeo */
+@media (max-width: 767px) {
+  .bk-page .bk-video-hero {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: stretch;
+    width: 100%;
+    height: 100svh;
+    min-height: 560px;
+    padding: 0;
+    overflow: hidden;
+    isolation: isolate;
+    background: #0A0A0A;
+  }
+
+  .bk-page .bk-video-hero .bk-hero-video {
+    position: absolute;
+    z-index: -2;
+    inset: 0;
+    display: block;
+    width: 100%;
+    height: 100%;
+    max-height: none;
+    object-fit: cover;
+    object-position: 72% center;
+  }
+
+  .bk-page .bk-video-hero .bk-hero-video-gradient {
+    position: absolute;
+    z-index: -1;
+    inset: 42% 0 0;
+    background: linear-gradient(
+      to top,
+      rgba(10, 10, 10, .98) 0%,
+      rgba(10, 10, 10, .82) 34%,
+      rgba(10, 10, 10, .42) 68%,
+      rgba(10, 10, 10, 0) 100%
+    );
+    pointer-events: none;
+  }
+
+  .bk-page .bk-video-hero .bk-hero-copy {
+    position: absolute;
+    z-index: 1;
+    right: 7%;
+    bottom: max(6svh, 36px);
+    left: 7%;
+    display: flex !important;
+    flex-direction: column;
+    align-items: flex-start;
+    width: auto;
+    max-width: none;
+    min-width: 0;
+    margin: 0;
+    padding: 0;
+    color: #F5F3EE;
+    text-align: left;
+  }
+
+  .bk-page .bk-video-hero .bk-hero-copy h1 {
+    width: 100%;
+    max-width: 100%;
+    margin: 0;
+    color: #F5F3EE;
+    font-size: clamp(36px, 9.2vw, 44px);
+    line-height: 1.06;
+    letter-spacing: -.04em;
+    white-space: normal;
+  }
+
+  .bk-page .bk-video-hero .bk-hero-copy h1 br {
+    display: block;
+  }
+
+  .bk-page .bk-video-hero .bk-hero-subtitle {
+    display: block;
+    width: 100%;
+    max-width: 33ch;
+    margin: 13px 0 0;
+    color: #F5F3EE;
+    font-size: 12px;
+    line-height: 1.55;
+    text-align: left;
+  }
+
+  .bk-page .bk-mobile-hero-copy {
+    display: none !important;
+  }
+
+  .bk-page .bk-video-hero .bk-hero-video::-webkit-media-controls,
+  .bk-page .bk-video-hero .bk-hero-video::-webkit-media-controls-start-playback-button {
+    display: none !important;
+    -webkit-appearance: none;
+  }
+}
