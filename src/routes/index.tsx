@@ -61,6 +61,7 @@ function Index() {
   const [reducedMotion, setReducedMotion] = useState(
     () => typeof window !== "undefined" && window.matchMedia("(prefers-reduced-motion: reduce)").matches
   );
+  const [heroVideoStarted, setHeroVideoStarted] = useState(false);
   const [headerVisible, setHeaderVisible] = useState(
     () => typeof window !== "undefined" && window.matchMedia("(prefers-reduced-motion: reduce)").matches
   );
@@ -114,8 +115,7 @@ function Index() {
     const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
     const all = Array.from(document.querySelectorAll<HTMLElement>(".bk-page [data-reveal]"));
     const hero = all.filter((element) =>
-      element.classList.contains("bk-hero-copy") ||
-      element.classList.contains("bk-mobile-hero-copy")
+      element.classList.contains("bk-hero-copy")
     );
     const observed = all.filter((element) => !hero.includes(element));
     let observer: IntersectionObserver | null = null;
@@ -141,13 +141,6 @@ function Index() {
       all.forEach((element) => element.style.setProperty("--reveal-delay", "0ms"));
       return () => root.classList.remove("js-reveal");
     }
-
-    const heroFrame = window.requestAnimationFrame(() => {
-      hero.forEach((element) => {
-        element.style.setProperty("--reveal-delay", "300ms");
-        element.classList.add("is-in");
-      });
-    });
 
     observer = new IntersectionObserver((entries) => {
       entries.forEach((entry) => {
@@ -177,7 +170,6 @@ function Index() {
     window.addEventListener("resize", onResize, { passive: true });
 
     return () => {
-      window.cancelAnimationFrame(heroFrame);
       observer?.disconnect();
       reducedMotion.removeEventListener?.("change", onMotionPreferenceChange);
       window.removeEventListener("resize", onResize);
@@ -216,10 +208,11 @@ function Index() {
             preload="auto"
             fetchPriority="high"
             poster="/hero-chef-poster.jpg"
+            onPlaying={() => setHeroVideoStarted(true)}
           />
         )}
         <div className="bk-hero-video-gradient" aria-hidden="true" />
-        <div className="bk-hero-copy" data-reveal>
+        <div className={`bk-hero-copy${heroVideoStarted || reducedMotion ? " is-in" : ""}`} data-reveal>
           <h1>Doce, com<br /><em>personalidade.</em></h1>
           <p className="bk-hero-subtitle">Cheesecakes, bolos e doces autorais em Santa Cecília, São Paulo.</p>
         </div>
