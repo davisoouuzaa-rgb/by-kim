@@ -621,6 +621,12 @@ html, body, .bk-page,
 
 /* Link do iFood em cada produto da vitrine */
 .bk-product-ifood {
+  appearance: none;
+  background: transparent;
+  border: 0;
+  border-bottom: 1px solid #777;
+  cursor: pointer;
+  font-family: inherit;
   display: inline-flex;
   align-items: center;
   gap: 10px;
@@ -630,7 +636,6 @@ html, body, .bk-page,
   font-size: 9px;
   font-weight: 700;
   letter-spacing: .13em;
-  border-bottom: 1px solid #777;
   padding-bottom: 7px;
   transition: opacity .25s ease, gap .25s ease;
 }
@@ -2949,3 +2954,19 @@ html.js-reveal .bk-mobile-hero-copy[data-reveal] {
   margin: 9px 0 0 !important;
 }
 
+
+
+/* Carrinho compartilhado também na home */
+.bk-header .bk-cart-trigger {
+  color: #f7f7f5;
+  border-color: rgba(247,247,245,.55);
+}
+.bk-header .bk-cart-trigger b {
+  background: #f7f7f5;
+  color: #080808;
+}
+.bk-cart-checkout:disabled {
+  opacity: .45;
+  cursor: not-allowed;
+  pointer-events: none;
+}
