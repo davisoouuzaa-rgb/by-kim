@@ -35,6 +35,16 @@ function validCart(value: unknown): value is CartItem[] {
   );
 }
 
+function mergeCartItems(saved: CartItem[], current: CartItem[]) {
+  const merged = [...saved];
+  current.forEach((item) => {
+    const index = merged.findIndex((entry) => entry.id === item.id && entry.option === item.option);
+    if (index >= 0) merged[index] = { ...merged[index], quantity: merged[index].quantity + item.quantity };
+    else merged.push(item);
+  });
+  return merged;
+}
+
 export function CartProvider({ children }: { children: ReactNode }) {
   const [items, setItems] = useState<CartItem[]>([]);
   const [loaded, setLoaded] = useState(false);
@@ -45,10 +55,10 @@ export function CartProvider({ children }: { children: ReactNode }) {
       const saved = window.localStorage.getItem(STORAGE_KEY);
       if (saved) {
         const parsed: unknown = JSON.parse(saved);
-        setItems(validCart(parsed) ? parsed : []);
+        if (validCart(parsed)) setItems((current) => mergeCartItems(parsed, current));
       }
     } catch {
-      setItems([]);
+      // JSON inválido: mantém apenas itens adicionados nesta sessão.
     } finally {
       setLoaded(true);
     }
