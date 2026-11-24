@@ -3538,3 +3538,29 @@ html.js-reveal .bk-mobile-hero-copy[data-reveal] {
   .bk-menu-header .bk-cart-trigger svg { width: 14px; height: 14px; }
   .bk-menu-header .bk-cart-trigger b { min-width: 16px; height: 16px; font-size: 8px; padding: 0 3px; }
 }
+
+
+/* CARDÁPIO — botão do WhatsApp no topo (só o ícone, sem texto) */
+.bk-menu-whatsapp {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+  width: 38px;
+  height: 38px;
+  border: 1px solid #555;
+  background: transparent;
+  color: #f7f7f7;
+  text-decoration: none;
+  transition: background .2s, color .2s, border-color .2s;
+}
+.bk-menu-whatsapp:hover { background: #f7f7f5; border-color: #f7f7f5; color: #080808; }
+.bk-menu-whatsapp:focus-visible { outline: 2px solid #f7f7f5; outline-offset: 2px; }
+.bk-menu-whatsapp svg { display: block; }
+@media (max-width: 760px) {
+  .bk-menu-whatsapp { width: 34px; height: 34px; }
+}
+@media (max-width: 420px) {
+  .bk-menu-whatsapp { width: 30px; height: 30px; }
+  .bk-menu-whatsapp svg { width: 14px; height: 14px; }
+}
