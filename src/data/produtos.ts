@@ -72,11 +72,38 @@ export const productImages: Record<string, string> = {
 };
 
 const priceNumber = (price: string) => Number(price.replace("R$", "").trim().replace(".", "").replace(",", "."));
-const catalogProduct = (name: string) => categories.flatMap((category) => category.items).find((item) => item.name === name)!;
+const productId = (name: string) => name.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[^a-z0-9]+/g, "-");
+
+export type ProductRecord = {
+  id: string;
+  name: string;
+  price: number;
+  priceText: string;
+  unit: string;
+  description: string;
+  image: string;
+  category: string;
+  slice: boolean;
+};
+
+export const catalogProducts: ProductRecord[] = categories.flatMap((category) =>
+  category.items.map((item) => ({
+    id: productId(item.name),
+    name: item.name,
+    price: priceNumber(item.price),
+    priceText: item.price,
+    unit: item.slice ? "fatia" : "unidade",
+    description: item.description,
+    image: productImages[item.name] ?? "",
+    category: category.name,
+    slice: Boolean(item.slice),
+  }))
+);
+
+const catalogProduct = (name: string) => catalogProducts.find((item) => item.name === name)!;
 
 type ShowcaseProduct = { id: string; name: string; price: number; unit: string; displayPrice: string; image: string; alt: string; optionGroup?: "cheesecake" };
 const makeShowcaseProduct = (
-  id: string,
   name: string,
   catalogName: string,
   image: string,
@@ -84,13 +111,12 @@ const makeShowcaseProduct = (
   optionGroup?: "cheesecake",
 ): ShowcaseProduct => {
   const product = catalogProduct(catalogName);
-  const unit = product.slice ? "fatia" : "unidade";
   return {
-    id,
+    id: product.id,
     name,
-    price: priceNumber(product.price),
-    unit,
-    displayPrice: `${product.price}${product.slice ? " · fatia" : ""}`,
+    price: product.price,
+    unit: product.unit,
+    displayPrice: `${product.priceText}${product.slice ? " · fatia" : ""}`,
     image,
     alt,
     ...(optionGroup ? { optionGroup } : {}),
@@ -98,10 +124,10 @@ const makeShowcaseProduct = (
 };
 
 export const showcaseProducts: ShowcaseProduct[] = [
-  makeShowcaseProduct("cheesecake-cookies-n-cream", "Cheesecake Cookies n Cream", "Cheesecake Cookies n Cream", "/cheese%20cake%20cookie.jpg?v=20261122", "Cheesecake Cookies n Cream", "cheesecake"),
-  makeShowcaseProduct("mil-folhas-palmier", "Mil Folhas Palmier Baunilha", "Mil Folhas Palmier", "/mil%20folhas.jpg?v=20261122", "Mil Folhas Palmier Baunilha"),
-  makeShowcaseProduct("entremet-espresso", "Entremet Espresso", "Entremet Espresso", "/entremet.jpg?v=20261122", "Entremet Espresso"),
-  makeShowcaseProduct("torta-de-banana", "Torta de Banana", "Torta de Banana", "/torta%20banana.jpg?v=20261122", "Torta de Banana"),
-  makeShowcaseProduct("sablee-com-chocolate-de-matcha", "Sablee com Chocolate de Matchá", "Sablee com Chocolate de Matchá", "/sable%20matcha.jpg?v=20261122", "Sablee com Chocolate de Matchá"),
-  makeShowcaseProduct("cheesecake-cumaru", "Cheesecake Cumaru", "Cheesecake Cumaru", "/cheese%20cake%20cumaru.jpg?v=20261122", "Cheesecake Cumaru", "cheesecake"),
+  makeShowcaseProduct("Cheesecake Cookies n Cream", "Cheesecake Cookies n Cream", "/cheese%20cake%20cookie.jpg?v=20261122", "Cheesecake Cookies n Cream", "cheesecake"),
+  makeShowcaseProduct("Mil Folhas Palmier Baunilha", "Mil Folhas Palmier", "/mil%20folhas.jpg?v=20261122", "Mil Folhas Palmier Baunilha"),
+  makeShowcaseProduct("Entremet Espresso", "Entremet Espresso", "/entremet.jpg?v=20261122", "Entremet Espresso"),
+  makeShowcaseProduct("Torta de Banana", "Torta de Banana", "/torta%20banana.jpg?v=20261122", "Torta de Banana"),
+  makeShowcaseProduct("Sablee com Chocolate de Matchá", "Sablee com Chocolate de Matchá", "/sable%20matcha.jpg?v=20261122", "Sablee com Chocolate de Matchá"),
+  makeShowcaseProduct("Cheesecake Cumaru", "Cheesecake Cumaru", "/cheese%20cake%20cumaru.jpg?v=20261122", "Cheesecake Cumaru", "cheesecake"),
 ];
