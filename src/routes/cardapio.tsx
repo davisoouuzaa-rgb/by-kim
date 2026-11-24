@@ -31,7 +31,7 @@ function Cardapio() {
   const [productQty, setProductQty] = useState(1);
   const [flavorSelections, setFlavorSelections] = useState<Record<string, string>>({});
   const [selectedFlavor, setSelectedFlavor] = useState("Composta");
-  const { addItem } = useCart();
+  const { addItem, openCart } = useCart();
   const gridPositionsRef = useRef<Map<HTMLElement, Map<HTMLElement, DOMRect>>>(new Map());
   const animateGridRef = useRef(false);
 
@@ -149,7 +149,7 @@ function Cardapio() {
 
   const addToCart = (product: Product, quantity: number, openCart = true) => {
     addItem({
-      id: product.name.toLowerCase().normalize("NFD").replace(/[\\u0300-\\u036f]/g, "").replace(/[^a-z0-9]+/g, "-"),
+      id: product.name.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[^a-z0-9]+/g, "-"),
       name: product.name,
       unitPrice: cents(product.price) / 100,
       unit: product.slice ? "fatia" : "unidade",
@@ -160,6 +160,7 @@ function Cardapio() {
       setClosingSelected(false);
       setCoveredIndex(null);
       setProductQty(1);
+      openCart();
     }
   };
 
