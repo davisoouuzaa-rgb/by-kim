@@ -3578,20 +3578,20 @@ html.js-reveal .bk-mobile-hero-copy[data-reveal] {
 }
 
 
-/* BOTÕES — cantos arredondados e transições mais suaves (mesmas cores e fontes) */
+/* BOTÕES — arredondamento médio, suave e consistente, sem formato de cápsula */
 .bk-cart-trigger,
 .bk-menu-whatsapp,
 .bk-button,
 .bk-button-dark,
 .bk-menu-add,
 .bk-menu-order,
-.bk-flavor-picker button,
-.bk-fulfillment button,
-.bk-cart-clear {
-  border-radius: 999px;
+.bk-cart-clear,
+.bk-modal-primary {
+  border-radius: 14px;
 }
-.bk-modal-primary { border-radius: 16px; }
-.bk-quantity-control { border-radius: 999px; }
+.bk-flavor-picker button { border-radius: 10px; }
+.bk-fulfillment button { border-radius: 12px; }
+.bk-quantity-control { border-radius: 14px; }
 .bk-quantity-control button { border-radius: 50%; }
 .bk-remove-item { border-radius: 50%; }
 .bk-cart-fields input,
