@@ -169,12 +169,10 @@ function Index() {
           autoPlay={motionPreferenceReady && !reducedMotion}
           muted
           playsInline
-          preload={motionPreferenceReady && !reducedMotion ? "auto" : "none"}
+          preload={motionPreferenceReady && !reducedMotion ? "metadata" : "none"}
           fetchPriority="high"
           poster="/hero-chef-poster.jpg"
-          onPlay={() => setVideoPlaying(true)}
-          onPause={() => setVideoPlaying(false)}
-          onError={() => { setVideoFailed(true); setVideoPlaying(false); }}
+          onError={() => setVideoFailed(true)}
         />
         <div className="bk-hero-video-gradient" aria-hidden="true" />
         <div className={`bk-hero-copy${heroTextVisible ? " is-in" : ""}`}>
