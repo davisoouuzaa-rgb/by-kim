@@ -66,7 +66,33 @@ const categories = [
   },
 ];
 
-type Product = { name: string; description?: string; price: string; slice?: boolean; category: string; flavor?: string | undefined; image?: string | undefined };
+const productUnits: Record<string, string> = {
+  "Bolo de Brigadeiro 15 Camadas": "fatia",
+  "Cheesecake Original": "fatia",
+  "Cheesecake Cookies n Cream": "fatia",
+  "Bolo de Cenoura 15 Camadas": "fatia",
+  "Mil Folhas Palmier": "fatia [CONFIRMAR]",
+  "Cheesecake de Trufas": "fatia [CONFIRMAR]",
+  "Cheesecake Cumaru": "fatia",
+  "Carré Palmier com Chocolate Meio Amargo": "unidade [CONFIRMAR]",
+  "Carré Palmier com Chocolate Branco": "unidade [CONFIRMAR]",
+  "Carré Palmier com Matchá e Flocos de Sal": "unidade [CONFIRMAR]",
+  "Carré Palmier": "unidade [CONFIRMAR]",
+  "Entremet Espresso": "fatia",
+  "Torta Caramelo e Nozes": "fatia [CONFIRMAR]",
+  "Torta de Banana": "fatia [CONFIRMAR]",
+  "Ugly Bites": "pacote [CONFIRMAR]",
+  "Sable com Chocolate Meio Amargo": "pacote com 10 unidades",
+  "Sablee com Chocolate de Matchá": "pacote [CONFIRMAR]",
+  "Sable da Debora com Chocolate Branco": "pacote [CONFIRMAR]",
+  "Chocolate de Matchá com Crispy de Arroz": "90 g",
+  "Chocolate Meio Amargo com Crispy de Arroz": "90 g",
+  "Chocolate Branco com Crispy de Arroz": "90 g",
+  "Nozes Crocantes": "90 g",
+  "Caixa Presenteável Carré": "caixa",
+  "Presente Sable": "caixa [CONFIRMAR]"
+};
+\ntype Product = { name: string; description?: string; price: string; slice?: boolean; category: string; flavor?: string | undefined; image?: string | undefined };
 const productImages: Record<string, string> = {
   "Bolo de Brigadeiro 15 Camadas": "/bolo%20brigadeiro.jpg?v=20261122",
   "Bolo de Cenoura 15 Camadas": "/bolo%20de%20cenoura.jpg?v=20261122",
@@ -372,7 +398,7 @@ function Cardapio() {
                     >
                       {product.image && <img className="bk-menu-product-image" src={product.image} alt={item.name} loading="lazy" />}
                       <span className="bk-menu-item-title">{item.name}</span>
-                      {item.description && <span className="bk-menu-item-description">{item.description}</span>}
+                      {item.description && <span className="bk-menu-item-description">{item.description}</span>}<span className="bk-menu-contains">Contém: [CONFIRMAR]</span>
                     </button>
                     {expanded && (
                       <div className={`bk-menu-purchase-panel bk-menu-purchase-panel-${panelSide}${closingSelected ? " bk-menu-purchase-panel-closing" : ""}`} role="dialog" aria-label={`Comprar ${product.name}`}>
@@ -404,7 +430,7 @@ function Cardapio() {
                         {flavors.map((option) => <button type="button" key={option} className={flavor === option ? "active" : ""} onClick={() => setFlavorSelections((current) => ({ ...current, [item.name]: option }))}>{option}</button>)}
                       </div>}
                       <span className="bk-menu-item-bottom">
-                        <span className="bk-menu-price"><strong>{item.price}</strong>{item.slice && <small>fatia</small>}</span>
+                        <span className="bk-menu-price"><strong>{item.price}</strong><small>{productUnits[item.name] || "[CONFIRMAR]"}</small></span>
                         <button type="button" className="bk-menu-add" onClick={() => addToCart(listingProduct, 1)}>ADICIONAR</button>
                         <a className="bk-menu-order" href={whatsappBase + encodeURIComponent(productMessage(listingProduct, 1))} target="_blank" rel="noopener noreferrer">WHATSAPP <ArrowRight size={14} /></a>
                       </span>
