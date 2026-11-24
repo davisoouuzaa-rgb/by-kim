@@ -22,7 +22,7 @@ export function CartDrawer({ onClose }: { onClose: () => void }) {
   const [notes, setNotes] = useState("");
   const message = useMemo(() => [
     "Olá! Vim pelo site da By Kim e quero pedir:",
-    ...items.map((item) => `- ${item.quantity}x ${item.name} (${item.unit})${item.option ? ` - ${item.option}` : ""}`),
+    ...items.map((item) => `- ${item.quantity}x ${item.name}${item.unit === "fatia" ? " (fatia)" : ""}${item.option ? ` - ${item.option}` : ""}`),
     `Total: ${formatMoney(subtotal)}`,
     ...(name.trim() ? [`Nome: ${name.trim()}`] : []),
     ...(notes.trim() ? [`Observações: ${notes.trim()}`] : []),
@@ -47,7 +47,7 @@ export function CartDrawer({ onClose }: { onClose: () => void }) {
           <label>Observações <textarea value={notes} onChange={(event) => setNotes(event.target.value)} placeholder="Alguma observação para o pedido?" rows={2} /></label>
         </div></div>
         <div className="bk-cart-footer">
-          <div className="bk-cart-total"><span>Subtotal</span><strong>{formatMoney(subtotal)}</strong></div>
+          <div className="bk-cart-total"><span>Subtotal</span><strong>{formatMoney(subtotal)}</strong></div><div className="bk-cart-total"><span>Total</span><strong>{formatMoney(subtotal)}</strong></div>
           <a className="bk-modal-primary bk-cart-checkout" href={whatsapp + encodeURIComponent(message)} target="_blank" rel="noopener noreferrer">ENVIAR PEDIDO PELO WHATSAPP <ArrowRight size={16} /></a>
           <button className="bk-cart-clear" type="button" onClick={() => { if (window.confirm("Deseja esvaziar o carrinho?")) clear(); }}>ESVAZIAR CARRINHO</button>
         </div>
