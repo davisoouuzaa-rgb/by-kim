@@ -5,6 +5,7 @@ import { CartButton } from "../components/CartDrawer";
 import { useCart } from "../context/CartContext";
 import { showcaseProducts } from "../data/produtos";
 import { ArrowRight, Instagram, MapPin, Clock3, MessageCircle, Sparkles, TrainFront } from "lucide-react";
+import { usePageTitle } from "../hooks/use-page-title";
 
 export const Route = createFileRoute("/")({ component: Index });
 
@@ -12,6 +13,7 @@ const instagram = "https://www.instagram.com/bykimconfeitaria";
 const whatsapp = "https://wa.me/5511913171186?text=Ol%C3%A1%2C%20vim%20pelo%20site%20da%20By%20Kim%20e%20gostaria%20de%20saber%20mais!";
 
 function Index() {
+  usePageTitle("By Kim | Confeitaria em Santa Cecília, São Paulo");
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const { addItem, openCart } = useCart();
   const [optionSelections, setOptionSelections] = useState<Record<string, string>>({});
@@ -209,7 +211,7 @@ function Index() {
           {showcaseProducts.map((product) => (
             <article className="bk-product" key={product.name} data-reveal>
               <Link className="bk-product-image" to="/cardapio" aria-label={`Ver ${product.name} no cardápio`}>
-                <img src={product.image} alt={product.alt} loading="lazy" />
+                <img src={product.image} alt={product.alt} width={4} height={3} loading="lazy" decoding="async" />
               </Link>
               <div className="bk-product-info">
                 <div>
