@@ -6,13 +6,12 @@ const formatMoney = (value: number) => new Intl.NumberFormat("pt-BR", { style: "
 const whatsapp = "https://wa.me/5511913171186?text=";
 
 export function CartButton() {
-  const { count } = useCart();
-  const [open, setOpen] = useState(false);
+  const { count, isOpen, openCart, closeCart } = useCart();
   return <>
-    <button className="bk-cart-trigger" type="button" onClick={() => setOpen(true)} aria-label={`Abrir carrinho, ${count} itens`}>
+    <button className="bk-cart-trigger" type="button" onClick={openCart} aria-label={`Abrir carrinho, ${count} itens`}>
       <ShoppingBag size={17} /><span>CARRINHO</span><b>{count}</b>
     </button>
-    {open && <CartDrawer onClose={() => setOpen(false)} />}
+    {isOpen && <CartDrawer onClose={closeCart} />}
   </>;
 }
 
