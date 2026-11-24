@@ -1,4 +1,4 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
 import { ArrowRight, Instagram, MessageCircle, X, Plus, Minus } from "lucide-react";
 import { useCart } from "../context/CartContext";
@@ -13,14 +13,14 @@ const phone = "5511913171186";
 const whatsappBase = `https://wa.me/${phone}?text=`;
 
 type Product = { name: string; description?: string; price: string; slice?: boolean; category: string; flavor?: string | undefined; image?: string | undefined };
-type Fulfillment = "pickup" | "delivery";
 const allProducts: Product[] = categories.flatMap((category) => category.items.map((item) => ({ ...item, category: category.name, image: productImages[item.name] })));
 const money = (value: number) => value.toLocaleString("pt-BR", { style: "currency", currency: "BRL" });
 const cents = (price: string) => Math.round(Number(price.replace("R$", "").trim().replace(".", "").replace(",", ".")) * 100);
-const productMessage = (product: Product, quantity: number) => {
-  const total = money(cents(product.price) * quantity / 100);
-  return `Olá! Vim pelo site da By Kim e quero pedir: ${quantity}x ${product.name}${product.slice ? " (fatia)" : ""}${product.flavor ? ` - ${product.flavor}` : ""}. Total: ${total}`;
-};
+const cheesecakeNames = ["Cheesecake Original", "Cheesecake Cookies n Cream", "Cheesecake Cumaru", "Cheesecake de Trufas"];
+const cheesecakeOptions = ["Composta", "Goiabada", "Morango"];
+const sableOptions = ["Chocolate meio amargo", "Chocolate branco", "Chocolate de matchá"];
+const hasFlavor = (product: Product) => cheesecakeNames.includes(product.name) || product.name === "Presente Sable";
+const optionsFor = (product: Product) => product.name === "Presente Sable" ? sableOptions : cheesecakeOptions;
 
 function Cardapio() {
   const [selected, setSelected] = useState<Product | null>(null);
@@ -176,11 +176,11 @@ function Cardapio() {
     <main className="bk-page bk-menu-page">
       <div className="bk-topline">DOCES FORA DA CAIXA</div>
       <header className="bk-header bk-menu-header">
-        <a className="bk-wordmark" href="/" aria-label="By Kim início">
+        <Link className="bk-wordmark" to="/" aria-label="By Kim início">
           <span className="bk-mark">By Kim</span>
           <span className="bk-submark">CONFEITARIA</span>
-        </a>
-        <a className="bk-menu-back" href="/">← VOLTAR AO SITE</a>
+        </Link>
+        <Link className="bk-menu-back" to="/">← VOLTAR AO SITE</Link>
         <div className="bk-menu-header-actions">
           <CartButton />
           <a className="bk-header-cta" href={whatsappBase + encodeURIComponent("Olá, vim pelo site da By Kim e gostaria de saber mais!")} target="_blank" rel="noopener noreferrer">PEDIR <ArrowRight size={14} /></a>
@@ -203,7 +203,8 @@ function Cardapio() {
               {category.items.map((item, itemIndex) => {
                 const product = allProducts.find((entry) => entry.name === item.name)!;
                 const flavored = hasFlavor(product);
-                const flavor = flavored ? (flavorSelections[item.name] ?? "Composta") : undefined;
+                const productOptions = optionsFor(product);
+                const flavor = flavored ? (flavorSelections[item.name] ?? productOptions[0]) : undefined;
                 const listingProduct = flavored ? { ...product, flavor } : product;
                 const expanded = selected?.name === product.name;
                 const isCovered = Boolean(selected && selected.category === product.category && coveredIndex === itemIndex && !expanded);
@@ -241,7 +242,7 @@ function Cardapio() {
                           <h3>{product.name}</h3>
                           {product.slice && <p className="bk-product-serving">Serve 1 pessoa</p>}
                           {product.description && <p className="bk-product-description">{product.description}</p>}
-                          {flavored && <div className="bk-flavor-picker bk-flavor-picker-detail" aria-label="Escolha o sabor">{flavors.map((option) => <button type="button" key={option} className={selectedFlavor === option ? "active" : ""} onClick={() => { setSelectedFlavor(option); setFlavorSelections((current) => ({ ...current, [item.name]: option })); }}>{option}</button>)}</div>}
+                          {flavored && <div className="bk-flavor-picker bk-flavor-picker-detail" aria-label="Escolha a opção">{productOptions.map((option) => <button type="button" key={option} className={selectedFlavor === option ? "active" : ""} onClick={() => { setSelectedFlavor(option); setFlavorSelections((current) => ({ ...current, [item.name]: option })); }}>{option}</button>)}</div>}
                           <div className="bk-product-modal-price">{product.price}{product.slice && <span> · fatia</span>}</div>
                           <div className="bk-quantity-row">
                             <span>Quantidade</span>
@@ -257,8 +258,8 @@ function Cardapio() {
                       </div>
                     )}
                     <>
-                      {flavored && <div className="bk-flavor-picker bk-flavor-picker-list" aria-label="Sabor">
-                        {flavors.map((option) => <button type="button" key={option} className={flavor === option ? "active" : ""} onClick={() => setFlavorSelections((current) => ({ ...current, [item.name]: option }))}>{option}</button>)}
+                      {flavored && <div className="bk-flavor-picker bk-flavor-picker-list" aria-label="Opção">
+                        {productOptions.map((option) => <button type="button" key={option} className={flavor === option ? "active" : ""} onClick={() => setFlavorSelections((current) => ({ ...current, [item.name]: option }))}>{option}</button>)}
                       </div>}
                       <span className="bk-menu-item-bottom">
                         <span className="bk-menu-price"><strong>{item.price}</strong>{item.slice && <small>fatia</small>}</span>
@@ -277,7 +278,7 @@ function Cardapio() {
       <p className="bk-menu-allergens">Alérgenos: consulte a loja antes de pedir.</p>
 
       <footer className="bk-footer bk-menu-footer">
-        <a className="bk-footer-brand" href="/">By Kim <span>CONFEITARIA</span></a>
+        <Link className="bk-footer-brand" to="/">By Kim <span>CONFEITARIA</span></Link>
         <div className="bk-footer-links">
           <a href={instagram} target="_blank" rel="noopener noreferrer"><Instagram size={16} /> INSTAGRAM</a>
           <a href={whatsappBase + encodeURIComponent("Olá, vim pelo site da By Kim e gostaria de saber mais!")} target="_blank" rel="noopener noreferrer"><MessageCircle size={16} /> WHATSAPP</a>
