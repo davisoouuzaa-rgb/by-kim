@@ -45,7 +45,7 @@ const categories = [
     ],
   },
   {
-    name: "Coffee Sides",
+    name: "Para acompanhar o café",
     items: [
       { name: "Ugly Bites", description: "Aparas das massas folhadas, a versão crocante do desperdício", price: "R$ 18,00" },
       { name: "Sable com Chocolate Meio Amargo", description: "Biscoito amanteigado banhado com chocolate meio amargo, pacote com 10 unidades", price: "R$ 36,00" },
@@ -119,6 +119,7 @@ function Cardapio() {
   const [cart, setCart] = useState<CartItem[]>([]);
   const [cartLoaded, setCartLoaded] = useState(false);
   const [cartOpen, setCartOpen] = useState(false);
+  const [menuFilter, setMenuFilter] = useState("Todos");
   const [customerName, setCustomerName] = useState("");
   const [notes, setNotes] = useState("");
   const [fulfillment, setFulfillment] = useState<Fulfillment>("pickup");
@@ -260,6 +261,17 @@ function Cardapio() {
     return () => { window.removeEventListener("keydown", onKeyDown); document.body.style.overflow = ""; };
   }, [cartOpen]);
 
+  const filterNames = ["Todos", "Bolos", "Cheesecakes", "Tortas", "Palmier", "Biscoitos e chocolates", "Presentes"];
+  const categoryMatches = (name: string, category: string) => {
+    if (category === "Todos") return true;
+    if (category === "Bolos") return /bolo|entremet/i.test(name);
+    if (category === "Cheesecakes") return /cheesecake/i.test(name);
+    if (category === "Tortas") return /torta/i.test(name);
+    if (category === "Palmier") return /palmier|mil folhas/i.test(name);
+    if (category === "Biscoitos e chocolates") return /sable|chocolate|ugly bites|nozes/i.test(name);
+    if (category === "Presentes") return /presente|caixa/i.test(name);
+    return true;
+  };
   const itemCount = cart.reduce((sum, entry) => sum + entry.quantity, 0);
   const totalCents = cart.reduce((sum, entry) => sum + cents(entry.product.price) * entry.quantity, 0);
 
@@ -320,14 +332,16 @@ function Cardapio() {
         <p>Doce, com personalidade.</p>
       </section>
 
+      <div className="bk-menu-filter" role="group" aria-label="Filtrar cardápio">{filterNames.map((name) => <button type="button" key={name} className={menuFilter === name ? "active" : ""} onClick={() => setMenuFilter(name)}>{name}</button>)}</div>
+
       <div className="bk-menu-categories">
-        {categories.map((category) => (
+        {categories.map((category) => { const visibleItems = category.items.filter((item) => categoryMatches(item.name, menuFilter)); return visibleItems.length ? (
           <section className="bk-menu-category" key={category.name}>
             <div className="bk-menu-category-heading">
               <h2>{category.name}</h2>
             </div>
             <div className="bk-menu-grid">
-              {category.items.map((item) => {
+              {visibleItems.map((item) => {
                 const product = allProducts.find((entry) => entry.name === item.name)!;
                 const flavored = hasFlavor(product);
                 const flavor = flavored ? (flavorSelections[item.name] ?? "Composta") : undefined;
@@ -400,10 +414,10 @@ function Cardapio() {
               })}
             </div>
           </section>
-        ))}
+        ) : null; })}
       </div>
 
-      <p className="bk-menu-allergens">Alérgenos: consulte a loja antes de pedir.</p>
+      <p className="bk-menu-allergens">Em caso de alergia, fale com a loja antes de pedir.</p>
 
       <footer className="bk-footer bk-menu-footer">
         <a className="bk-footer-brand" href="/">By Kim <span>CONFEITARIA</span></a>
