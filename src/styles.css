@@ -3034,3 +3034,14 @@ html.js-reveal .bk-mobile-hero-copy[data-reveal] {
     bottom: 18px;
   }
 }
+
+.bk-cart-fields input:focus-visible,
+.bk-cart-fields textarea:focus-visible {
+  outline: 2px solid #b58b58;
+  outline-offset: 3px;
+}
+
+.bk-cart-heading h2:focus {
+  outline: 2px solid #b58b58;
+  outline-offset: 4px;
+}
