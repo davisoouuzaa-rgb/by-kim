@@ -13,7 +13,7 @@ const whatsapp = "https://wa.me/5511913171186?text=Ol%C3%A1%2C%20vim%20pelo%20si
 
 function Index() {
   const videoRef = useRef<HTMLVideoElement | null>(null);
-  const { addItem } = useCart();
+  const { addItem, openCart } = useCart();
   const [optionSelections, setOptionSelections] = useState<Record<string, string>>({});
   const [reducedMotion, setReducedMotion] = useState(
     () => typeof window !== "undefined" && window.matchMedia("(prefers-reduced-motion: reduce)").matches
@@ -212,7 +212,7 @@ function Index() {
                 <div>
                   <h3>{product.name}</h3>
                   {product.optionGroup === "cheesecake" && <div className="bk-flavor-picker" aria-label="Escolha a cobertura">{["Composta Goiabada Morango", "Goiabada", "Morango"].map((option) => <button type="button" key={option} className={(optionSelections[product.id] ?? "Composta Goiabada Morango") === option ? "active" : ""} onClick={() => setOptionSelections((current) => ({ ...current, [product.id]: option }))}>{option}</button>)}</div>}
-                  <button className="bk-product-ifood" type="button" onClick={() => addItem({ id: product.id, name: product.name, unitPrice: product.price, unit: product.unit, ...(product.optionGroup ? { option: optionSelections[product.id] ?? "Composta Goiabada Morango" } : {}) })}>ADICIONAR <ArrowRight size={14} /></button>
+                  <button className="bk-product-ifood" type="button" onClick={() => { addItem({ id: product.id, name: product.name, unitPrice: product.price, unit: product.unit, ...(product.optionGroup ? { option: optionSelections[product.id] ?? "Composta Goiabada Morango" } : {}) }); openCart(); }}>ADICIONAR <ArrowRight size={14} /></button>
                 </div>
                 <span>{product.displayPrice}</span>
               </div>
