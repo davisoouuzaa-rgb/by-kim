@@ -4,7 +4,7 @@ import SugarOverlay from "../components/SugarOverlay";
 import { CartButton } from "../components/CartDrawer";
 import { useCart } from "../context/CartContext";
 import { showcaseProducts } from "../data/produtos";
-import { ArrowRight, Instagram, MapPin, Clock3, MessageCircle, Sparkles, TrainFront } from "lucide-react";
+import { ArrowRight, Instagram, MapPin, Clock3, MessageCircle, Sparkles, TrainFront, Play, Pause } from "lucide-react";
 
 export const Route = createFileRoute("/")({ component: Index });
 
@@ -19,6 +19,8 @@ function Index() {
     () => typeof window !== "undefined" && window.matchMedia("(prefers-reduced-motion: reduce)").matches
   );
   const [heroTextVisible, setHeroTextVisible] = useState(false);
+  const [videoPlaying, setVideoPlaying] = useState(false);
+  const [videoFailed, setVideoFailed] = useState(false);
   const [headerVisible, setHeaderVisible] = useState(
     () => typeof window !== "undefined" && window.matchMedia("(prefers-reduced-motion: reduce)").matches
   );
@@ -32,7 +34,11 @@ function Index() {
     const media = window.matchMedia("(prefers-reduced-motion: reduce)");
     const syncMotionPreference = () => {
       setReducedMotion(media.matches);
-      if (media.matches) setHeaderVisible(true);
+      if (media.matches) {
+        setHeaderVisible(true);
+        videoRef.current?.pause();
+        setVideoPlaying(false);
+      }
     };
     syncMotionPreference();
     media.addEventListener?.("change", syncMotionPreference);
@@ -157,20 +163,38 @@ function Index() {
       </header>
 
       <section className={`bk-hero bk-video-hero${reducedMotion ? " bk-video-hero-reduced" : ""}`} id="inicio">
-        {!reducedMotion && (
-          <video
-            ref={videoRef}
-            className="bk-hero-video"
-            data-sieve-video
-            src="/hero-chef.mp4"
-            autoPlay={!reducedMotion}
-            muted
-            playsInline
-            preload="auto"
-            fetchPriority="high"
-            poster="/hero-chef-poster.jpg"
-          />
-        )}
+        <video
+          ref={videoRef}
+          className={`bk-hero-video${videoFailed ? " bk-hero-video-failed" : ""}`}
+          data-sieve-video
+          src="/hero-chef.mp4"
+          autoPlay={!reducedMotion}
+          muted
+          playsInline
+          preload={reducedMotion ? "none" : "auto"}
+          fetchPriority="high"
+          poster="/hero-chef-poster.jpg"
+          onPlay={() => setVideoPlaying(true)}
+          onPause={() => setVideoPlaying(false)}
+          onError={() => { setVideoFailed(true); setVideoPlaying(false); }}
+        />
+        <button
+          className="bk-hero-video-toggle"
+          type="button"
+          aria-label={videoPlaying ? "Pausar vídeo" : "Reproduzir vídeo"}
+          onClick={() => {
+            const video = videoRef.current;
+            if (!video || videoFailed) return;
+            if (video.paused) {
+              void video.play().catch(() => setVideoPlaying(false));
+            } else {
+              video.pause();
+            }
+          }}
+          disabled={videoFailed}
+        >
+          {videoPlaying ? <Pause size={15} aria-hidden="true" /> : <Play size={15} aria-hidden="true" />}
+        </button>
         <div className="bk-hero-video-gradient" aria-hidden="true" />
         <div className={`bk-hero-copy${heroTextVisible ? " is-in" : ""}`}>
           <h1>Doce, com<br /><em>personalidade.</em></h1>
