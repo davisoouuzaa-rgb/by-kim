@@ -2923,4 +2923,27 @@ html.js-reveal .bk-mobile-hero-copy[data-reveal] {
   }
 }
 
+/* BY KIM — manter título e descrição do produto visíveis ao abrir a compra */
+.bk-menu-item-expanded .bk-menu-item-open {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: stretch !important;
+  justify-content: flex-start !important;
+  gap: 14px !important;
+}
+
+.bk-menu-item-expanded .bk-menu-item-title,
+.bk-menu-item-expanded .bk-menu-item-description {
+  display: block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+}
+
+.bk-menu-item-expanded .bk-menu-item-title {
+  margin: 0 !important;
+}
+
+.bk-menu-item-expanded .bk-menu-item-description {
+  margin: 9px 0 0 !important;
+}
 
