@@ -2,7 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
 import { ArrowRight, Instagram, MessageCircle, X, Plus, Minus } from "lucide-react";
 import { useCart } from "../context/CartContext";
-import { CartButton, MenuCartSummary } from "../components/CartDrawer";
+import { CartButton } from "../components/CartDrawer";
 import { categories, catalogProducts } from "../data/produtos";
 import { usePageTitle } from "../hooks/use-page-title";
 
@@ -171,7 +171,7 @@ function Cardapio() {
       <div className="bk-topline">DOCES FORA DA CAIXA</div>
       <header className="bk-header bk-menu-header">
         <Link className="bk-wordmark" to="/" aria-label="By Kim início">
-          <span className="bk-mark">By Kim</span>
+          <span className="bk-mark">BY KIM</span>
           <span className="bk-submark">CONFEITARIA</span>
         </Link>
         <Link className="bk-menu-back" to="/" aria-label="Voltar para a página inicial"><span className="bk-menu-back-full">← Voltar para a página inicial</span><span className="bk-menu-back-short">← Início</span></Link>
@@ -271,7 +271,6 @@ function Cardapio() {
 
       <p className="bk-menu-allergens">Alérgenos: consulte a loja antes de pedir.</p>
 
-      <MenuCartSummary />
 
       <footer className="bk-footer bk-menu-footer">
         <Link className="bk-footer-brand" to="/">By Kim <span>CONFEITARIA</span></Link>
