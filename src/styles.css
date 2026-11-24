@@ -3576,3 +3576,45 @@ html.js-reveal .bk-mobile-hero-copy[data-reveal] {
 @media (max-width: 767px) {
   .bk-header:not(.bk-menu-header) { height: 64px; padding: 0 5%; }
 }
+
+
+/* BOTÕES — cantos arredondados e transições mais suaves (mesmas cores e fontes) */
+.bk-cart-trigger,
+.bk-menu-whatsapp,
+.bk-button,
+.bk-button-dark,
+.bk-menu-add,
+.bk-menu-order,
+.bk-flavor-picker button,
+.bk-fulfillment button,
+.bk-cart-clear {
+  border-radius: 999px;
+}
+.bk-modal-primary { border-radius: 16px; }
+.bk-quantity-control { border-radius: 999px; }
+.bk-quantity-control button { border-radius: 50%; }
+.bk-remove-item { border-radius: 50%; }
+.bk-cart-fields input,
+.bk-cart-fields textarea { border-radius: 12px; }
+
+.bk-cart-trigger,
+.bk-menu-whatsapp,
+.bk-button,
+.bk-button-dark,
+.bk-menu-add,
+.bk-menu-order,
+.bk-modal-primary,
+.bk-flavor-picker button,
+.bk-fulfillment button,
+.bk-cart-clear,
+.bk-quantity-control button,
+.bk-remove-item {
+  transition: background .28s ease, color .28s ease, border-color .28s ease, box-shadow .28s ease, transform .18s ease;
+}
+.bk-modal-primary:hover { box-shadow: 0 6px 18px rgba(0, 0, 0, .16); }
+.bk-menu-whatsapp:hover,
+.bk-cart-trigger:hover { box-shadow: 0 4px 14px rgba(0, 0, 0, .28); }
+.bk-menu-whatsapp:active,
+.bk-cart-trigger:active,
+.bk-menu-add:active,
+.bk-modal-primary:active { transform: scale(.97); }
