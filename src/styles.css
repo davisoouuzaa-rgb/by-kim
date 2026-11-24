@@ -1587,8 +1587,6 @@ html, body, .bk-page,
   @keyframes bk-menu-panel-mobile-in { from { opacity:0; transform:translateY(16px); } to { opacity:1; transform:translateY(0); } }
   @keyframes bk-menu-panel-mobile-out { from { opacity:1; transform:translateY(0); } to { opacity:0; transform:translateY(12px); } }
   .bk-menu-purchase-scroll { height: auto; max-height: none; overflow: visible; padding: 24px 20px 20px; }
-  .bk-menu-item-expanded .bk-menu-item-title,
-  .bk-menu-item-expanded .bk-menu-item-description { display: none; }
   .bk-menu-item-expanded .bk-flavor-picker-list,
   .bk-menu-item-expanded .bk-menu-item-bottom { display: none; }
 }
