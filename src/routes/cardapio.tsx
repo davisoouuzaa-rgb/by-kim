@@ -8,7 +8,6 @@ import { categories, productImages } from "../data/produtos";
 export const Route = createFileRoute("/cardapio")({ component: Cardapio });
 
 const instagram = "https://www.instagram.com/bykimconfeitaria";
-const ifood = "https://www.ifood.com.br/delivery/sao-paulo-sp/by-kim-confeitaria-santa-cecilia/6623c15d-18c8-4c00-90ab-61aabacf720b";
 const phone = "5511913171186";
 const whatsappBase = `https://wa.me/${phone}?text=`;
 
@@ -147,14 +146,6 @@ function Cardapio() {
     const timeout = window.setTimeout(() => setAddedFeedback(false), 1500);
     return () => window.clearTimeout(timeout);
   }, [addedFeedback]);
-
-  useEffect(() => {
-    if (!cartOpen) return;
-    const onKeyDown = (event: KeyboardEvent) => { if (event.key === "Escape") setCartOpen(false); };
-    window.addEventListener("keydown", onKeyDown);
-    document.body.style.overflow = "hidden";
-    return () => { window.removeEventListener("keydown", onKeyDown); document.body.style.overflow = ""; };
-  }, [cartOpen]);
 
   const addToCart = (product: Product, quantity: number, openCart = true) => {
     addItem({
