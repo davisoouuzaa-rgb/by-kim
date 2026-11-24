@@ -106,7 +106,6 @@ type ShowcaseProduct = { id: string; name: string; price: number; unit: string; 
 const makeShowcaseProduct = (
   name: string,
   catalogName: string,
-  image: string,
   alt: string,
   optionGroup?: "cheesecake",
 ): ShowcaseProduct => {
@@ -117,17 +116,17 @@ const makeShowcaseProduct = (
     price: product.price,
     unit: product.unit,
     displayPrice: `${product.priceText}${product.slice ? " · fatia" : ""}`,
-    image,
+    image: product.image,
     alt,
     ...(optionGroup ? { optionGroup } : {}),
   };
 };
 
 export const showcaseProducts: ShowcaseProduct[] = [
-  makeShowcaseProduct("Cheesecake Cookies n Cream", "Cheesecake Cookies n Cream", "/cheese%20cake%20cookie.jpg?v=20261122", "Cheesecake Cookies n Cream", "cheesecake"),
-  makeShowcaseProduct("Mil Folhas Palmier Baunilha", "Mil Folhas Palmier", "/mil%20folhas.jpg?v=20261122", "Mil Folhas Palmier Baunilha"),
-  makeShowcaseProduct("Entremet Espresso", "Entremet Espresso", "/entremet.jpg?v=20261122", "Entremet Espresso"),
-  makeShowcaseProduct("Torta de Banana", "Torta de Banana", "/torta%20banana.jpg?v=20261122", "Torta de Banana"),
-  makeShowcaseProduct("Sablee com Chocolate de Matchá", "Sablee com Chocolate de Matchá", "/sable%20matcha.jpg?v=20261122", "Sablee com Chocolate de Matchá"),
-  makeShowcaseProduct("Cheesecake Cumaru", "Cheesecake Cumaru", "/cheese%20cake%20cumaru.jpg?v=20261122", "Cheesecake Cumaru", "cheesecake"),
+  makeShowcaseProduct("Cheesecake Cookies n Cream", "Cheesecake Cookies n Cream", "Cheesecake Cookies n Cream", "cheesecake"),
+  makeShowcaseProduct("Mil Folhas Palmier Baunilha", "Mil Folhas Palmier", "Mil Folhas Palmier Baunilha"),
+  makeShowcaseProduct("Entremet Espresso", "Entremet Espresso", "Entremet Espresso"),
+  makeShowcaseProduct("Torta de Banana", "Torta de Banana", "Torta de Banana"),
+  makeShowcaseProduct("Sablee com Chocolate de Matchá", "Sablee com Chocolate de Matchá", "Sablee com Chocolate de Matchá"),
+  makeShowcaseProduct("Cheesecake Cumaru", "Cheesecake Cumaru", "Cheesecake Cumaru", "cheesecake"),
 ];
