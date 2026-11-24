@@ -148,7 +148,7 @@ export function MenuCartSummary() {
             <b>{formatMoney(item.unitPrice * item.quantity)}</b>
           </div>
           <div className="bk-menu-cart-item-actions">
-            <div className="bk-quantity-control" aria-label={`Quantidade de ${item.name}`}>
+            <div className="bk-quantity-control" role="group" aria-label={`Quantidade de ${item.name}`}>
               <button type="button" aria-label={`Diminuir quantidade de ${item.name}`} onClick={() => setQuantity(item.id, item.option, item.quantity - 1)}><Minus size={12} /></button>
               <strong>{item.quantity}</strong>
               <button type="button" aria-label={`Aumentar quantidade de ${item.name}`} onClick={() => setQuantity(item.id, item.option, item.quantity + 1)}><Plus size={12} /></button>
