@@ -2793,3 +2793,11 @@ html.js-reveal .bk-mobile-hero-copy[data-reveal] {
     background-image: url("/hero-chef-poster.jpg");
   }
 }
+
+
+/* BY KIM — o texto do hero só anima quando o vídeo começa */
+@media (prefers-reduced-motion: no-preference) {
+  .bk-video-hero .bk-hero-copy > * {
+    animation: none !important;
+  }
+}
