@@ -131,16 +131,18 @@ function Cardapio() {
     const current = trigger.closest<HTMLElement>(".bk-menu-item");
     const index = current ? cards.indexOf(current) : -1;
     const rect = current?.getBoundingClientRect();
+    const gridRect = grid?.getBoundingClientRect();
+    const isAtRightEdge = Boolean(rect && gridRect && rect.right >= gridRect.right - 2);
     const sameRow = rect ? cards.map((card, i) => ({ card, i, rect: card.getBoundingClientRect() })).filter((entry) => Math.abs(entry.rect.top - rect.top) < 2) : [];
     const position = sameRow.findIndex((entry) => entry.i === index);
     const next = sameRow[position + 1];
     const previous = sameRow[position - 1];
-    if (next) {
+    if (isAtRightEdge || (!next && previous)) {
+      setPanelSide("left");
+      setCoveredIndex(previous?.i ?? null);
+    } else if (next) {
       setPanelSide("right");
       setCoveredIndex(next.i);
-    } else if (previous) {
-      setPanelSide("left");
-      setCoveredIndex(previous.i);
     } else {
       setPanelSide("right");
       setCoveredIndex(null);
