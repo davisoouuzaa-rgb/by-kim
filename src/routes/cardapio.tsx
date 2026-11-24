@@ -16,7 +16,7 @@ const allProducts: Product[] = categories.flatMap((category) => category.items.m
 const money = (value: number) => value.toLocaleString("pt-BR", { style: "currency", currency: "BRL" });
 const cents = (price: string) => Math.round(Number(price.replace("R$", "").trim().replace(".", "").replace(",", ".")) * 100);
 const cheesecakeNames = ["Cheesecake Original", "Cheesecake Cookies n Cream", "Cheesecake Cumaru", "Cheesecake de Trufas"];
-const cheesecakeOptions = ["Composta", "Goiabada", "Morango"];
+const cheesecakeOptions = ["Composta Goiabada Morango", "Goiabada", "Morango"];
 const sableOptions = ["Chocolate meio amargo", "Chocolate branco", "Chocolate de matchá"];
 const hasFlavor = (product: Product) => cheesecakeNames.includes(product.name) || product.name === "Presente Sable";
 const optionsFor = (product: Product) => product.name === "Presente Sable" ? sableOptions : cheesecakeOptions;
