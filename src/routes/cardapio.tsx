@@ -153,7 +153,7 @@ function Cardapio() {
       name: product.name,
       unitPrice: cents(product.price) / 100,
       unit: product.slice ? "fatia" : "unidade",
-      option: product.flavor,
+      ...(product.flavor ? { option: product.flavor } : {}),
     }, quantity);
     if (openCart) {
       setSelected(null);
