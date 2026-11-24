@@ -2786,7 +2786,7 @@ html.js-reveal .bk-mobile-hero-copy[data-reveal] {
 }
 @media (max-width: 767px) {
   .bk-video-hero {
-    aspect-ratio: auto;
+    aspect-ratio: 16 / 9;
     background-position: 72% center;
   }
 }
@@ -3044,4 +3044,22 @@ html.js-reveal .bk-mobile-hero-copy[data-reveal] {
 .bk-cart-heading h2:focus {
   outline: 2px solid #b58b58;
   outline-offset: 4px;
+}
+
+
+/* Desempenho: fallback neutro para imagens sem alterar suas proporções. */
+.bk-product-image.bk-image-fallback {
+  background: #171717;
+}
+.bk-product-image.bk-image-fallback img,
+.bk-menu-item-open.bk-image-fallback .bk-menu-product-image {
+  display: none;
+}
+.bk-menu-item-open.bk-image-fallback::before {
+  content: "";
+  display: block;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  margin: 0 0 15px;
+  background: #242321;
 }
