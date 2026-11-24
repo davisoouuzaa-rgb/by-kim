@@ -2897,17 +2897,6 @@ html.js-reveal .bk-mobile-hero-copy[data-reveal] {
     animation: none !important;
   }
 
-  .bk-menu-purchase-panel-right:not(.bk-menu-purchase-panel-closing),
-  .bk-menu-purchase-panel-left:not(.bk-menu-purchase-panel-closing) {
-    animation-duration: 480ms !important;
-    animation-timing-function: cubic-bezier(.22, 1, .36, 1) !important;
-  }
-
-  .bk-menu-purchase-panel-right.bk-menu-purchase-panel-closing,
-  .bk-menu-purchase-panel-left.bk-menu-purchase-panel-closing {
-    animation-duration: 360ms !important;
-    animation-timing-function: ease-out !important;
-  }
 
   .bk-cart-drawer {
     animation-duration: 420ms !important;
@@ -2949,16 +2938,6 @@ html.js-reveal .bk-mobile-hero-copy[data-reveal] {
     transform: none !important;
   }
 
-  /* No celular, o painel também entra apenas com fade. */
-  .bk-menu-purchase-panel-right:not(.bk-menu-purchase-panel-closing),
-  .bk-menu-purchase-panel-left:not(.bk-menu-purchase-panel-closing) {
-    animation-name: bk-fade-in !important;
-  }
-  .bk-menu-purchase-panel-right.bk-menu-purchase-panel-closing,
-  .bk-menu-purchase-panel-left.bk-menu-purchase-panel-closing {
-    animation-name: bk-fade-in !important;
-    animation-direction: reverse !important;
-  }
 
   .bk-product-modal,
   .bk-cart-drawer {
@@ -2967,61 +2946,3 @@ html.js-reveal .bk-mobile-hero-copy[data-reveal] {
 }
 
 
-/* BY KIM — saída suave do preço e das ações ao abrir o produto */
-@media (prefers-reduced-motion: no-preference) {
-  .bk-menu-item-bottom,
-  .bk-flavor-picker-list {
-    opacity: 1;
-    visibility: visible;
-    transition:
-      opacity 420ms cubic-bezier(.22, 1, .36, 1),
-      visibility 0s linear 0s;
-  }
-
-  .bk-menu-item-expanded .bk-menu-item-bottom,
-  .bk-menu-item-expanded .bk-flavor-picker-list {
-    opacity: 0;
-    visibility: hidden;
-    transition:
-      opacity 420ms cubic-bezier(.22, 1, .36, 1),
-      visibility 0s linear 420ms;
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .bk-menu-item-bottom,
-  .bk-flavor-picker-list {
-    transition: none !important;
-  }
-}
-
-
-/* BY KIM — fechamento animado igual para painéis à esquerda e à direita */
-@media (prefers-reduced-motion: no-preference) {
-  .bk-menu-purchase-panel-right.bk-menu-purchase-panel-closing,
-  .bk-menu-purchase-panel-left.bk-menu-purchase-panel-closing {
-    animation-name: bk-fade-in !important;
-    animation-direction: reverse !important;
-    animation-duration: 240ms !important;
-    animation-timing-function: cubic-bezier(.4, 0, .2, 1) !important;
-    animation-fill-mode: both !important;
-  }
-
-  /* O preço e as ações reaparecem suavemente enquanto a aba fecha. */
-  .bk-menu-item-closing .bk-menu-item-bottom,
-  .bk-menu-item-closing .bk-flavor-picker-list {
-    display: flex !important;
-    opacity: 1 !important;
-    visibility: visible !important;
-    transition:
-      opacity 220ms cubic-bezier(.22, 1, .36, 1),
-      visibility 0s linear 0s !important;
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .bk-menu-purchase-panel-right.bk-menu-purchase-panel-closing,
-  .bk-menu-purchase-panel-left.bk-menu-purchase-panel-closing {
-    animation: none !important;
-  }
-}
