@@ -61,10 +61,15 @@ function Index() {
   const [reducedMotion, setReducedMotion] = useState(
     () => typeof window !== "undefined" && window.matchMedia("(prefers-reduced-motion: reduce)").matches
   );
-  const [heroVideoStarted, setHeroVideoStarted] = useState(false);
+  const [heroTextVisible, setHeroTextVisible] = useState(false);
   const [headerVisible, setHeaderVisible] = useState(
     () => typeof window !== "undefined" && window.matchMedia("(prefers-reduced-motion: reduce)").matches
   );
+
+  useEffect(() => {
+    const heroTextTimer = window.setTimeout(() => setHeroTextVisible(true), 1000);
+    return () => window.clearTimeout(heroTextTimer);
+  }, []);
 
   useEffect(() => {
     const media = window.matchMedia("(prefers-reduced-motion: reduce)");
@@ -208,11 +213,10 @@ function Index() {
             preload="auto"
             fetchPriority="high"
             poster="/hero-chef-poster.jpg"
-            onPlaying={() => setHeroVideoStarted(true)}
           />
         )}
         <div className="bk-hero-video-gradient" aria-hidden="true" />
-        <div className={`bk-hero-copy${heroVideoStarted || reducedMotion ? " is-in" : ""}`} data-reveal>
+        <div className={`bk-hero-copy${heroTextVisible ? " is-in" : ""}`} data-reveal>
           <h1>Doce, com<br /><em>personalidade.</em></h1>
           <p className="bk-hero-subtitle">Cheesecakes, bolos e doces autorais em Santa Cecília, São Paulo.</p>
         </div>
