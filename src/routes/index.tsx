@@ -215,7 +215,7 @@ function Index() {
           />
         )}
         <div className="bk-hero-video-gradient" aria-hidden="true" />
-        <div className={`bk-hero-copy${heroTextVisible ? " is-in" : ""}`} data-reveal>
+        <div className={`bk-hero-copy${heroTextVisible ? " is-in" : ""}`}>
           <h1>Doce, com<br /><em>personalidade.</em></h1>
           <p className="bk-hero-subtitle">Cheesecakes, bolos e doces autorais em Santa Cecília, São Paulo.</p>
         </div>
