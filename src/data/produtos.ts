@@ -71,7 +71,7 @@ export const productImages: Record<string, string> = {
   "Presente Sable": "/presente%20sable.jpg?v=20261122",
 };
 
-export const showcaseProducts = [
+export const showcaseProducts: Array<{ id: string; name: string; price: number; unit: string; displayPrice: string; image: string; alt: string; optionGroup?: "cheesecake" }> = [
   { id: "cheesecake-cookies-n-cream", name: "Cheesecake Cookies n Cream", price: 39, unit: "fatia", displayPrice: "R$ 39,00 · fatia", image: "/cheese%20cake%20cookie.jpg?v=20261122", alt: "Cheesecake Cookies n Cream", optionGroup: "cheesecake" as const },
   { id: "mil-folhas-palmier-baunilha", name: "Mil Folhas Palmier Baunilha", price: 40.04, unit: "unidade", displayPrice: "R$ 40,04", image: "/mil%20folhas.jpg?v=20261122", alt: "Mil Folhas Palmier Baunilha" },
   { id: "entremet-espresso", name: "Entremet Espresso", price: 45.5, unit: "fatia", displayPrice: "R$ 45,50 · fatia", image: "/entremet.jpg?v=20261122", alt: "Entremet Espresso" },
