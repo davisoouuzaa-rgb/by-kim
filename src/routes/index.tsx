@@ -211,8 +211,8 @@ function Index() {
               <div className="bk-product-info">
                 <div>
                   <h3>{product.name}</h3>
-                  {product.optionGroup === "cheesecake" && <div className="bk-flavor-picker" aria-label="Escolha a cobertura">{["Composta", "Goiabada", "Morango"].map((option) => <button type="button" key={option} className={(optionSelections[product.id] ?? "Composta") === option ? "active" : ""} onClick={() => setOptionSelections((current) => ({ ...current, [product.id]: option }))}>{option}</button>)}</div>}
-                  <button className="bk-product-ifood" type="button" onClick={() => addItem({ id: product.id, name: product.name, unitPrice: product.price, unit: product.unit, option: product.optionGroup ? (optionSelections[product.id] ?? "Composta") : undefined })}>ADICIONAR <ArrowRight size={14} /></button>
+                  {product.optionGroup === "cheesecake" && <div className="bk-flavor-picker" aria-label="Escolha a cobertura">{["Composta Goiabada Morango", "Goiabada", "Morango"].map((option) => <button type="button" key={option} className={(optionSelections[product.id] ?? "Composta Goiabada Morango") === option ? "active" : ""} onClick={() => setOptionSelections((current) => ({ ...current, [product.id]: option }))}>{option}</button>)}</div>}
+                  <button className="bk-product-ifood" type="button" onClick={() => addItem({ id: product.id, name: product.name, unitPrice: product.price, unit: product.unit, option: product.optionGroup ? (optionSelections[product.id] ?? "Composta Goiabada Morango") : undefined })}>ADICIONAR <ArrowRight size={14} /></button>
                 </div>
                 <span>{product.displayPrice}</span>
               </div>
