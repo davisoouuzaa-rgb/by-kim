@@ -165,7 +165,7 @@ function Index() {
           ref={videoRef}
           className={`bk-hero-video${videoFailed ? " bk-hero-video-failed" : ""}`}
           data-sieve-video
-          src="/hero-chef.mp4"
+          src={reducedMotion ? undefined : "/hero-chef.mp4"}
           autoPlay={motionPreferenceReady && !reducedMotion}
           muted
           playsInline
