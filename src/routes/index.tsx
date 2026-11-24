@@ -86,8 +86,6 @@ function Index() {
     let touchStartY = 0;
     const onTouchStart = (event: TouchEvent) => {
       touchStartY = event.touches[0]?.clientY ?? 0;
-      const video = videoRef.current;
-      if (video && video.paused && !video.ended) void video.play().catch(() => undefined);
     };
     const onTouchMove = (event: TouchEvent) => {
       const currentY = event.touches[0]?.clientY ?? touchStartY;
@@ -187,12 +185,6 @@ function Index() {
     };
   }, []);
 
-  const handleVideoEnded = () => setHeaderVisible(true);
-  const handleVideoCanPlay = () => {
-    const video = videoRef.current;
-    if (video && video.paused && !video.ended) void video.play().catch(() => undefined);
-  };
-
   return (
     <main className="bk-page">
       <SugarOverlay />
@@ -217,13 +209,13 @@ function Index() {
             className="bk-hero-video"
             data-sieve-video
             src="/hero-chef.mp4"
-            autoPlay
+            autoPlay={!reducedMotion}
             muted
             playsInline
+            loop
             preload="auto"
-            onEnded={handleVideoEnded}
-            onCanPlay={handleVideoCanPlay}
-            onError={handleVideoEnded}
+            fetchPriority="high"
+            poster="/hero-poster.jpg"
           />
         )}
         <div className="bk-hero-video-gradient" aria-hidden="true" />
