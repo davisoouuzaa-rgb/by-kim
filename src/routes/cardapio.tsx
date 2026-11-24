@@ -4,6 +4,7 @@ import { ArrowRight, Instagram, MessageCircle, X, Plus, Minus } from "lucide-rea
 import { useCart } from "../context/CartContext";
 import { CartButton, MenuCartSummary } from "../components/CartDrawer";
 import { categories, catalogProducts } from "../data/produtos";
+import { usePageTitle } from "../hooks/use-page-title";
 
 export const Route = createFileRoute("/cardapio")({ component: Cardapio });
 
@@ -22,6 +23,7 @@ const hasFlavor = (product: Product) => cheesecakeNames.includes(product.name) |
 const optionsFor = (product: Product) => product.name === "Presente Sable" ? sableOptions : cheesecakeOptions;
 
 function Cardapio() {
+  usePageTitle("Cardápio | By Kim Confeitaria");
   const [selected, setSelected] = useState<Product | null>(null);
   const [closingSelected, setClosingSelected] = useState(false);
   const [panelSide, setPanelSide] = useState<"right" | "left">("right");
@@ -186,7 +188,7 @@ function Cardapio() {
       </section>
 
       <div className="bk-menu-categories">
-        {categories.map((category) => (
+        {categories.map((category, categoryIndex) => (
           <section className="bk-menu-category" key={category.name}>
             <div className="bk-menu-category-heading">
               <h2>{category.name}</h2>
@@ -222,7 +224,7 @@ function Cardapio() {
                         openProduct(listingProduct, flavor ?? "Composta", event.currentTarget);
                       }}
                     >
-                      {product.image && <img className="bk-menu-product-image" src={product.image} alt={item.name} loading="lazy" />}
+                      {product.image && <img className="bk-menu-product-image" src={product.image} alt={item.name} width={4} height={3} loading={categoryIndex === 0 && itemIndex === 0 ? "eager" : "lazy"} decoding="async" fetchPriority={categoryIndex === 0 && itemIndex === 0 ? "high" : "auto"} />}
                       <span className="bk-menu-item-title">{item.name}</span>
                       {item.description && <span className="bk-menu-item-description">{item.description}</span>}
                     </button>
