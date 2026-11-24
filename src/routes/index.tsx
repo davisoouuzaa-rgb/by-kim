@@ -306,7 +306,7 @@ function Index() {
                   <h3>{product.name}</h3>
                   <button className="bk-product-ifood bk-product-cta" type="button" onClick={() => {
                   const name = product.name === "Mil Folhas Palmier Baunilha" ? "Mil Folhas Palmier" : product.name;
-                  const amountText = product.price.match(/R\\$\\s*([\\d.,]+)/)?.[1] || "0";
+                  const amountText = product.price.split("R$")[1]?.trim().split(" ")[0] || "0";
                   const amount = Number(amountText.replace(".", "").replace(",", "."));
                   const cartProduct = { name, price: "R$ " + amount.toFixed(2).replace(".", ","), slice: product.price.toLowerCase().includes("fatia"), category: "Vitrine", description: product.detail || "", flavor: product.cheesecake ? "Composta" : undefined };
                   try {
