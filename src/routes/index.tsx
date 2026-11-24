@@ -209,7 +209,6 @@ function Index() {
             autoPlay={!reducedMotion}
             muted
             playsInline
-            loop
             preload="auto"
             fetchPriority="high"
             poster="/hero-chef-poster.jpg"
