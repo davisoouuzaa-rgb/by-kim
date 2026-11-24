@@ -3060,7 +3060,7 @@ html.js-reveal .bk-mobile-hero-copy[data-reveal] {
 }
 
 
-/* Home mobile: texto sobre o vídeo, com degradê apenas na metade inferior */
+/* Home mobile: texto ancorado na base do vídeo e degradê mais amplo */
 @media (max-width: 767px) {
   .bk-video-hero {
     position: relative;
@@ -3070,7 +3070,7 @@ html.js-reveal .bk-mobile-hero-copy[data-reveal] {
     align-items: stretch;
     height: 100svh;
     min-height: 560px;
-    padding: 0 7% max(7svh, 42px);
+    padding: 0;
     overflow: hidden;
     background: #0A0A0A;
   }
@@ -3088,22 +3088,27 @@ html.js-reveal .bk-mobile-hero-copy[data-reveal] {
   .bk-video-hero .bk-hero-video-gradient {
     position: absolute;
     z-index: 0;
-    inset: 45% 0 0;
+    inset: 25% 0 0;
     background: linear-gradient(
       to top,
-      rgba(10, 10, 10, .96) 0%,
-      rgba(10, 10, 10, .72) 35%,
-      rgba(10, 10, 10, .24) 72%,
+      rgba(10, 10, 10, .98) 0%,
+      rgba(10, 10, 10, .86) 28%,
+      rgba(10, 10, 10, .58) 52%,
+      rgba(10, 10, 10, .24) 76%,
       rgba(10, 10, 10, 0) 100%
     );
     pointer-events: none;
   }
 
   .bk-video-hero .bk-hero-copy {
-    position: relative;
+    position: absolute;
     z-index: 1;
+    left: 7%;
+    right: 7%;
+    bottom: max(6svh, 36px);
     display: flex !important;
-    width: 100%;
+    flex-direction: column;
+    width: auto;
     max-width: none;
     min-width: 0;
     margin: 0;
