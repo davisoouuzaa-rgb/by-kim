@@ -34,6 +34,7 @@ function validCart(value: unknown): value is CartItem[] {
 
 export function CartProvider({ children }: { children: ReactNode }) {
   const [items, setItems] = useState<CartItem[]>(() => {
+    if (typeof window === "undefined") return [];
     try {
       const saved = window.localStorage.getItem(STORAGE_KEY);
       if (!saved) return [];
