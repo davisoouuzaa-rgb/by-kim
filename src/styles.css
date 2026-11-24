@@ -2842,3 +2842,79 @@ html.js-reveal .bk-mobile-hero-copy[data-reveal] {
     transition: none;
   }
 }
+
+
+/* BY KIM — movimento sutil e clean */
+@media (prefers-reduced-motion: no-preference) {
+  html { scroll-behavior: smooth; }
+
+  .bk-page *,
+  .bk-page *::before,
+  .bk-page *::after {
+    scroll-behavior: smooth;
+  }
+
+  .bk-product,
+  .bk-product-image img,
+  .bk-product-arrow,
+  .bk-product-number,
+  .bk-text-link,
+  .bk-footer-links a,
+  .bk-image-stamp,
+  .bk-header-cta,
+  .bk-button,
+  .bk-menu-item,
+  .bk-menu-purchase-link svg {
+    transition-duration: 650ms !important;
+    transition-timing-function: cubic-bezier(.22, 1, .36, 1) !important;
+  }
+
+  .bk-product:hover,
+  .bk-visit-copy .bk-details > div:hover,
+  .bk-text-link:hover,
+  .bk-footer-links a:hover {
+    transform: none !important;
+  }
+
+  .bk-product:hover .bk-product-number,
+  .bk-hero-image-wrap:hover .bk-image-stamp {
+    transform: none !important;
+  }
+
+  .bk-product-image:hover img {
+    transform: scale(1.025) !important;
+  }
+
+  .bk-product-image:hover::after {
+    animation: none !important;
+  }
+
+  .bk-hero-image {
+    animation: bk-image-settle 1.6s cubic-bezier(.22, 1, .36, 1) both !important;
+  }
+
+  .bk-marquee-sparkle {
+    animation: none !important;
+  }
+
+  .bk-menu-purchase-panel-right:not(.bk-menu-purchase-panel-closing),
+  .bk-menu-purchase-panel-left:not(.bk-menu-purchase-panel-closing) {
+    animation-duration: 480ms !important;
+    animation-timing-function: cubic-bezier(.22, 1, .36, 1) !important;
+  }
+
+  .bk-menu-purchase-panel-right.bk-menu-purchase-panel-closing,
+  .bk-menu-purchase-panel-left.bk-menu-purchase-panel-closing {
+    animation-duration: 360ms !important;
+    animation-timing-function: ease-out !important;
+  }
+
+  .bk-cart-drawer {
+    animation-duration: 420ms !important;
+    animation-timing-function: cubic-bezier(.22, 1, .36, 1) !important;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto !important; }
+}
