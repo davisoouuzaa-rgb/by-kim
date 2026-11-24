@@ -1,13 +1,16 @@
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { createFileRoute } from "@tanstack/react-router";
 import SugarOverlay from "../components/SugarOverlay";
-import { ArrowRight, Instagram, MapPin, Clock3, MessageCircle, Sparkles, TrainFront } from "lucide-react";
+import { ArrowRight, Instagram, MapPin, Clock3, MessageCircle, Sparkles, TrainFront, ShoppingBag } from "lucide-react";
 
 export const Route = createFileRoute("/")({ component: Index });
 
 const instagram = "https://www.instagram.com/bykimconfeitaria";
 const whatsapp = "https://wa.me/5511913171186?text=Ol%C3%A1%2C%20vim%20pelo%20site%20da%20By%20Kim%20e%20gostaria%20de%20saber%20mais!";
 const ifood = "https://www.ifood.com.br/delivery/sao-paulo-sp/by-kim-confeitaria-santa-cecilia/6623c15d-18c8-4c00-90ab-61aabacf720b";
+const mapsUrl = "https://www.google.com/maps/search/?api=1&query=Rua+Tupi+114+Santa+Cecilia+Sao+Paulo";
+const cartStorageKey = "bykim-cardapio-cart-v1";
+const orderWhatsapp = "https://wa.me/5511913171186?text=" + encodeURIComponent("Olá! Quero fazer uma encomenda pelo site da By Kim.\nData para retirada:\nTamanho ou quantidade:\nSabor:\nObservações:");
 
 const products = [
   {
@@ -61,9 +64,39 @@ function Index() {
   const [reducedMotion, setReducedMotion] = useState(
     () => typeof window !== "undefined" && window.matchMedia("(prefers-reduced-motion: reduce)").matches
   );
+  const [cartCount, setCartCount] = useState(0);
+  const [storeStatus, setStoreStatus] = useState("Verificando horário...");
   const [headerVisible, setHeaderVisible] = useState(
     () => typeof window !== "undefined" && window.matchMedia("(prefers-reduced-motion: reduce)").matches
   );
+
+  useEffect(() => {
+    const updateCount = () => { try { const entries = JSON.parse(localStorage.getItem(cartStorageKey) || "[]"); setCartCount(Array.isArray(entries) ? entries.reduce((sum: number, item: any) => sum + (Number(item.quantity) || 0), 0) : 0); } catch { setCartCount(0); } };
+    updateCount();
+    window.addEventListener("storage", updateCount);
+    window.addEventListener("bykim-cart-updated", updateCount);
+    return () => { window.removeEventListener("storage", updateCount); window.removeEventListener("bykim-cart-updated", updateCount); };
+  }, []);
+
+
+  useEffect(() => {
+    const updateHours = () => {
+      const parts = new Intl.DateTimeFormat("en-US", { timeZone: "America/Sao_Paulo", weekday: "short", hour: "2-digit", minute: "2-digit", hourCycle: "h23" }).formatToParts(new Date());
+      const day = parts.find((p) => p.type === "weekday")?.value || "";
+      const hour = Number(parts.find((p) => p.type === "hour")?.value || 0);
+      const minute = Number(parts.find((p) => p.type === "minute")?.value || 0);
+      const minutes = hour * 60 + minute;
+      const openDay = ["Tue", "Wed", "Thu", "Fri", "Sat", "Sun"].includes(day);
+      if (openDay && minutes >= 600 && minutes < 1050) setStoreStatus("Aberto agora · fecha às 17h30");
+      else if (openDay && minutes < 600) setStoreStatus("Fechado agora · abrimos às 10h de hoje");
+      else if (day === "Mon") setStoreStatus("Fechado agora · abrimos às 10h de terça");
+      else setStoreStatus("Fechado agora · abrimos às 10h do próximo dia de funcionamento");
+    };
+    updateHours();
+    const timer = window.setInterval(updateHours, 60000);
+    return () => window.clearInterval(timer);
+  }, []);
+
 
   useEffect(() => {
     const media = window.matchMedia("(prefers-reduced-motion: reduce)");
@@ -207,6 +240,7 @@ function Index() {
           <a href="/cardapio">Cardápio</a>
           <a href="#visite">Visite a By Kim</a>
         </nav>
+        <a className="bk-cart-trigger" href="/cardapio" aria-label={`Abrir carrinho, ${cartCount} itens`}><ShoppingBag size={16}/><span>CARRINHO</span><b>{cartCount}</b></a>
         <a className="bk-header-cta" href={whatsapp} target="_blank" rel="noreferrer">PEDIR <ArrowRight size={14} /></a>
       </header>
 
@@ -238,6 +272,8 @@ function Index() {
         <p>Cheesecakes, bolos e doces autorais em Santa Cecília, São Paulo.</p>
       </section>
 
+      <section className="bk-location-hours" aria-label="Funcionamento e localização"><p><Clock3 size={15}/>{storeStatus}</p><a href={mapsUrl} target="_blank" rel="noreferrer">COMO CHEGAR <ArrowRight size={14}/></a></section>
+
       <section className="bk-marquee" aria-label="Especialidades">
         <span>CHEESECAKES</span><Sparkles className="bk-marquee-sparkle" size={16} strokeWidth={1.5} aria-hidden="true" /><span>BOLOS</span><Sparkles className="bk-marquee-sparkle" size={16} strokeWidth={1.5} aria-hidden="true" /><span>MIL-FOLHAS</span>
       </section>
@@ -247,7 +283,8 @@ function Index() {
         <div className="bk-about-main">
           
           <h2 data-reveal>A casa<br /><em>By Kim.</em></h2>
-          <p className="bk-about-text" data-reveal>Confeitaria autoral em Santa Cecília.</p>
+          <p className="bk-about-text" data-reveal>Desde 2021, Veronica Kim cria doces com referências coreanas, francesas e brasileiras. Em 2023, a By Kim ganhou uma loja física em Santa Cecília, onde você pode acompanhar a produção de perto.</p>
+          <img className="bk-about-photo" src="/sobre.jpg" alt="Veronica Kim na confeitaria By Kim, em Santa Cecília" loading="lazy" width="640" height="800" />
           <a className="bk-underlined" href={instagram} target="_blank" rel="noreferrer">CONHEÇA NO INSTAGRAM <ArrowRight size={15} /></a>
         </div>
       </section>
@@ -266,7 +303,7 @@ function Index() {
               <div className="bk-product-info">
                 <div>
                   <h3>{product.name}</h3>
-                  <a className="bk-product-ifood" href="/cardapio" target="_blank" rel="noopener noreferrer">VER NO CARDÁPIO <ArrowRight size={14} /></a>
+                  <a className="bk-product-ifood" href="/cardapio">ADICIONAR <ArrowRight size={14} /></a>
                 </div>
                 <span>{product.price}</span>
               </div>
@@ -277,6 +314,10 @@ function Index() {
           <a className="bk-underlined" href="/cardapio" target="_blank" rel="noopener noreferrer">CARDÁPIO COMPLETO <ArrowRight size={15} /></a>
         </div>
       </section>
+
+      <section className="bk-order-section" id="encomendas" data-reveal><p className="bk-eyebrow">ENCOMENDAS</p><h2>Encomende seu <em>bolo.</em></h2><p>Bolos e tortas podem ser encomendados para deixar seus momentos ainda mais especiais. Prazo mínimo: <strong>[CONFIRMAR]</strong>.</p><a href={orderWhatsapp} target="_blank" rel="noreferrer">PEDIR ENCOMENDA <ArrowRight size={15}/></a></section>
+
+      <section className="bk-testimonials" hidden><h2>O que dizem os clientes</h2><ul>{[].map((quote, index) => <li key={index}>{quote}</li>)}</ul></section>
 
       <section className="bk-visit" id="visite">
         <div className="bk-visit-copy">
