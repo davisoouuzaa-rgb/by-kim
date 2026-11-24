@@ -255,7 +255,7 @@ function Cardapio() {
                       </div>}
                       <span className="bk-menu-item-bottom">
                         <span className="bk-menu-price"><strong>{item.price}</strong>{item.slice && <small>fatia</small>}</span>
-                        <button type="button" className="bk-menu-add" aria-label={`Adicionar ${listingProduct.name} ao pedido`} onClick={() => addToCart(listingProduct, 1)}>ADICIONAR</button>
+                        <button type="button" className="bk-menu-add" aria-label={`Adicionar ${listingProduct.name} ao pedido`} onClick={() => addToCart(listingProduct, 1, false)}>ADICIONAR</button>
 
                       </span>
                     </>
