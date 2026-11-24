@@ -110,7 +110,7 @@ function Cardapio() {
   const [selected, setSelected] = useState<Product | null>(null);
   const [closingSelected, setClosingSelected] = useState(false);
   const [panelSide, setPanelSide] = useState<"right" | "left">("right");
-  const [, setCoveredIndex] = useState<number | null>(null);
+  const [coveredIndex, setCoveredIndex] = useState<number | null>(null);
   const [pendingSelection, setPendingSelection] = useState<{ product: Product; flavor: string; trigger: HTMLButtonElement } | null>(null);
   const [addedFeedback, setAddedFeedback] = useState(false);
   const [productQty, setProductQty] = useState(1);
@@ -329,13 +329,13 @@ function Cardapio() {
               <h2>{category.name}</h2>
             </div>
             <div className="bk-menu-grid">
-              {category.items.map((item) => {
+              {category.items.map((item, itemIndex) => {
                 const product = allProducts.find((entry) => entry.name === item.name)!;
                 const flavored = hasFlavor(product);
                 const flavor = flavored ? (flavorSelections[item.name] ?? "Composta") : undefined;
                 const listingProduct = flavored ? { ...product, flavor } : product;
                 const expanded = selected?.name === product.name;
-                const isCovered = false;
+                const isCovered = Boolean(selected && selected.category === product.category && coveredIndex === itemIndex && !expanded);
                 const activeProduct = flavored ? { ...product, flavor: selectedFlavor } : product;
                 return (
                   <article
