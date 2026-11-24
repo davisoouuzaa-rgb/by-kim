@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { ArrowRight, Minus, Plus, ShoppingBag, Trash2, X } from "lucide-react";
 import { useCart } from "../context/CartContext";
 
@@ -20,6 +20,12 @@ export function CartDrawer({ onClose }: { onClose: () => void }) {
   const { items, count, subtotal, setQuantity, removeItem, clear } = useCart();
   const [name, setName] = useState("");
   const [notes, setNotes] = useState("");
+  useEffect(() => {
+    const onKeyDown = (event: KeyboardEvent) => { if (event.key === "Escape") onClose(); };
+    document.body.style.overflow = "hidden";
+    window.addEventListener("keydown", onKeyDown);
+    return () => { document.body.style.overflow = ""; window.removeEventListener("keydown", onKeyDown); };
+  }, [onClose]);
   const message = useMemo(() => [
     "Olá! Vim pelo site da By Kim e quero pedir:",
     ...items.map((item) => `- ${item.quantity}x ${item.name}${item.unit === "fatia" ? " (fatia)" : ""}${item.option ? ` - ${item.option}` : ""}`),
