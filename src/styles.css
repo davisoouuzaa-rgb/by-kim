@@ -2767,3 +2767,34 @@ html.js-reveal .bk-mobile-hero-copy[data-reveal] {
   transform: translateY(16px);
   transition: opacity 1000ms cubic-bezier(0.22, 1, 0.36, 1), transform 1000ms cubic-bezier(0.22, 1, 0.36, 1), filter 1000ms ease;
 }
+
+
+/* Correções By Kim — status de loja, encomendas e imagem Sobre */
+.bk-location-hours {
+  display:flex; align-items:center; justify-content:center; gap:28px;
+  padding:18px 7%; background:#111; color:#F5F3EE;
+}
+.bk-location-hours p, .bk-location-hours a {
+  display:inline-flex; align-items:center; gap:9px; margin:0;
+  color:#F5F3EE; font-size:10px; letter-spacing:.1em;
+}
+.bk-location-hours a { text-decoration:none; border-bottom:1px solid #F5F3EE; padding-bottom:4px; font-weight:700; }
+.bk-about-photo { display:block; width:min(100%, 520px); height:auto; max-height:620px; object-fit:cover; margin:28px 0; }
+.bk-order-section { padding:90px 7.2%; background:#111; color:#F5F3EE; }
+.bk-order-section .bk-eyebrow { color:#A3A3A3; }
+.bk-order-section h2 { font-family:'Playfair Display',serif; font-size:clamp(44px,5vw,64px); line-height:1.05; margin:0; font-weight:500; }
+.bk-order-section h2 em { font-weight:500; }
+.bk-order-section p:not(.bk-eyebrow) { max-width:560px; color:#C6C6C6; font-size:13px; line-height:1.8; margin:20px 0 28px; }
+.bk-order-section a { display:inline-flex; align-items:center; gap:14px; padding:14px 18px; border:1px solid #F5F3EE; color:#F5F3EE; text-decoration:none; font-size:9px; font-weight:700; letter-spacing:.12em; }
+.bk-testimonials[hidden] { display:none !important; }
+.bk-product-cta { cursor:pointer; border:0; background:none; padding:0; font:inherit; }
+.bk-cart-trigger { display:flex; align-items:center; gap:8px; color:#F5F3EE; text-decoration:none; font-size:9px; letter-spacing:.1em; border:1px solid #3E3E3E; padding:12px 14px; }
+.bk-cart-trigger b { display:inline-grid; place-items:center; min-width:18px; height:18px; border-radius:50%; background:#F5F3EE; color:#111; font-size:9px; }
+@media (max-width:767px) {
+  .bk-location-hours { flex-direction:column; gap:10px; padding:16px 7%; text-align:center; }
+  .bk-location-hours p, .bk-location-hours a { font-size:9px; }
+  .bk-about-photo { width:100%; max-height:none; }
+  .bk-order-section { padding:65px 7%; }
+  .bk-order-section h2 { font-size:46px; }
+  .bk-cart-trigger { padding:8px; gap:5px; font-size:8px; }
+}
