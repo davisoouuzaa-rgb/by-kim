@@ -1438,12 +1438,14 @@ html, body, .bk-page,
   overflow: visible;
 }
 .bk-menu-item-covered {
-  opacity: .25;
+  opacity: 0;
+  visibility: hidden;
   pointer-events: none;
-  transition: opacity 320ms ease;
+  transition: opacity 320ms ease, visibility 0s linear 320ms;
 }
 .bk-menu-item-covered-closing {
-  opacity: 1;
+  opacity: 0;
+  visibility: hidden;
   transition-duration: 240ms;
 }
 .bk-menu-item-covered .bk-menu-item-open,
