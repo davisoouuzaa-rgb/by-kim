@@ -1880,6 +1880,22 @@ html, body, .bk-page,
     display: none;
   }
 }
+@media (min-width: 768px) {
+  /* Na última coluna, o painel abre sobre a coluna vizinha sem deslocar o produto. */
+  .bk-menu-item-expanded:has(.bk-menu-purchase-panel-left) {
+    display: flex;
+    grid-column: auto;
+  }
+  .bk-menu-item-expanded .bk-menu-purchase-panel-left {
+    position: absolute;
+    top: 0;
+    right: calc(100% + var(--bk-expanded-gap, 34px));
+    left: auto;
+    width: min(100%, 420px);
+    height: auto;
+    min-height: 0;
+  }
+}
 @media (min-width: 1180px) {
   .bk-menu-grid { --bk-expanded-gap: 28px; }
 }
