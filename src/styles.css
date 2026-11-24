@@ -2804,3 +2804,6 @@ html.js-reveal .bk-mobile-hero-copy[data-reveal] {
 .bk-menu-filter button { border:1px solid #444; background:transparent; color:#F5F3EE; padding:10px 14px; border-radius:999px; font-size:10px; letter-spacing:.08em; cursor:pointer; transition:background .2s,color .2s,border-color .2s; }
 .bk-menu-filter button.active,.bk-menu-filter button:hover { background:#F5F3EE; color:#111; border-color:#F5F3EE; }
 .bk-menu-filter button:focus-visible { outline:2px solid #F5F3EE; outline-offset:3px; }
+
+.bk-menu-contains { display:block; margin-top:7px; color:#999; font-size:9px; letter-spacing:.03em; line-height:1.5; }
+.bk-menu-price small { display:block; color:#888; font-size:9px; font-weight:400; margin-top:5px; }
