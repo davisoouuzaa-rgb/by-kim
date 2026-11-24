@@ -2,7 +2,6 @@ import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import SugarOverlay from "../components/SugarOverlay";
 import { CartButton } from "../components/CartDrawer";
-import { useCart } from "../context/CartContext";
 import { showcaseProducts } from "../data/produtos";
 import { ArrowRight, Instagram, MapPin, Clock3, MessageCircle, Sparkles, TrainFront } from "lucide-react";
 import { usePageTitle } from "../hooks/use-page-title";
@@ -15,8 +14,6 @@ const whatsapp = "https://wa.me/5511913171186?text=Ol%C3%A1%2C%20vim%20pelo%20si
 function Index() {
   usePageTitle("By Kim | Confeitaria em Santa Cecília, São Paulo");
   const videoRef = useRef<HTMLVideoElement | null>(null);
-  const { addItem, openCart } = useCart();
-  const [optionSelections, setOptionSelections] = useState<Record<string, string>>({});
   const [reducedMotion, setReducedMotion] = useState(false);
   const [motionPreferenceReady, setMotionPreferenceReady] = useState(false);
   const [heroTextVisible, setHeroTextVisible] = useState(false);
@@ -210,14 +207,13 @@ function Index() {
         <div className="bk-product-grid">
           {showcaseProducts.map((product) => (
             <article className="bk-product" key={product.name} data-reveal>
-              <Link className="bk-product-image" to="/cardapio" aria-label={`Ver ${product.name} no cardápio`}>
+              <Link className="bk-product-image" to="/cardapio" hash={product.id} aria-label={`Ver ${product.name} no cardápio`}>
                 <img src={product.image} alt={product.alt} width={4} height={3} loading="lazy" decoding="async" />
               </Link>
               <div className="bk-product-info">
                 <div>
                   <h3>{product.name}</h3>
-                  {product.optionGroup === "cheesecake" && <div className="bk-flavor-picker" aria-label="Escolha a cobertura">{["Composta Goiabada Morango", "Goiabada", "Morango"].map((option) => <button type="button" key={option} className={(optionSelections[product.id] ?? "Composta Goiabada Morango") === option ? "active" : ""} onClick={() => setOptionSelections((current) => ({ ...current, [product.id]: option }))}>{option}</button>)}</div>}
-                  <button className="bk-product-ifood" type="button" aria-label={`Adicionar ${product.name} ao pedido`} onClick={() => { addItem({ id: product.id, name: product.name, unitPrice: product.price, unit: product.unit, ...(product.optionGroup ? { option: optionSelections[product.id] ?? "Composta Goiabada Morango" } : {}) }); openCart(); }}>ADICIONAR <ArrowRight size={14} /></button>
+                  <Link className="bk-product-ifood" to="/cardapio" hash={product.id} aria-label={`Ver ${product.name} no cardápio`}>VER NO CARDÁPIO <ArrowRight size={14} /></Link>
                 </div>
                 <span>{product.displayPrice}</span>
               </div>
