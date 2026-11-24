@@ -254,7 +254,8 @@ function Index() {
             autoPlay
             muted
             playsInline
-            preload="auto"
+            preload="metadata"
+            poster="/cheese%20cake%20cookie.jpg"
             onEnded={handleVideoEnded}
             onCanPlay={handleVideoCanPlay}
             onError={handleVideoEnded}
@@ -303,7 +304,22 @@ function Index() {
               <div className="bk-product-info">
                 <div>
                   <h3>{product.name}</h3>
-                  <a className="bk-product-ifood" href="/cardapio">ADICIONAR <ArrowRight size={14} /></a>
+                  <button className="bk-product-ifood bk-product-cta" type="button" onClick={() => {
+                  const name = product.name === "Mil Folhas Palmier Baunilha" ? "Mil Folhas Palmier" : product.name;
+                  const amountText = product.price.match(/R\\$\\s*([\\d.,]+)/)?.[1] || "0";
+                  const amount = Number(amountText.replace(".", "").replace(",", "."));
+                  const cartProduct = { name, price: "R$ " + amount.toFixed(2).replace(".", ","), slice: product.price.toLowerCase().includes("fatia"), category: "Vitrine", description: product.detail || "", flavor: product.cheesecake ? "Composta" : undefined };
+                  try {
+                    const saved = JSON.parse(localStorage.getItem(cartStorageKey) || "[]");
+                    const key = name + "::" + (cartProduct.flavor || "");
+                    const existing = saved.find((entry: any) => entry.product.name + "::" + (entry.product.flavor || "") === key);
+                    const next = existing ? saved.map((entry: any) => entry.product.name + "::" + (entry.product.flavor || "") === key ? { ...entry, quantity: entry.quantity + 1 } : entry) : [...saved, { product: cartProduct, quantity: 1 }];
+                    localStorage.setItem(cartStorageKey, JSON.stringify(next));
+                    window.dispatchEvent(new Event("bykim-cart-updated"));
+                    setCartCount(next.reduce((sum: number, entry: any) => sum + (Number(entry.quantity) || 0), 0));
+                  } catch {}
+                  window.location.href = "/cardapio";
+                }}>ADICIONAR <ArrowRight size={14} /></button>
                 </div>
                 <span>{product.price}</span>
               </div>
