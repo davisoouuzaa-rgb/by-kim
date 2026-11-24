@@ -3017,3 +3017,44 @@ html.js-reveal .bk-mobile-hero-copy[data-reveal] {
   .bk-menu-back-full { display:none; }
   .bk-menu-back-short { display:inline; }
 }
+
+
+/* Cardápio: botão de retorno sempre visível e acessível */
+.bk-menu-header .bk-menu-back {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+  min-height: 40px;
+  padding: 0 13px;
+  border: 1px solid #F5F3EE;
+  color: #F5F3EE;
+  white-space: nowrap;
+  line-height: 1;
+  letter-spacing: .06em;
+}
+.bk-menu-header .bk-menu-back:hover {
+  opacity: 1;
+  background: #F5F3EE;
+  color: #0A0A0A;
+}
+.bk-menu-header .bk-menu-back:focus-visible,
+.bk-menu-header .bk-wordmark:focus-visible {
+  outline: 2px solid #F5F3EE;
+  outline-offset: 4px;
+}
+@media (max-width: 760px) {
+  .bk-menu-header .bk-menu-back {
+    min-height: 36px;
+    padding: 0 9px;
+    font-size: 8px;
+    white-space: nowrap;
+  }
+}
+@media (max-width: 520px) {
+  .bk-menu-header .bk-menu-back {
+    max-width: none;
+    padding: 0 7px;
+    font-size: 8px;
+  }
+}
