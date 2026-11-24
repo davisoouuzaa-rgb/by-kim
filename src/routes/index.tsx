@@ -10,7 +10,6 @@ export const Route = createFileRoute("/")({ component: Index });
 
 const instagram = "https://www.instagram.com/bykimconfeitaria";
 const whatsapp = "https://wa.me/5511913171186?text=Ol%C3%A1%2C%20vim%20pelo%20site%20da%20By%20Kim%20e%20gostaria%20de%20saber%20mais!";
-const ifood = "https://www.ifood.com.br/delivery/sao-paulo-sp/by-kim-confeitaria-santa-cecilia/6623c15d-18c8-4c00-90ab-61aabacf720b";
 
 function Index() {
   const videoRef = useRef<HTMLVideoElement | null>(null);
