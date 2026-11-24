@@ -236,7 +236,7 @@ function Index() {
                 <div>
                   <h3>{product.name}</h3>
                   {product.optionGroup === "cheesecake" && <div className="bk-flavor-picker" aria-label="Escolha a cobertura">{["Composta Goiabada Morango", "Goiabada", "Morango"].map((option) => <button type="button" key={option} className={(optionSelections[product.id] ?? "Composta Goiabada Morango") === option ? "active" : ""} onClick={() => setOptionSelections((current) => ({ ...current, [product.id]: option }))}>{option}</button>)}</div>}
-                  <button className="bk-product-ifood" type="button" onClick={() => { addItem({ id: product.id, name: product.name, unitPrice: product.price, unit: product.unit, ...(product.optionGroup ? { option: optionSelections[product.id] ?? "Composta Goiabada Morango" } : {}) }); openCart(); }}>ADICIONAR <ArrowRight size={14} /></button>
+                  <button className="bk-product-ifood" type="button" aria-label={`Adicionar ${product.name} ao pedido`} onClick={() => { addItem({ id: product.id, name: product.name, unitPrice: product.price, unit: product.unit, ...(product.optionGroup ? { option: optionSelections[product.id] ?? "Composta Goiabada Morango" } : {}) }); openCart(); }}>ADICIONAR <ArrowRight size={14} /></button>
                 </div>
                 <span>{product.displayPrice}</span>
               </div>
