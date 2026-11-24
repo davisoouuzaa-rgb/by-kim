@@ -39,7 +39,8 @@ function mergeCartItems(saved: CartItem[], current: CartItem[]) {
   const merged = [...saved];
   current.forEach((item) => {
     const index = merged.findIndex((entry) => entry.id === item.id && entry.option === item.option);
-    if (index >= 0) merged[index] = { ...merged[index], quantity: merged[index].quantity + item.quantity };
+    const existing = merged[index];
+    if (existing) merged[index] = { ...existing, quantity: existing.quantity + item.quantity };
     else merged.push(item);
   });
   return merged;
