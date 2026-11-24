@@ -74,11 +74,34 @@ export const productImages: Record<string, string> = {
 const priceNumber = (price: string) => Number(price.replace("R$", "").trim().replace(".", "").replace(",", "."));
 const catalogProduct = (name: string) => categories.flatMap((category) => category.items).find((item) => item.name === name)!;
 
-export const showcaseProducts: Array<{ id: string; name: string; price: number; unit: string; displayPrice: string; image: string; alt: string; optionGroup?: "cheesecake" }> = [
-  { id: "cheesecake-cookies-n-cream", name: "Cheesecake Cookies n Cream", price: priceNumber(catalogProduct("Cheesecake Cookies n Cream").price), unit: "fatia", displayPrice: "R$ 39,00 · fatia", image: "/cheese%20cake%20cookie.jpg?v=20261122", alt: "Cheesecake Cookies n Cream", optionGroup: "cheesecake" },
-  { id: "mil-folhas-palmier", name: "Mil Folhas Palmier Baunilha", price: priceNumber(catalogProduct("Mil Folhas Palmier").price), unit: "unidade", displayPrice: "R$ 40,04", image: "/mil%20folhas.jpg?v=20261122", alt: "Mil Folhas Palmier Baunilha" },
-  { id: "entremet-espresso", name: "Entremet Espresso", price: priceNumber(catalogProduct("Entremet Espresso").price), unit: "fatia", displayPrice: "R$ 45,50 · fatia", image: "/entremet.jpg?v=20261122", alt: "Entremet Espresso" },
-  { id: "torta-de-banana", name: "Torta de Banana", price: priceNumber(catalogProduct("Torta de Banana").price), unit: "unidade", displayPrice: "R$ 45,50", image: "/torta%20banana.jpg?v=20261122", alt: "Torta de Banana" },
-  { id: "sablee-com-chocolate-de-matcha", name: "Sablee com Chocolate de Matchá", price: priceNumber(catalogProduct("Sablee com Chocolate de Matchá").price), unit: "unidade", displayPrice: "R$ 36,00", image: "/sable%20matcha.jpg?v=20261122", alt: "Sablee com Chocolate de Matchá" },
-  { id: "cheesecake-cumaru", name: "Cheesecake Cumaru", price: priceNumber(catalogProduct("Cheesecake Cumaru").price), unit: "fatia", displayPrice: "R$ 39,00 · fatia", image: "/cheese%20cake%20cumaru.jpg?v=20261122", alt: "Cheesecake Cumaru", optionGroup: "cheesecake" },
+type ShowcaseProduct = { id: string; name: string; price: number; unit: string; displayPrice: string; image: string; alt: string; optionGroup?: "cheesecake" };
+const makeShowcaseProduct = (
+  id: string,
+  name: string,
+  catalogName: string,
+  image: string,
+  alt: string,
+  optionGroup?: "cheesecake",
+): ShowcaseProduct => {
+  const product = catalogProduct(catalogName);
+  const unit = product.slice ? "fatia" : "unidade";
+  return {
+    id,
+    name,
+    price: priceNumber(product.price),
+    unit,
+    displayPrice: `${product.price}${product.slice ? " · fatia" : ""}`,
+    image,
+    alt,
+    ...(optionGroup ? { optionGroup } : {}),
+  };
+};
+
+export const showcaseProducts: ShowcaseProduct[] = [
+  makeShowcaseProduct("cheesecake-cookies-n-cream", "Cheesecake Cookies n Cream", "Cheesecake Cookies n Cream", "/cheese%20cake%20cookie.jpg?v=20261122", "Cheesecake Cookies n Cream", "cheesecake"),
+  makeShowcaseProduct("mil-folhas-palmier", "Mil Folhas Palmier Baunilha", "Mil Folhas Palmier", "/mil%20folhas.jpg?v=20261122", "Mil Folhas Palmier Baunilha"),
+  makeShowcaseProduct("entremet-espresso", "Entremet Espresso", "Entremet Espresso", "/entremet.jpg?v=20261122", "Entremet Espresso"),
+  makeShowcaseProduct("torta-de-banana", "Torta de Banana", "Torta de Banana", "/torta%20banana.jpg?v=20261122", "Torta de Banana"),
+  makeShowcaseProduct("sablee-com-chocolate-de-matcha", "Sablee com Chocolate de Matchá", "Sablee com Chocolate de Matchá", "/sable%20matcha.jpg?v=20261122", "Sablee com Chocolate de Matchá"),
+  makeShowcaseProduct("cheesecake-cumaru", "Cheesecake Cumaru", "Cheesecake Cumaru", "/cheese%20cake%20cumaru.jpg?v=20261122", "Cheesecake Cumaru", "cheesecake"),
 ];
