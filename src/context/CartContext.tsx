@@ -33,22 +33,28 @@ function validCart(value: unknown): value is CartItem[] {
 }
 
 export function CartProvider({ children }: { children: ReactNode }) {
-  const [items, setItems] = useState<CartItem[]>(() => {
-    if (typeof window === "undefined") return [];
-    try {
-      const saved = window.localStorage.getItem(STORAGE_KEY);
-      if (!saved) return [];
-      const parsed: unknown = JSON.parse(saved);
-      return validCart(parsed) ? parsed : [];
-    } catch {
-      return [];
-    }
-  });
+  const [items, setItems] = useState<CartItem[]>([]);
+  const [loaded, setLoaded] = useState(false);
 
   useEffect(() => {
+    try {
+      const saved = window.localStorage.getItem(STORAGE_KEY);
+      if (saved) {
+        const parsed: unknown = JSON.parse(saved);
+        setItems(validCart(parsed) ? parsed : []);
+      }
+    } catch {
+      setItems([]);
+    } finally {
+      setLoaded(true);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (!loaded) return;
     try { window.localStorage.setItem(STORAGE_KEY, JSON.stringify(items)); }
     catch { /* carrinho continua disponível em memória */ }
-  }, [items]);
+  }, [items, loaded]);
 
   const addItem = useCallback((product: CartProduct, quantity = 1) => {
     setItems((current) => {
