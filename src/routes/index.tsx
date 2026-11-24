@@ -1,6 +1,9 @@
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import SugarOverlay from "../components/SugarOverlay";
+import { CartButton } from "../components/CartDrawer";
+import { useCart } from "../context/CartContext";
+import { showcaseProducts } from "../data/produtos";
 import { ArrowRight, Instagram, MapPin, Clock3, MessageCircle, Sparkles, TrainFront } from "lucide-react";
 
 export const Route = createFileRoute("/")({ component: Index });
@@ -9,55 +12,10 @@ const instagram = "https://www.instagram.com/bykimconfeitaria";
 const whatsapp = "https://wa.me/5511913171186?text=Ol%C3%A1%2C%20vim%20pelo%20site%20da%20By%20Kim%20e%20gostaria%20de%20saber%20mais!";
 const ifood = "https://www.ifood.com.br/delivery/sao-paulo-sp/by-kim-confeitaria-santa-cecilia/6623c15d-18c8-4c00-90ab-61aabacf720b";
 
-const products = [
-  {
-    name: "Cheesecake Cookies n Cream",
-    detail: "",
-    price: "R$ 39,00 · fatia",
-    image: "/cheese%20cake%20cookie.jpg?v=20261122",
-    alt: "Cheesecake Cookies n Cream",
-    cheesecake: true,
-  },
-  {
-    name: "Mil Folhas Palmier Baunilha",
-    detail: "Massa de palmier formando um mil folhas, com creme de confeiteiro clássico de baunilha",
-    price: "R$ 40,04",
-    image: "/mil%20folhas.jpg?v=20261122",
-    alt: "Mil Folhas Palmier Baunilha",
-  },
-  {
-    name: "Entremet Espresso",
-    detail: "Bolo de chocolate regado com café, cremoso de chocolate, mousse de chocolate caramelizado com café",
-    price: "R$ 45,50 · fatia",
-    image: "/entremet.jpg?v=20261122",
-    alt: "Entremet Espresso",
-  },
-  {
-    name: "Torta de Banana",
-    detail: "Base de sablé, bolo de amêndoas e laranja, doce de leite, purê de banana, banana fresca e creme de doce de leite",
-    price: "R$ 45,50",
-    image: "/torta%20banana.jpg?v=20261122",
-    alt: "Torta de Banana",
-  },
-  {
-    name: "Sablee com Chocolate de Matchá",
-    detail: "Biscoitos amanteigados banhados no chocolate de matchá",
-    price: "R$ 36,00",
-    image: "/sable%20matcha.jpg?v=20261122",
-    alt: "Sablee com Chocolate de Matchá",
-  },
-  {
-    name: "Cheesecake Cumaru",
-    detail: "",
-    price: "R$ 39,00 · fatia",
-    image: "/cheese%20cake%20cumaru.jpg?v=20261122",
-    alt: "Cheesecake Cumaru",
-    cheesecake: true,
-  },
-];
-
 function Index() {
   const videoRef = useRef<HTMLVideoElement | null>(null);
+  const { addItem } = useCart();
+  const [optionSelections, setOptionSelections] = useState<Record<string, string>>({});
   const [reducedMotion, setReducedMotion] = useState(
     () => typeof window !== "undefined" && window.matchMedia("(prefers-reduced-motion: reduce)").matches
   );
@@ -186,17 +144,17 @@ function Index() {
     <main className="bk-page">
       <SugarOverlay />
       <header className={`bk-header${headerVisible ? " bk-header-visible" : ""}`}>
-        <a className="bk-wordmark" href="#inicio" aria-label="By Kim início">
+        <Link className="bk-wordmark" to="/" hash="inicio" aria-label="By Kim início">
           <span className="bk-mark">BY KIM</span>
           <span className="bk-submark">CONFEITARIA</span>
-        </a>
+        </Link>
         <nav className="bk-nav" aria-label="Navegação principal">
-          <a href="#sobre">Sobre</a>
-          <a href="#vitrine">Vitrine</a>
-          <a href="/cardapio">Cardápio</a>
-          <a href="#visite">Visite a By Kim</a>
+          <Link to="/" hash="sobre">Sobre</Link>
+          <Link to="/" hash="vitrine">Vitrine</Link>
+          <Link to="/cardapio">Cardápio</Link>
+          <Link to="/" hash="visite">Visite a By Kim</Link>
         </nav>
-        <a className="bk-header-cta" href={whatsapp} target="_blank" rel="noreferrer">PEDIR <ArrowRight size={14} /></a>
+        <div className="bk-menu-header-actions"><CartButton /><a className="bk-header-cta" href={whatsapp} target="_blank" rel="noreferrer">PEDIR <ArrowRight size={14} /></a></div>
       </header>
 
       <section className={`bk-hero bk-video-hero${reducedMotion ? " bk-video-hero-reduced" : ""}`} id="inicio">
@@ -246,23 +204,24 @@ function Index() {
 
         </div>
         <div className="bk-product-grid">
-          {products.map((product) => (
+          {showcaseProducts.map((product) => (
             <article className="bk-product" key={product.name} data-reveal>
-              <a className="bk-product-image" href="/cardapio" target="_blank" rel="noopener noreferrer" aria-label={`Ver ${product.name} no cardápio`}>
+              <Link className="bk-product-image" to="/cardapio" aria-label={`Ver ${product.name} no cardápio`}>
                 <img src={product.image} alt={product.alt} loading="lazy" />
-              </a>
+              </Link>
               <div className="bk-product-info">
                 <div>
                   <h3>{product.name}</h3>
-                  <a className="bk-product-ifood" href="/cardapio" target="_blank" rel="noopener noreferrer">VER NO CARDÁPIO <ArrowRight size={14} /></a>
+                  {product.optionGroup === "cheesecake" && <div className="bk-flavor-picker" aria-label="Escolha a cobertura">{["Composta", "Goiabada", "Morango"].map((option) => <button type="button" key={option} className={(optionSelections[product.id] ?? "Composta") === option ? "active" : ""} onClick={() => setOptionSelections((current) => ({ ...current, [product.id]: option }))}>{option}</button>)}</div>}
+                  <button className="bk-product-ifood" type="button" onClick={() => addItem({ id: product.id, name: product.name, unitPrice: product.price, unit: product.unit, option: product.optionGroup ? (optionSelections[product.id] ?? "Composta") : undefined })}>ADICIONAR <ArrowRight size={14} /></button>
                 </div>
-                <span>{product.price}</span>
+                <span>{product.displayPrice}</span>
               </div>
             </article>
           ))}
         </div>
         <div className="bk-showcase-complete">
-          <a className="bk-underlined" href="/cardapio" target="_blank" rel="noopener noreferrer">CARDÁPIO COMPLETO <ArrowRight size={15} /></a>
+          <Link className="bk-underlined" to="/cardapio">CARDÁPIO COMPLETO <ArrowRight size={15} /></Link>
         </div>
       </section>
 
@@ -290,7 +249,7 @@ function Index() {
       </section>
 
       <footer className="bk-footer">
-        <a className="bk-footer-brand" href="#inicio">BY KIM <span>ㄱ ㅣ ㅁ</span></a>
+        <Link className="bk-footer-brand" to="/" hash="inicio">BY KIM <span>ㄱ ㅣ ㅁ</span></Link>
         
         <div className="bk-footer-links"><a href={instagram} target="_blank" rel="noreferrer"><Instagram size={16} /> INSTAGRAM</a><a href={whatsapp} target="_blank" rel="noreferrer"><MessageCircle size={16} /> WHATSAPP</a></div>
         <small>© {new Date().getFullYear()} BY KIM CONFEITARIA</small>
