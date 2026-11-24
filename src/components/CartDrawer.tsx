@@ -31,7 +31,7 @@ export function CartDrawer({ onClose }: { onClose: () => void }) {
   return <div className="bk-overlay bk-cart-overlay" onMouseDown={(event) => { if (event.target === event.currentTarget) onClose(); }}>
     <aside className="bk-cart-drawer" role="dialog" aria-modal="true" aria-label="Carrinho de compras">
       <header className="bk-cart-heading"><div><p className="bk-eyebrow">BY KIM</p><h2>Sua sacola <span>({count})</span></h2></div><button className="bk-panel-close" type="button" aria-label="Fechar carrinho" onClick={onClose}><X size={20} /></button></header>
-      {items.length === 0 ? <div className="bk-cart-empty"><ShoppingBag size={32} strokeWidth={1.2} /><h3>Seu carrinho está vazio</h3><button type="button" className="bk-modal-primary" onClick={onClose}>CONTINUAR COMPRANDO</button></div> : <>
+      {items.length === 0 ? <div className="bk-cart-empty"><ShoppingBag size={32} strokeWidth={1.2} /><h3>Seu carrinho está vazio</h3><button type="button" className="bk-modal-primary" onClick={onClose}>CONTINUAR COMPRANDO</button><button type="button" className="bk-modal-primary bk-cart-checkout" disabled>ENVIAR PEDIDO PELO WHATSAPP</button></div> : <>
         <div className="bk-cart-content"><div className="bk-cart-items">
           {items.map((item) => <article className="bk-cart-item" key={item.id + (item.option ?? "")}>
             <div className="bk-cart-item-info"><h3>{item.name}{item.option ? ` - ${item.option}` : ""}</h3><p>{formatMoney(item.unitPrice)} · {item.unit}</p><strong>{formatMoney(item.unitPrice * item.quantity)}</strong></div>
