@@ -636,7 +636,8 @@ html, body, .bk-page,
   font-size: 9px;
   font-weight: 700;
   letter-spacing: .13em;
-  padding-bottom: 7px;
+  padding: 0 0 7px;
+  text-align: left;
   transition: opacity .25s ease, gap .25s ease;
 }
 .bk-product-ifood:hover {
