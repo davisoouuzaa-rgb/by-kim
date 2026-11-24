@@ -15,9 +15,8 @@ function Index() {
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const { addItem, openCart } = useCart();
   const [optionSelections, setOptionSelections] = useState<Record<string, string>>({});
-  const [reducedMotion, setReducedMotion] = useState(
-    () => typeof window !== "undefined" && window.matchMedia("(prefers-reduced-motion: reduce)").matches
-  );
+  const [reducedMotion, setReducedMotion] = useState(false);
+  const [motionPreferenceReady, setMotionPreferenceReady] = useState(false);
   const [heroTextVisible, setHeroTextVisible] = useState(false);
   const [videoPlaying, setVideoPlaying] = useState(false);
   const [videoFailed, setVideoFailed] = useState(false);
@@ -34,6 +33,7 @@ function Index() {
     const media = window.matchMedia("(prefers-reduced-motion: reduce)");
     const syncMotionPreference = () => {
       setReducedMotion(media.matches);
+      setMotionPreferenceReady(true);
       if (media.matches) {
         setHeaderVisible(true);
         videoRef.current?.pause();
@@ -168,10 +168,10 @@ function Index() {
           className={`bk-hero-video${videoFailed ? " bk-hero-video-failed" : ""}`}
           data-sieve-video
           src="/hero-chef.mp4"
-          autoPlay={!reducedMotion}
+          autoPlay={motionPreferenceReady && !reducedMotion}
           muted
           playsInline
-          preload={reducedMotion ? "none" : "auto"}
+          preload={motionPreferenceReady && !reducedMotion ? "auto" : "none"}
           fetchPriority="high"
           poster="/hero-chef-poster.jpg"
           onPlay={() => setVideoPlaying(true)}
