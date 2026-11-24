@@ -11,9 +11,9 @@ export function CartButton() {
   const { count, isOpen, openCart, closeCart } = useCart();
   const triggerRef = useRef<HTMLButtonElement>(null);
   return <>
-    <button ref={triggerRef} className="bk-cart-trigger" type="button" onClick={openCart} aria-label={`Abrir carrinho, ${count} ${count === 1 ? "item" : "itens"}`}>
-      <ShoppingBag size={17} /><span>CARRINHO</span><b aria-hidden="true">{count}</b>
-      <span className="bk-sr-only" aria-live="polite" aria-atomic="true">Carrinho: {count} {count === 1 ? "item" : "itens"}</span>
+    <button ref={triggerRef} className="bk-cart-trigger" type="button" onClick={openCart} aria-label={`Abrir sacola, ${count} ${count === 1 ? "item" : "itens"}`}>
+      <ShoppingBag size={17} /><span>SACOLA</span><b aria-hidden="true">{count}</b>
+      <span className="bk-sr-only" aria-live="polite" aria-atomic="true">Sacola: {count} {count === 1 ? "item" : "itens"}</span>
     </button>
     {isOpen && <CartDrawer onClose={closeCart} returnFocusRef={triggerRef} />}
   </>;
@@ -96,8 +96,8 @@ export function CartDrawer({ onClose, returnFocusRef }: { onClose: () => void; r
 
   return createPortal(<div className="bk-overlay bk-cart-overlay" onMouseDown={(event) => { if (event.target === event.currentTarget) onClose(); }}>
     <aside ref={dialogRef} className="bk-cart-drawer" role="dialog" aria-modal="true" aria-labelledby="bk-cart-dialog-title">
-      <header className="bk-cart-heading"><div><p className="bk-eyebrow">BY KIM</p><h2 ref={titleRef} tabIndex={-1}><span id="bk-cart-dialog-title" className="bk-sr-only">Seu pedido</span>Sua sacola <span>({count})</span></h2></div><button className="bk-panel-close" type="button" aria-label="Fechar carrinho" onClick={onClose}><X size={20} /></button></header>
-      {items.length === 0 ? <div className="bk-cart-empty"><ShoppingBag size={32} strokeWidth={1.2} /><h3>Seu carrinho está vazio</h3><button type="button" className="bk-modal-primary" onClick={onClose}>CONTINUAR COMPRANDO</button><button type="button" className="bk-modal-primary bk-cart-checkout" disabled>ENVIAR PEDIDO PELO WHATSAPP</button></div> : <>
+      <header className="bk-cart-heading"><div><p className="bk-eyebrow">BY KIM</p><h2 ref={titleRef} tabIndex={-1}><span id="bk-cart-dialog-title" className="bk-sr-only">Seu pedido</span>Sua sacola <span>({count})</span></h2></div><button className="bk-panel-close" type="button" aria-label="Fechar sacola" onClick={onClose}><X size={20} /></button></header>
+      {items.length === 0 ? <div className="bk-cart-empty"><ShoppingBag size={32} strokeWidth={1.2} /><h3>Sua sacola está vazia</h3><button type="button" className="bk-modal-primary" onClick={onClose}>CONTINUAR COMPRANDO</button><button type="button" className="bk-modal-primary bk-cart-checkout" disabled>ENVIAR PEDIDO PELO WHATSAPP</button></div> : <>
         <div className="bk-cart-content"><div className="bk-cart-items">
           {items.map((item) => <article className="bk-cart-item" key={item.id + (item.option ?? "")}>
             <div className="bk-cart-item-info"><h3>{item.name}{item.option ? ` - ${item.option}` : ""}</h3><p>{formatMoney(item.unitPrice)} · {item.unit}</p><strong>{formatMoney(item.unitPrice * item.quantity)}</strong></div>
@@ -115,9 +115,63 @@ export function CartDrawer({ onClose, returnFocusRef }: { onClose: () => void; r
         <div className="bk-cart-footer">
           <div className="bk-cart-total"><span>Subtotal</span><strong>{formatMoney(subtotal)}</strong></div><div className="bk-cart-total"><span>Total</span><strong>{formatMoney(subtotal)}</strong></div>
           <a className="bk-modal-primary bk-cart-checkout" href={whatsapp + encodeURIComponent(message)} target="_blank" rel="noopener noreferrer">ENVIAR PEDIDO PELO WHATSAPP <ArrowRight size={16} /></a>
-          <button className="bk-cart-clear" type="button" onClick={() => { if (window.confirm("Deseja esvaziar o carrinho?")) clear(); }}>ESVAZIAR CARRINHO</button>
+          <button className="bk-cart-clear" type="button" onClick={() => { if (window.confirm("Deseja esvaziar a sacola?")) clear(); }}>ESVAZIAR SACOLA</button>
         </div>
       </>}
     </aside>
   </div>, portalHost);
+}
+
+
+
+export function MenuCartSummary() {
+  const { items, count, subtotal, setQuantity, removeItem, openCart } = useCart();
+  const formatMoney = (value: number) => new Intl.NumberFormat("pt-BR", { style: "currency", currency: "BRL" }).format(value);
+  const message = [
+    "Olá! Vim pelo site da By Kim e quero pedir:",
+    ...items.map((item) => `- ${item.quantity}x ${item.name}${item.unit === "fatia" ? " (fatia)" : ""}${item.option ? ` - ${item.option}` : ""}`),
+    `Total: ${formatMoney(subtotal)}`,
+  ].join("\n");
+  const checkoutUrl = whatsapp + encodeURIComponent(message);
+
+  return <>
+    <aside className="bk-menu-cart-desktop" aria-label="Resumo da sacola">
+      <div className="bk-menu-cart-heading">
+        <div><span>BY KIM</span><h2>Sua sacola <b>({count})</b></h2></div>
+        <ShoppingBag size={19} aria-hidden="true" />
+      </div>
+      {items.length === 0 ? <p className="bk-menu-cart-empty">Sua sacola está vazia</p> : <div className="bk-menu-cart-items">
+        {items.map((item) => <article className="bk-menu-cart-item" key={item.id + (item.option ?? "")}>
+          <div className="bk-menu-cart-item-copy">
+            <strong>{item.name}{item.option ? ` · ${item.option}` : ""}</strong>
+            <span>{formatMoney(item.unitPrice)} · {item.unit}</span>
+            <b>{formatMoney(item.unitPrice * item.quantity)}</b>
+          </div>
+          <div className="bk-menu-cart-item-actions">
+            <div className="bk-quantity-control" aria-label={`Quantidade de ${item.name}`}>
+              <button type="button" aria-label={`Diminuir quantidade de ${item.name}`} onClick={() => setQuantity(item.id, item.option, item.quantity - 1)}><Minus size={12} /></button>
+              <strong>{item.quantity}</strong>
+              <button type="button" aria-label={`Aumentar quantidade de ${item.name}`} onClick={() => setQuantity(item.id, item.option, item.quantity + 1)}><Plus size={12} /></button>
+            </div>
+            <button className="bk-remove-item" type="button" aria-label={`Remover ${item.name} da sacola`} onClick={() => removeItem(item.id, item.option)}><Trash2 size={14} /></button>
+          </div>
+        </article>)}
+      </div>}
+      <div className="bk-menu-cart-totals">
+        <div><span>Subtotal</span><strong>{formatMoney(subtotal)}</strong></div>
+        <div><span>Total</span><strong>{formatMoney(subtotal)}</strong></div>
+      </div>
+      {items.length > 0
+        ? <a className="bk-menu-cart-checkout" href={checkoutUrl} target="_blank" rel="noopener noreferrer">ENVIAR PEDIDO PELO WHATSAPP <ArrowRight size={15} /></a>
+        : <button className="bk-menu-cart-checkout" type="button" disabled>ENVIAR PEDIDO PELO WHATSAPP <ArrowRight size={15} /></button>}
+      <span className="bk-sr-only" aria-live="polite" aria-atomic="true">Sacola: {count} {count === 1 ? "item" : "itens"}</span>
+    </aside>
+    <div className="bk-menu-cart-mobile" role="region" aria-label="Resumo da sacola">
+      <div className="bk-menu-cart-mobile-info" aria-live="polite" aria-atomic="true">
+        <span>{count} {count === 1 ? "item" : "itens"}</span>
+        <strong>{formatMoney(subtotal)}</strong>
+      </div>
+      <button type="button" onClick={openCart} aria-label={`Ver sacola, ${count} ${count === 1 ? "item" : "itens"}`}>VER SACOLA <ArrowRight size={15} /></button>
+    </div>
+  </>;
 }
