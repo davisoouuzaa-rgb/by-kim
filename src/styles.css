@@ -3314,10 +3314,13 @@ html.js-reveal .bk-mobile-hero-copy[data-reveal] {
     position: absolute;
     z-index: 40;
     top: 0;
-    left: calc(100% + var(--bk-expanded-gap));
+    /* Alinha o painel à primeira coluna da grade, em vez de projetá-lo
+       para fora da tela a partir da borda do card selecionado. */
+    left: 0;
     right: auto;
     width: min(calc(200% + var(--bk-expanded-gap)), 420px);
-    max-width: calc(100vw - 14vw);
+    max-width: calc(100vw - 9vw);
+    box-sizing: border-box;
     height: auto;
     min-height: 0;
     max-height: min(72svh, 620px);
@@ -3329,8 +3332,8 @@ html.js-reveal .bk-mobile-hero-copy[data-reveal] {
   }
 
   .bk-menu-item-expanded .bk-menu-purchase-panel-left {
-    left: auto;
-    right: calc(100% + var(--bk-expanded-gap));
+    left: calc(-100% - var(--bk-expanded-gap));
+    right: auto;
     animation-name: bk-menu-panel-in-left;
   }
 
