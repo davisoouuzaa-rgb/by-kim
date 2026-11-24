@@ -2965,3 +2965,32 @@ html.js-reveal .bk-mobile-hero-copy[data-reveal] {
     animation-name: bk-fade-in !important;
   }
 }
+
+
+/* BY KIM — saída suave do preço e das ações ao abrir o produto */
+@media (prefers-reduced-motion: no-preference) {
+  .bk-menu-item-bottom,
+  .bk-flavor-picker-list {
+    opacity: 1;
+    visibility: visible;
+    transition:
+      opacity 420ms cubic-bezier(.22, 1, .36, 1),
+      visibility 0s linear 0s;
+  }
+
+  .bk-menu-item-expanded .bk-menu-item-bottom,
+  .bk-menu-item-expanded .bk-flavor-picker-list {
+    opacity: 0;
+    visibility: hidden;
+    transition:
+      opacity 420ms cubic-bezier(.22, 1, .36, 1),
+      visibility 0s linear 420ms;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bk-menu-item-bottom,
+  .bk-flavor-picker-list {
+    transition: none !important;
+  }
+}
