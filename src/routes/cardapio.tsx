@@ -4,6 +4,7 @@ import { ArrowRight, Instagram, MessageCircle, X, Plus, Minus } from "lucide-rea
 import { useCart } from "../context/CartContext";
 import { CartButton } from "../components/CartDrawer";
 import { categories, catalogProducts } from "../data/produtos";
+import { usePageTitle } from "../hooks/use-page-title";
 
 export const Route = createFileRoute("/cardapio")({ component: Cardapio });
 
@@ -22,6 +23,7 @@ const hasFlavor = (product: Product) => cheesecakeNames.includes(product.name) |
 const optionsFor = (product: Product) => product.name === "Presente Sable" ? sableOptions : cheesecakeOptions;
 
 function Cardapio() {
+  usePageTitle("Cardápio | By Kim Confeitaria");
   const [selected, setSelected] = useState<Product | null>(null);
   const [closingSelected, setClosingSelected] = useState(false);
   const [panelSide, setPanelSide] = useState<"right" | "left">("right");
@@ -222,7 +224,7 @@ function Cardapio() {
                         openProduct(listingProduct, flavor ?? "Composta", event.currentTarget);
                       }}
                     >
-                      {product.image && <img className="bk-menu-product-image" src={product.image} alt={item.name} loading="lazy" />}
+                      {product.image && <img className="bk-menu-product-image" src={product.image} alt={item.name} width={4} height={3} loading={itemIndex === 0 ? "eager" : "lazy"} decoding="async" fetchPriority={itemIndex === 0 ? "high" : "auto"} onError={(event) => { event.currentTarget.style.visibility = "hidden"; }} />}
                       <span className="bk-menu-item-title">{item.name}</span>
                       {item.description && <span className="bk-menu-item-description">{item.description}</span>}
                     </button>
