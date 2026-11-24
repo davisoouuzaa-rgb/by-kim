@@ -244,7 +244,7 @@ function Cardapio() {
                               <button type="button" aria-label="Aumentar quantidade" onClick={() => setProductQty((q) => q + 1)}><Plus size={17} /></button>
                             </div>
                           </div>
-                          <button className="bk-modal-primary bk-menu-add-primary" type="button" onClick={() => { addToCart(flavored ? activeProduct : product, productQty, false); setAddedFeedback(true); }}>{addedFeedback ? "ADICIONADO ✓" : `ADICIONAR · ${money(cents(product.price) * productQty / 100)}`}</button>
+                          <button className="bk-modal-primary bk-menu-add-primary" type="button" aria-label={`Adicionar ${product.name} ao pedido`} onClick={() => { addToCart(flavored ? activeProduct : product, productQty, false); setAddedFeedback(true); }}>{addedFeedback ? "ADICIONADO ✓" : `ADICIONAR · ${money(cents(product.price) * productQty / 100)}`}</button>
                           <div className="bk-menu-purchase-separator" />
                         </div>
                       </div>
@@ -255,7 +255,7 @@ function Cardapio() {
                       </div>}
                       <span className="bk-menu-item-bottom">
                         <span className="bk-menu-price"><strong>{item.price}</strong>{item.slice && <small>fatia</small>}</span>
-                        <button type="button" className="bk-menu-add" onClick={() => addToCart(listingProduct, 1)}>ADICIONAR</button>
+                        <button type="button" className="bk-menu-add" aria-label={`Adicionar ${listingProduct.name} ao pedido`} onClick={() => addToCart(listingProduct, 1)}>ADICIONAR</button>
 
                       </span>
                     </>
