@@ -188,7 +188,7 @@ function Cardapio() {
       </section>
 
       <div className="bk-menu-categories">
-        {categories.map((category) => (
+        {categories.map((category, categoryIndex) => (
           <section className="bk-menu-category" key={category.name}>
             <div className="bk-menu-category-heading">
               <h2>{category.name}</h2>
@@ -224,7 +224,7 @@ function Cardapio() {
                         openProduct(listingProduct, flavor ?? "Composta", event.currentTarget);
                       }}
                     >
-                      {product.image && <img className="bk-menu-product-image" src={product.image} alt={item.name} width={4} height={3} loading={itemIndex === 0 ? "eager" : "lazy"} decoding="async" fetchPriority={itemIndex === 0 ? "high" : "auto"} onError={(event) => { event.currentTarget.style.visibility = "hidden"; }} />}
+                      {product.image && <img className="bk-menu-product-image" src={product.image} alt={item.name} width={4} height={3} loading={categoryIndex === 0 && itemIndex === 0 ? "eager" : "lazy"} decoding="async" fetchPriority={categoryIndex === 0 && itemIndex === 0 ? "high" : "auto"} onError={(event) => { event.currentTarget.parentElement?.classList.add("bk-image-fallback"); }} />}
                       <span className="bk-menu-item-title">{item.name}</span>
                       {item.description && <span className="bk-menu-item-description">{item.description}</span>}
                     </button>
