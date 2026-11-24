@@ -2918,3 +2918,50 @@ html.js-reveal .bk-mobile-hero-copy[data-reveal] {
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto !important; }
 }
+
+
+/* BY KIM — sem deslocamento vertical nos elementos */
+@media (prefers-reduced-motion: no-preference) {
+  /* Revelações aparecem por opacidade, sem subir ou descer. */
+  .bk-page [data-reveal],
+  .bk-page [data-reveal].is-in,
+  .bk-video-hero .bk-hero-copy,
+  .bk-video-hero .bk-hero-copy.is-in {
+    transform: none !important;
+  }
+
+  .bk-about,
+  .bk-showcase,
+  .bk-visit,
+  .bk-footer,
+  .bk-hero-copy > * {
+    animation-name: bk-fade-in !important;
+  }
+
+  /* Os cards do cardápio não deslizam quando a grade se reorganiza. */
+  .bk-menu-grid > .bk-menu-item {
+    transform: none !important;
+  }
+
+  .bk-product:hover,
+  .bk-product:active,
+  .bk-visit-copy .bk-details > div:hover {
+    transform: none !important;
+  }
+
+  /* No celular, o painel também entra apenas com fade. */
+  .bk-menu-purchase-panel-right:not(.bk-menu-purchase-panel-closing),
+  .bk-menu-purchase-panel-left:not(.bk-menu-purchase-panel-closing) {
+    animation-name: bk-fade-in !important;
+  }
+  .bk-menu-purchase-panel-right.bk-menu-purchase-panel-closing,
+  .bk-menu-purchase-panel-left.bk-menu-purchase-panel-closing {
+    animation-name: bk-fade-in !important;
+    animation-direction: reverse !important;
+  }
+
+  .bk-product-modal,
+  .bk-cart-drawer {
+    animation-name: bk-fade-in !important;
+  }
+}
