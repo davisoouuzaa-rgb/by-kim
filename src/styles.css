@@ -2773,7 +2773,7 @@ html.js-reveal .bk-mobile-hero-copy[data-reveal] {
 .bk-video-hero {
   aspect-ratio: 16 / 9;
   background-color: #0A0A0A;
-  background-image: url("/hero-poster.jpg");
+  background-image: url("/hero-chef-poster.jpg");
   background-position: center;
   background-size: cover;
 }
@@ -2790,6 +2790,6 @@ html.js-reveal .bk-mobile-hero-copy[data-reveal] {
 }
 @media (prefers-reduced-motion: reduce) {
   .bk-video-hero {
-    background-image: url("/hero-poster.jpg");
+    background-image: url("/hero-chef-poster.jpg");
   }
 }
