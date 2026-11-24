@@ -2,7 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
 import { ArrowRight, Instagram, MessageCircle, X, Plus, Minus } from "lucide-react";
 import { useCart } from "../context/CartContext";
-import { CartButton } from "../components/CartDrawer";
+import { CartButton, MenuCartSummary } from "../components/CartDrawer";
 import { categories, catalogProducts } from "../data/produtos";
 
 export const Route = createFileRoute("/cardapio")({ component: Cardapio });
@@ -172,7 +172,7 @@ function Cardapio() {
           <span className="bk-mark">By Kim</span>
           <span className="bk-submark">CONFEITARIA</span>
         </Link>
-        <Link className="bk-menu-back" to="/">← VOLTAR AO SITE</Link>
+        <Link className="bk-menu-back" to="/" aria-label="Voltar para a página inicial"><span className="bk-menu-back-full">← Voltar para a página inicial</span><span className="bk-menu-back-short">← Início</span></Link>
         <div className="bk-menu-header-actions">
           <CartButton />
           <a className="bk-header-cta" href={whatsappBase + encodeURIComponent("Olá, vim pelo site da By Kim e gostaria de saber mais!")} target="_blank" rel="noopener noreferrer">PEDIR <ArrowRight size={14} /></a>
@@ -268,6 +268,8 @@ function Cardapio() {
       </div>
 
       <p className="bk-menu-allergens">Alérgenos: consulte a loja antes de pedir.</p>
+
+      <MenuCartSummary />
 
       <footer className="bk-footer bk-menu-footer">
         <Link className="bk-footer-brand" to="/">By Kim <span>CONFEITARIA</span></Link>
