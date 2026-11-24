@@ -3,7 +3,7 @@ import { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react
 import { ArrowRight, Instagram, MessageCircle, X, Plus, Minus } from "lucide-react";
 import { useCart } from "../context/CartContext";
 import { CartButton } from "../components/CartDrawer";
-import { categories, productImages } from "../data/produtos";
+import { categories, catalogProducts } from "../data/produtos";
 
 export const Route = createFileRoute("/cardapio")({ component: Cardapio });
 
@@ -11,8 +11,8 @@ const instagram = "https://www.instagram.com/bykimconfeitaria";
 const phone = "5511913171186";
 const whatsappBase = `https://wa.me/${phone}?text=`;
 
-type Product = { name: string; description?: string; price: string; slice?: boolean; category: string; flavor?: string | undefined; image?: string | undefined };
-const allProducts: Product[] = categories.flatMap((category) => category.items.map((item) => ({ ...item, category: category.name, image: productImages[item.name] })));
+type Product = { id: string; name: string; description?: string; price: string; slice?: boolean; category: string; flavor?: string | undefined; image?: string | undefined };
+const allProducts: Product[] = catalogProducts.map((item) => ({ id: item.id, name: item.name, description: item.description, price: item.priceText, slice: item.slice, category: item.category, image: item.image }));
 const money = (value: number) => value.toLocaleString("pt-BR", { style: "currency", currency: "BRL" });
 const cents = (price: string) => Math.round(Number(price.replace("R$", "").trim().replace(".", "").replace(",", ".")) * 100);
 const cheesecakeNames = ["Cheesecake Original", "Cheesecake Cookies n Cream", "Cheesecake Cumaru", "Cheesecake de Trufas"];
@@ -149,7 +149,7 @@ function Cardapio() {
 
   const addToCart = (product: Product, quantity: number, shouldOpenCart = true) => {
     addItem({
-      id: product.name.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[^a-z0-9]+/g, "-"),
+      id: product.id,
       name: product.name,
       unitPrice: cents(product.price) / 100,
       unit: product.slice ? "fatia" : "unidade",
