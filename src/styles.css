@@ -1832,81 +1832,61 @@ html, body, .bk-page,
 }
 
 
-/* BY KIM — reorganização fluida da grade ao abrir/fechar um produto */
+/* BY KIM — abrir o painel sobreposto sem mover os produtos da grade */
 @media (min-width: 768px) {
   .bk-menu-grid {
     --bk-expanded-gap: 34px;
   }
+
   .bk-menu-item-expanded {
-    display: grid;
-    grid-column: span 2;
-    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-    column-gap: var(--bk-expanded-gap);
-    align-items: stretch;
+    display: block;
+    grid-column: auto;
+    grid-row: auto;
+    position: relative;
+    z-index: 12;
+    overflow: visible;
   }
+
   .bk-menu-item-expanded .bk-menu-item-open {
-    grid-row: 1;
+    display: flex;
     width: 100%;
     min-width: 0;
     margin: 0;
   }
+
   .bk-menu-item-expanded .bk-menu-purchase-panel {
-    position: relative;
-    top: auto;
+    position: absolute;
+    top: 0;
     right: auto;
-    left: auto;
-    grid-row: 1;
-    width: 100%;
+    left: calc(100% + var(--bk-expanded-gap));
+    width: min(100%, 420px);
     min-width: 0;
     height: auto;
     min-height: 0;
     overflow: hidden;
     box-shadow: 0 16px 38px rgba(0,0,0,.28);
   }
-  .bk-menu-item-expanded .bk-menu-purchase-panel-right {
-    grid-column: 2;
-  }
+
   .bk-menu-item-expanded .bk-menu-purchase-panel-left {
-    grid-column: 1;
+    right: calc(100% + var(--bk-expanded-gap));
+    left: auto;
   }
-  .bk-menu-item-expanded:has(.bk-menu-purchase-panel-left) .bk-menu-item-open {
-    grid-column: 2;
-  }
-  .bk-menu-item-expanded:has(.bk-menu-purchase-panel-right) .bk-menu-item-open {
-    grid-column: 1;
-  }
+
   .bk-menu-item-expanded .bk-menu-item-bottom,
   .bk-menu-item-expanded .bk-flavor-picker-list {
     display: none;
   }
 }
-@media (min-width: 768px) {
-  /* Na última coluna, o painel abre sobre a coluna vizinha sem deslocar o produto. */
-  .bk-menu-item-expanded:has(.bk-menu-purchase-panel-left) {
-    display: flex;
-    grid-column: auto;
-  }
-  .bk-menu-item-expanded .bk-menu-purchase-panel-left {
-    position: absolute;
-    top: 0;
-    right: calc(100% + var(--bk-expanded-gap, 34px));
-    left: auto;
-    width: min(100%, 420px);
-    height: auto;
-    min-height: 0;
-  }
-}
+
 @media (min-width: 1180px) {
   .bk-menu-grid { --bk-expanded-gap: 28px; }
 }
+
 @media (max-width: 767px) {
   .bk-menu-item-expanded .bk-menu-item-bottom,
   .bk-menu-item-expanded .bk-flavor-picker-list {
     display: none;
   }
-}
-@media (prefers-reduced-motion: reduce) {
-  .bk-menu-grid > .bk-menu-item { transition: none !important; }
 }
 
 
