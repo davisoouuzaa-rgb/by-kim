@@ -11,7 +11,7 @@ export function CartButton() {
   const { count, isOpen, openCart, closeCart } = useCart();
   const triggerRef = useRef<HTMLButtonElement>(null);
   return <>
-    <button ref={triggerRef} className="bk-cart-trigger" type="button" onClick={openCart} aria-label={`Abrir carrinho, ${count} itens`}>
+    <button ref={triggerRef} className="bk-cart-trigger" type="button" onClick={openCart} aria-label={`Abrir carrinho, ${count} ${count === 1 ? "item" : "itens"}`}>
       <ShoppingBag size={17} /><span>CARRINHO</span><b aria-hidden="true">{count}</b>
       <span className="bk-sr-only" aria-live="polite" aria-atomic="true">Carrinho: {count} {count === 1 ? "item" : "itens"}</span>
     </button>
