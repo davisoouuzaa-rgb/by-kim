@@ -232,7 +232,7 @@ function Index() {
           {showcaseProducts.map((product) => (
             <article className="bk-product" key={product.name} data-reveal>
               <Link className="bk-product-image" to="/cardapio" aria-label={`Ver ${product.name} no cardápio`}>
-                <img src={product.image} alt={product.alt} width={4} height={3} loading="lazy" decoding="async" onError={(event) => { event.currentTarget.style.visibility = "hidden"; }} />
+                <img src={product.image} alt={product.alt} width={4} height={3} loading="lazy" decoding="async" onError={(event) => { event.currentTarget.parentElement?.classList.add("bk-image-fallback"); }} />
               </Link>
               <div className="bk-product-info">
                 <div>
