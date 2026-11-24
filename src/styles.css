@@ -3008,8 +3008,7 @@ html.js-reveal .bk-mobile-hero-copy[data-reveal] {
   outline-offset: 3px;
 }
 .bk-cart-heading h2:focus {
-  outline: 2px solid #b58b58;
-  outline-offset: 4px;
+  outline: none;
 }
 
 .bk-menu-back-short { display:none; }
